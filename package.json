@@ -2,7 +2,10 @@
   "name": "visual-analytics-football-talent-scout",
   "version": "0.0.1",
   "description": "Visual analytics project: an help for talent scount looking for football palyer",
-  "authors": ["Bruno Marino", "Gianluca Pepe"],
+  "authors": [
+    "Bruno Marino",
+    "Gianluca Pepe"
+  ],
   "license": "LGPL-3.0",
   "private": true,
   "main": "dist/bundle.js",
