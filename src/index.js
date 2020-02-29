@@ -17,9 +17,9 @@ var svg = d3.select("svg"),
 // Map and projection
 var path = d3.geoPath();
 var projection = d3.geoMercator()
-  .scale(70)
-  .center([0,20])
-  .translate([width / 2, height / 2]);
+  .scale(100)
+  .center([0,40])
+  .translate([width /2, height /2]);
 
 // Data and color scale
 var data = d3.map();
