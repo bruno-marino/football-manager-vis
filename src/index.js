@@ -11,15 +11,15 @@ d3.csv("/assets/dataset.csv").then(function(data) {
 
 // The svg
 var svg = d3.select("svg"),
-  width = +svg.attr("width"),
-  height = +svg.attr("height");
+  width = +svg.node().getBoundingClientRect().width,
+  height = +svg.node().getBoundingClientRect().height;
 
 // Map and projection
 var path = d3.geoPath();
 var projection = d3.geoMercator()
-  .scale(100)
-  .center([0,40])
-  .translate([width /2, height /2]);
+  .center([0,45])
+  .translate([width /2, height /2])
+  .scale((height / (2 * Math.PI))*1.5);
 
 // Data and color scale
 var data = d3.map();
@@ -43,6 +43,9 @@ Promise.all(promises).then(ready)
 
 //function ready(error, topo) {
 function ready(topo) {
+  // remove antartica
+  let index_ata = topo[0].features.findIndex(country => country.id === 'ATA');
+  topo[0].features.splice(index_ata, 1);
 
   //console.log(topo[0].features);
   let mouseOver = function(d) {
@@ -50,6 +53,7 @@ function ready(topo) {
       .transition()
       .duration(200)
       .style("opacity", .5)
+      .style("cursor", "pointer")
     d3.select(this)
       .transition()
       .duration(200)
@@ -64,12 +68,12 @@ function ready(topo) {
       .style("opacity", .8)
     d3.select(this)
       .transition()
-      .duration(200)
+      .duration(0)
       .style("stroke", "transparent")
   }
 
   // Draw the map
-  svg.append("g")
+  const g = svg.append("g")
     .selectAll("path")
     .data(topo[0].features)
     .enter()
@@ -88,5 +92,25 @@ function ready(topo) {
       .style("opacity", .8)
       .on("mouseover", mouseOver )
       .on("mouseleave", mouseLeave )
+      .on("click", () => {d3.event.stopPropagation()})
+    
+    svg.on("click", reset);
+    const zoom = d3.zoom()
+    .scaleExtent([1, 8])
+    .on("zoom", zoomed);
+    
+    svg.call(zoom);
+    
+    function reset() {
+      svg.transition().duration(750).call(
+        zoom.transform,
+        d3.zoomIdentity,
+        d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
+      );
     }
-
+    
+    function zoomed() {
+      const {transform} = d3.event;
+      g.attr("transform", transform);
+    }
+}
