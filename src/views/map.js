@@ -1,6 +1,17 @@
 import * as d3 from "d3";
+import ColorBrewerLinear from "./colorscale"
 
 export default function() {
+
+
+
+  /* map color initialization */
+  const BrewerScale = new ColorBrewerLinear;
+  var BrewerRange = BrewerScale.scale(1);
+  var CustomDomain = BrewerScale.domain();
+  /* end map color initialization */
+
+
   const mapchart = function() {
     console.log('ciao')
     /*
@@ -23,9 +34,30 @@ export default function() {
 
     // Data and color scale
     var data = d3.map();
+
+    /*
+    
+    OPTION 1 FOR COLOR: scaleThreshold
+    manually specify domain and range
+    
+    
+    */
     var colorScale = d3.scaleThreshold()
-      .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-      .range(d3.schemeBlues[7]);
+      /*
+      domain specify wich color use for the range
+      in the following: 
+      - till 100000 -> rgb(237,248,251)
+      - from 100000 to 1000000 -> rgb(204,236,230)
+      - ....
+      */
+      .domain(CustomDomain)
+      //.range(d3.schemeBlues[7]);
+      /* RGB version
+      .range(["rgb(237,248,251)", "rgb(204,236,230)", "rgb(153,216,201)",
+       "rgb(102,194,164)", "rgb(65,174,118)", "rgb(35,139,69)", "rgb(0,88,36)"]);
+      */
+     //.range(["#edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#41ae76", "#238b45", "#005824"]);
+     .range(BrewerRange);
 
     // Load external data and boot
     /*

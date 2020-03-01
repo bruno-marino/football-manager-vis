@@ -16,8 +16,28 @@
     <h1>Visual Analytics: helping football talent scouts do their job</h1>
     <h2>Marino &amp; Pepe</h2>
 
+    <!--<input type="hidden" id="colorscale" name="colorscale" value="1">-->
+    <div class="filter-box">
+      <div class="custom-select-wrapper">
+          <div class="custom-select">
+              <div class="custom-select__trigger">
+              <span id="first-scale" id="color_selection">
+                  <!-- fill automatically -->
+              </span>
+                  <div class="arrow"></div>
+              </div>
+              <div id="scale-container" class="custom-options">
+                  <!-- fill automatically -->
+              </div>
+          </div>
+      </div>
+    </div>
+
     <!-- Create an element where the map will take place -->
     <svg id="my_dataviz" width="800" height="450"></svg>
+    
+    <br><br>
+
   </div>
 </body>
 </html>
