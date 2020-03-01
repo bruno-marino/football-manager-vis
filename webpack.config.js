@@ -4,12 +4,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const meta = require('./package.json')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const config = {
   entry: { main: './src/index.js' },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'main.js'
+    filename: 'main.js',
   },
   module: {
     rules: [
@@ -43,7 +44,13 @@ const config = {
       title: meta.name,
       hash: true,
       alwaysWriteToDisk: true
-    })
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, 'assets'),
+        to: path.resolve(__dirname, 'dist/assets')
+      }
+    ]),
   ]
 }
 
