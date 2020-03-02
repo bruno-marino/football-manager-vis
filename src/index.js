@@ -19,7 +19,7 @@ const mapchart = new views.mapchart(mapchartContainer);
 // data sarebbero i dati che ci restituisce il model, in questo esempio li prendiamo da quei link
 let data = d3.map();
 var promises = [
-  d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
+  d3.json("./assets/world.geojson"),
   d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { data.set(d.code, +d.pop); })
 ]
 
