@@ -2,6 +2,7 @@ import 'normalize.css'
 import './index.scss'
 import * as d3 from "d3";
 import views from "./views"
+import model from "./model"
 
 /**
  * TO DO: refactor in model view controller
@@ -20,16 +21,22 @@ const mapchart = new views.mapchart(mapchartContainer);
 let data = d3.map();
 var promises = [
   d3.json("./assets/world.geojson"),
+  d3.csv('assets/dataset.csv'),
   d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { data.set(d.code, +d.pop); })
 ]
+Promise.all(promises).then((loaded_data) => {
+  loaded_data[0].features.forEach(country => {
+    country.id === 'ATA' ? null : model.addCountry(country);
+  })
 
-Promise.all(promises).then((topo) => {
-  // remove antartica
-  let index_ata = topo[0].features.findIndex(country => country.id === 'ATA');
-  topo[0].features.splice(index_ata, 1);
+  console.log(model.countries)
+
+  loaded_data[1].forEach(player => {
+    model.addPlayer(player);
+  })
 
   // iniziamo a visualizzare roba
-  mapchart.topo = topo;
+  mapchart.topo = model.countries;
   mapchart.data = data;
   mapchart.draw();
 });

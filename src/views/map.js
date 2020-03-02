@@ -36,7 +36,7 @@ export default class MapChart {
   draw() {
     this.svg.select("g")
       .selectAll("path")
-      .data(this.topo[0].features)
+      .data(this.topo)
       .enter()
       .append("path")
       // draw each country
