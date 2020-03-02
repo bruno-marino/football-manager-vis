@@ -7,17 +7,35 @@ import views from "./views"
  * TO DO: refactor in model view controller
  * temporal
  */
-const mapchart = views.mapchart()
+//const mapchart = views.mapchart()
 
 
 const mapchartContainer = d3.select('#root')
       .append('div')
-      .attr('id', '#map')
-    mapchartContainer.call(mapchart) 
+      .attr('id', 'map')
 
+// mapchartContainer.call(mapchart) 
+const mapchart = new views.mapchart(mapchartContainer);
+// data sarebbero i dati che ci restituisce il model, in questo esempio li prendiamo da quei link
+let data = d3.map();
+var promises = [
+  d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
+  d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { data.set(d.code, +d.pop); })
+]
+
+Promise.all(promises).then((topo) => {
+  // remove antartica
+  let index_ata = topo[0].features.findIndex(country => country.id === 'ATA');
+  topo[0].features.splice(index_ata, 1);
+
+  // iniziamo a visualizzare roba
+  mapchart.topo = topo;
+  mapchart.data = data;
+  mapchart.draw();
+});
 
 /* Applying new color scale to the map */
-
+/*
 const mapcolor = new views.ColorBrewerLinear;
 
 
@@ -50,13 +68,14 @@ function apply_color_filter(scalenumber){
     //how to set the new ColorScale in the map without reload the data???
 
 }
+*/
 /* End applying new color scale to the map */
 
 
 /*
 to be removed and to be put in assets (maybe)
 */
-
+const mapcolor = new views.ColorBrewerLinear;
 /* Dinamically create select box color scale */
 
 var created_content = "";
@@ -101,7 +120,8 @@ for (const option of document.querySelectorAll('.custom-option')) {
           //console.log(this.innerHTML);
           //document.getElementById("colorscale").value = this.getAttribute('data-value');
           //change color scale in the map
-          apply_color_filter(this.getAttribute('data-value'));
+          //apply_color_filter(this.getAttribute('data-value'));
+          mapchart.onRampChange(this.getAttribute('data-value'));
       }
   })
 }
