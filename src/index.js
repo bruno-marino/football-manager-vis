@@ -29,8 +29,6 @@ Promise.all(promises).then((loaded_data) => {
     country.id === 'ATA' ? null : model.addCountry(country);
   })
 
-  console.log(model.countries)
-
   loaded_data[1].forEach(player => {
     model.addPlayer(player);
   })

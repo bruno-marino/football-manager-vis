@@ -22,16 +22,16 @@ class Model {
     this.playersById[player.UID] = this.players.length - 1
     this.onPlayersListChanged()
   }
-  updateEntry(entry) {
-    this.entries[this.entriesById[entry.UID]] = { ...this.entriesById[entry.UID], ...entry }
+  updatePLayer(player) {
+    this.players[this.playersById[player.UID]] = { ...this.playersById[player.UID], ...player }
     this.onEntriesListChanged()
   }
-  deleteEntry(entryId) {
-    const entryIndex = this.entriesById[entryId]
+  deletePlayer(playerId) {
+    const entryIndex = this.playersById[playerId]
     this.entries.splice(entryIndex, 1)
-    delete this.entriesById[entryId]
-    this.entries.forEach(e => {
-      if (this.entriesById[e.id] > entryIndex) this.entriesById[e.id] -= 1
+    delete this.playersById[playerId]
+    this.players.forEach(e => {
+      if (this.playersById[e.id] > entryIndex) this.playersById[e.id] -= 1
     })
     this.onEntriesListChanged()
   }
