@@ -1,86 +1,13 @@
-import 'normalize.css'
-import './index.scss'
-import * as d3 from "d3";
-import views from "./views"
-import model from "./model"
+import 'normalize.css';
+import './index.scss';
+import app from './app';
 
-/**
- * TO DO: refactor in model view controller
- * temporal
- */
-//const mapchart = views.mapchart()
-
-
-const mapchartContainer = d3.select('#root')
-      .append('div')
-      .attr('id', 'map')
-
-// mapchartContainer.call(mapchart) 
-const mapchart = new views.mapchart(mapchartContainer);
-// data sarebbero i dati che ci restituisce il model, in questo esempio li prendiamo da quei link
-let data = d3.map();
-var promises = [
-  d3.json("./assets/world.geojson"),
-  d3.csv('assets/dataset.csv'),
-  d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { data.set(d.code, +d.pop); })
-]
-Promise.all(promises).then((loaded_data) => {
-  loaded_data[0].features.forEach(country => {
-    country.id === 'ATA' ? null : model.addCountry(country);
-  })
-
-  loaded_data[1].forEach(player => {
-    model.addPlayer(player);
-  })
-
-  // iniziamo a visualizzare roba
-  mapchart.topo = model.countries;
-  mapchart.data = data;
-  mapchart.draw();
-});
-
-/* Applying new color scale to the map */
-/*
-const mapcolor = new views.ColorBrewerLinear;
-
-
-function apply_color_filter(scalenumber){
-    //color range array
-    var color_range = mapcolor.scale(parseInt(scalenumber));
-    //new color range
-    var colorScale = d3.scaleThreshold()
-      .domain(mapcolor.domain())
-      .range(color_range);
-    
-    
-    var data = d3.map();
-    var promises = [
-      d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
-      d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { data.set(d.code, +d.pop); })
-  ]
-    
-  Promise.all(promises).then(ready)
-
-  //function ready(error, topo) {
-  function ready(topo) {
-    
-    d3.selectAll("path")    
-      .attr("fill", function (d) {
-        d.total = data.get(d.id) || 0;
-        return colorScale(d.total);
-      })
-  } 
-    //how to set the new ColorScale in the map without reload the data???
-
-}
-*/
-/* End applying new color scale to the map */
-
+app();
 
 /*
 to be removed and to be put in assets (maybe)
 */
-const mapcolor = new views.ColorBrewerLinear;
+const mapcolor = window.app.mapcolor;
 /* Dinamically create select box color scale */
 
 var created_content = "";
@@ -126,7 +53,7 @@ for (const option of document.querySelectorAll('.custom-option')) {
           //document.getElementById("colorscale").value = this.getAttribute('data-value');
           //change color scale in the map
           //apply_color_filter(this.getAttribute('data-value'));
-          mapchart.onRampChange(this.getAttribute('data-value'));
+          window.app.onRampChange(this.getAttribute('data-value'));
       }
   })
 }

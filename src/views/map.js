@@ -1,17 +1,22 @@
 import * as d3 from "d3";
 import ColorBrewerLinear from "./colorscale"
+import { timeThursday } from "d3";
 
 export default class MapChart {
   constructor(container) {
-    this.data = [];
-    this.onCountriesSelection = {};
-    this.container = container;
+    this._data = [];
     this.BrewerScale = new ColorBrewerLinear;
-    this.init();
+    this.selected_countries = [];
+    
+    this.onCountriesSelection = () => {};
+
+    if (container)
+      this.init(container);
   }
 
   // insert svg in container and init interaction events
-  init() {
+  init(container) {    
+    this.container = container || this.container;
     this.zoom = d3.zoom()
         .scaleExtent([1, 8])
         .on("zoom", this.zoomed.bind(this));
@@ -29,14 +34,15 @@ export default class MapChart {
       .translate([this.width /2, this.height /2])
       .scale((this.height / (2 * Math.PI))*1.5);
 
-    this.onRampChange(1);
+    this.changeRamp(1);
+    this.draw();
   }
 
   // draw countries
   draw() {
     this.svg.select("g")
       .selectAll("path")
-      .data(this.topo)
+      .data(this._data)
       .enter()
       .append("path")
       // draw each country
@@ -44,19 +50,16 @@ export default class MapChart {
         .projection(this.projection)
       )
       // set the color of each country
-      .attr("fill", d => {
-        d.total = this.data.get(d.id) || 0;
-        return this.colorScale(d.total);
-      })
+      .attr("fill", d => this.colorScale(d.total))
       .style("stroke", "transparent")
-      .attr("class", function(d){ return "Country" } )
+      .attr("class", d => "Country")
       .style("opacity", .8)
       .on("mouseover", this.mouseOverCountry )
       .on("mouseleave", this.mouseLeaveCountry )
       .on("click", () => {d3.event.stopPropagation()});
   }
 
-  onRampChange(scale_number) {
+  changeRamp(scale_number) {
     /* map color initialization */
     var BrewerRange = this.BrewerScale.scale(parseInt(scale_number));
     var CustomDomain = this.BrewerScale.domain();
@@ -87,10 +90,7 @@ export default class MapChart {
       .range(BrewerRange);
 
     this.svg.selectAll('.Country')
-      .attr("fill", d => {
-        d.total = this.data.get(d.id) || 0;
-        return this.colorScale(d.total);
-      })
+      .attr("fill", d => this.colorScale(d.total))
   }
 
   updateData() {
@@ -134,11 +134,30 @@ export default class MapChart {
       .style("stroke", "transparent");
   }
 
+  countrySelected() {
+    //perform visual change and give the selected countries to the controller
+    this.onCountriesSelection(this.selected_countries);
+  }
+
+  bindCountriesSelection(callback) {
+    this.onCountriesSelection = callback;
+  }
+
+  // getters and setters
   get width() {
     return this.container.node().getBoundingClientRect().width;
   }
   
   get height() {
     return this.container.node().getBoundingClientRect().height;
+  }
+  
+  get data() {
+    return this._data;
+  }
+
+  set data(data) {
+    this._data = data;
+    if (this.svg) this.draw();
   }
 }

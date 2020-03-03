@@ -12,9 +12,14 @@ class Model {
     this.onCountriesListChanged = () => {}
   }
   //
-  bindEntriesListChanged(callback) {
-    this.onEntriesListChanged = callback
+  bindPlayersListChanged(callback) {
+    this.onPlayersListChanged = callback
   }
+
+  bindCountriesListChanged(callback) {
+    this.onCountriesListChanged = callback
+  }
+
   //
   addPlayer(player) {
     //if (entry.id === undefined) throw new Error('Entry with missing id')
