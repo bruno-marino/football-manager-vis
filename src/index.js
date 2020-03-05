@@ -5,36 +5,42 @@ import app from './app';
 app();
 
 /*
-to be removed and to be put in assets (maybe)
+to be removed and to be put in assets (maybe) or in another place
 */
-const mapcolor = window.app.mapcolor;
+const roles_settings = window.app.rolessettings;
+
+
 /* Dinamically create select box color scale */
 
-/*
+/* sample to be injected
+<span class='custom-option selected' data-value='1'>
+<img class="role_img" src="/assets/img/role_1.png" height="24" width="24" alt="Goalkeepers">
+<span class="role_name_container">Goalkeepers</span>
+</span>
+*/
+var role_j = roles_settings.settings(1);
 var created_content = "";
-var current_scale = mapcolor.scale(1);
-for(var i = 0; i <= current_scale.length; i++){
-   created_content = created_content + "<div class='scale-square' style='background:" + current_scale[i] + "' ></div>";
-}
+
+created_content = "<img class='role_img' src='/assets/" + role_j.img_path + "' height='24' width='24' alt='" + role_j.role_name + "'>";
+created_content = created_content + "<span class='role_name_container'>" + role_j.role_name + "</span>";
 document.getElementById("first-scale").innerHTML = created_content;
 
 
 created_content = "";
-for(var j = 1; j <= 12; j++){
-  current_scale = mapcolor.scale(j);
+for(var j = 1; j <= 4; j++){
+  role_j = roles_settings.settings(j);
   if(j==1){
     created_content = created_content + "<span class='custom-option selected' data-value='" + j + "'>";
   }else{
     created_content = created_content + "<span class='custom-option' data-value='" + j + "'>";
   }
-  for(var i = 0; i < current_scale.length; i++){
-    created_content = created_content + "<div class='scale-square' style='background:" + current_scale[i] + "' ></div>";
-  }
+
+  created_content = created_content + "<img class='role_img' src='/assets/" + role_j.img_path + "' height='24' width='24' alt='" + role_j.role_name + "'>";
+  created_content = created_content + "<span class='role_name_container'>" + role_j.role_name + "</span>";
   created_content = created_content + "</span>";
 }
 
 document.getElementById("scale-container").innerHTML = created_content;
-*/
 /* End dinamically create select box color scale */
 
 /* Select box code */
@@ -52,20 +58,11 @@ for (const option of document.querySelectorAll('.custom-option')) {
           this.classList.add('selected');
           this.closest('.custom-select').querySelector('.custom-select__trigger span').innerHTML = this.innerHTML;
           //console.log(this.innerHTML);
-          //document.getElementById("colorscale").value = this.getAttribute('data-value');
           //change color scale in the map
-          //apply_color_filter(this.getAttribute('data-value'));
-          window.app.onRampChange(this.getAttribute('data-value'));
+          window.app.onRampChange(parseInt(this.getAttribute('data-value')));
       }
   })
 }
-
-// window.addEventListener('click', function (e) {
-//     const select = document.querySelector('.custom-select')
-//     if (!select.contains(e.target)) {
-//         select.classList.remove('open');
-//     }
-// });
 
 window.addEventListener('click', function (e) {
   for (const select of document.querySelectorAll('.custom-select')) {
