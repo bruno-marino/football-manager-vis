@@ -5,7 +5,7 @@ export default class Controller {
   constructor() {
     this.model = model;
     this.mapchart = new views.mapchart();
-    this.mapcolor = new views.ColorBrewerLinear();
+    this.rolessettings = new views.RoleSettings();
 
     // register callback function for model upddate events
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));

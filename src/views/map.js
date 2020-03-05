@@ -5,7 +5,7 @@ import { timeThursday } from "d3";
 export default class MapChart {
   constructor(container) {
     this._data = [];
-    this.BrewerScale = new ColorBrewerLinear;
+    this.RoleSetting = new RoleSettings;    
     this.selected_countries = [];
     
     this.onCountriesSelection = () => {};
@@ -59,10 +59,12 @@ export default class MapChart {
       .on("click", () => {d3.event.stopPropagation()});
   }
 
-  changeRamp(scale_number) {
+  changeRamp(role_number) {
+
     /* map color initialization */
-    var BrewerRange = this.BrewerScale.scale(parseInt(scale_number));
-    var CustomDomain = this.BrewerScale.domain();
+    var RampSettings = this.RoleSetting.settings(role_number);
+    var BrewerRange = RampSettings.role_scale;
+    var CustomDomain = RampSettings.role_domain;
     /* end map color initialization */
 
     /*
