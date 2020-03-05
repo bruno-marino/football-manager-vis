@@ -10,6 +10,7 @@ to be removed and to be put in assets (maybe)
 const mapcolor = window.app.mapcolor;
 /* Dinamically create select box color scale */
 
+/*
 var created_content = "";
 var current_scale = mapcolor.scale(1);
 for(var i = 0; i <= current_scale.length; i++){
@@ -33,6 +34,7 @@ for(var j = 1; j <= 12; j++){
 }
 
 document.getElementById("scale-container").innerHTML = created_content;
+*/
 /* End dinamically create select box color scale */
 
 /* Select box code */

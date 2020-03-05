@@ -1,5 +1,5 @@
 import mapchart from './map'
-import ColorBrewerLinear from './colorscale'
+import RoleSettings from './rolesettings'
 
 // export default { map, scatterplot, ... }
-export default { mapchart, ColorBrewerLinear }
+export default { mapchart, RoleSettings }

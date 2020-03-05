@@ -82,12 +82,12 @@ body {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding: 0 10px;
+  padding: 5px 10px;
   font-size: 20px;
   font-weight: 300;
   color: #3b3b3b;
-  height: 40px;
-  line-height: 10px;
+  /*height: 40px;
+  line-height: 10px;*/
   background: #ffffff;
   cursor: pointer;
   border-width: 2px 0 2px 0;
@@ -120,12 +120,12 @@ body {
 .custom-option {
   position: relative;
   display: block;
-  padding: 0 10px 0 10px;
+  padding: 5px 10px;
   font-size: 22px;
   font-weight: 300;
   color: #3b3b3b;
-  line-height:45px;
-  height:40px;
+ /* line-height:45px;
+  height:40px; */
   cursor: pointer;
   transition: all 0.5s;
 }
@@ -176,4 +176,16 @@ body {
 .open .arrow::after {
   left: 5px;
   transform: rotate(45deg);
+}
+
+.role_img{
+  display:inline-block;
+  width: 32px;
+  height: 32px;
+  vertical-align:middle;
+}
+.role_name_container{
+  display:inline-block;
+  vertical-align:middle;
+  line-height: 32px;
 }

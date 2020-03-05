@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import ColorBrewerLinear from "./colorscale"
+import RoleSettings from "./rolesettings"
 import { timeThursday } from "d3";
 
 export default class MapChart {
