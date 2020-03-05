@@ -12,8 +12,6 @@ const roles_settings = window.app.rolessettings;
 
 /* Dinamically create select box color scale */
 
-<<<<<<< Updated upstream
-=======
 /* sample to be injected
 <span class='custom-option selected' data-value='1'>
 <img class="role_img" src="/assets/img/role_1.png" height="24" width="24" alt="Goalkeepers">
@@ -21,7 +19,6 @@ const roles_settings = window.app.rolessettings;
 </span>
 */
 var role_j = roles_settings.settings(1);
->>>>>>> Stashed changes
 var created_content = "";
 
 created_content = "<img class='role_img' src='/assets/" + role_j.img_path + "' height='24' width='24' alt='" + role_j.role_name + "'>";
@@ -44,10 +41,7 @@ for(var j = 1; j <= 4; j++){
 }
 
 document.getElementById("scale-container").innerHTML = created_content;
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 /* End dinamically create select box color scale */
 
 /* Select box code */
