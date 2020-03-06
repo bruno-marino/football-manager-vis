@@ -1,11 +1,9 @@
 import * as d3 from "d3";
-import RoleSettings from "./rolesettings"
 import { timeThursday } from "d3";
 
 export default class MapChart {
   constructor(container) {
-    this._data = [];
-    this.RoleSetting = new RoleSettings;    
+    this._data = []; 
     this.selected_countries = [];
     
     this.onCountriesSelection = () => {};
@@ -34,7 +32,6 @@ export default class MapChart {
       .translate([this.width /2, this.height /2])
       .scale((this.height / (2 * Math.PI))*1.5);
 
-    this.changeRamp(1);
     this.draw();
   }
 
@@ -59,14 +56,7 @@ export default class MapChart {
       .on("click", () => {d3.event.stopPropagation()});
   }
 
-  changeRamp(role_number) {
-
-    /* map color initialization */
-    var RampSettings = this.RoleSetting.settings(role_number);
-    var BrewerRange = RampSettings.role_scale;
-    var CustomDomain = RampSettings.role_domain;
-    /* end map color initialization */
-
+  changeRamp(domain, range) {
     /*
     
     OPTION 1 FOR COLOR: scaleThreshold
@@ -82,17 +72,19 @@ export default class MapChart {
       - from 100000 to 1000000 -> rgb(204,236,230)
       - ....
       */
-      .domain(CustomDomain)
+      .domain(domain)
       //.range(d3.schemeBlues[7]);
       /* RGB version
       .range(["rgb(237,248,251)", "rgb(204,236,230)", "rgb(153,216,201)",
         "rgb(102,194,164)", "rgb(65,174,118)", "rgb(35,139,69)", "rgb(0,88,36)"]);
       */
       //.range(["#edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#41ae76", "#238b45", "#005824"]);
-      .range(BrewerRange);
+      .range(range);
 
-    this.svg.selectAll('.Country')
-      .attr("fill", d => this.colorScale(d.total))
+    if (this.svg) {
+      this.svg.selectAll('.Country')
+        .attr("fill", d => this.colorScale(d.total))
+    }
   }
 
   updateData() {

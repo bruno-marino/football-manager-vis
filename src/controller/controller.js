@@ -1,16 +1,17 @@
 import views from '../views';
 import model from '../model';
+import rolesettings from './rolesettings';
 
 export default class Controller {
   constructor() {
     this.model = model;
     this.mapchart = new views.mapchart();
-    this.rolessettings = new views.RoleSettings();
+    this.rolesettings = rolesettings;
 
     // register callback function for model upddate events
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
     this.model.bindCountriesListChanged(this.onCountriesListChanged.bind(this));
-
+    this.onRoleChange(0);
   }
   
   handleAddPlayer(player) {
@@ -29,7 +30,9 @@ export default class Controller {
     this.mapchart.data = this.model.countries;
   }
 
-  onRampChange(scalenumber) {
-    this.mapchart.changeRamp(scalenumber);
+  onRoleChange(role_id) {
+    let role_scale = this.rolesettings[role_id].role_scale;
+    let role_domain = this.rolesettings[role_id].role_domain;
+    this.mapchart.changeRamp(role_domain,role_scale);
   }
 }
