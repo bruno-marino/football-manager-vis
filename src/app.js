@@ -19,7 +19,6 @@ const loadData = function() {
     return new Promise((resolve, reject) => {
       // temp
       let data = d3.map();
-      data.set('aa', 'aa');
       let promises = [
         d3.json("./assets/world.geojson"),
         d3.csv("./assets/dataset.csv"),

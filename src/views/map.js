@@ -16,13 +16,12 @@ export default class MapChart {
   init(container) {    
     this.container = container || this.container;
     this.zoom = d3.zoom()
-        .scaleExtent([1, 8])
         .on("zoom", this.zoomed.bind(this));
 
     this.svg = this.container.append("svg")
       .attr("width",this.width)
       .attr("height", this.height)
-      .on("click", this.reset.bind(this))
+      .on("click", () => { this.reset(); })
       .call(this.zoom);
 
     this.svg.append("g");     
@@ -48,12 +47,11 @@ export default class MapChart {
       )
       // set the color of each country
       .attr("fill", d => this.colorScale(d.total))
-      .style("stroke", "transparent")
+      .style("vector-effect", "non-scaling-stroke") 
       .attr("class", d => "Country")
-      .style("opacity", .8)
-      .on("mouseover", this.mouseOverCountry )
-      .on("mouseleave", this.mouseLeaveCountry )
-      .on("click", () => {d3.event.stopPropagation()});
+      //.on("mouseover", this.mouseOverCountry )
+      //.on("mouseleave", this.mouseLeaveCountry )
+      .on("click",  this.toggleCountrySelection.bind(this));
   }
 
   changeRamp(domain, range) {
@@ -103,32 +101,39 @@ export default class MapChart {
     const {transform} = d3.event;
     this.svg.select("g").attr("transform", transform);
   }
-
+/*
   mouseOverCountry() {
     d3.selectAll(".Country")
-      .transition()
-      .duration(200)
       .style("opacity", .5)
       .style("cursor", "pointer");
     d3.select(d3.event.target)
-      .transition()
-      .duration(200)
       .style("opacity", 1)
-      .style("stroke", "black");
+      .style("stroke-width", 2)
   }
 
   mouseLeaveCountry() {
     d3.selectAll(".Country")
-      .transition()
-      .duration(200)
-      .style("opacity", .8);
-    d3.select(d3.event.target)
-      .transition()
-      .duration(0)
-      .style("stroke", "transparent");
+      .style("opacity", .8)
+      .style("stroke-width", 0.3);
   }
-
-  countrySelected() {
+*/
+  toggleCountrySelection(country) {
+    if(!country) {
+      // reset selected countries
+      d3.selectAll('.Country.selected').classed('selected', false);
+      this.selected_countries = [];
+    } else {
+      d3.event.stopPropagation();
+      if (this.selected_countries.includes(country.id)) {
+        this.selected_countries.splice(
+          this.selected_countries.findIndex(code => code == country.id),
+          1);
+      } else {
+        this.selected_countries.push(country.id)
+      }
+      d3.event.target.classList.toggle('selected')
+    }
+    
     //perform visual change and give the selected countries to the controller
     this.onCountriesSelection(this.selected_countries);
   }
