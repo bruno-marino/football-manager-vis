@@ -1,6 +1,7 @@
 import views from '../views';
 import model from '../model';
 import rolesettings from './rolesettings';
+import countryStrengthPerRole from './util/country-strength-per-role'
 
 export default class Controller {
   constructor() {
@@ -34,5 +35,6 @@ export default class Controller {
     let role_scale = this.rolesettings[role_id].role_scale;
     let role_domain = this.rolesettings[role_id].role_domain;
     this.mapchart.changeRamp(role_domain,role_scale);
+    console.log(countryStrengthPerRole(rolesettings[role_id],this.model.players));
   }
 }

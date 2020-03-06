@@ -31,10 +31,9 @@ const loadData = function() {
           country.id === 'ATA' ? null : controller.handleAddCountry(country);
         });
 
-        /*
         loaded_data[1].forEach(player => {
           controller.handleAddPlayer(player);
-        })*/
+        })
         resolve(true)
       })
       .catch(error => reject(error));
