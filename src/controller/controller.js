@@ -34,8 +34,6 @@ export default class Controller {
     let role_scale = this.rolesettings[role_id].role_scale;
     let role_domain = this.rolesettings[role_id].role_domain;
     this.mapchart.changeRamp(role_domain,role_scale);
-    this.mapchart.updateData(
-      countryStrengthPerRole(rolesettings[role_id],this.model.players)
-    );
+    this.mapchart.values = countryStrengthPerRole(rolesettings[role_id],this.model.players);
   }
 }
