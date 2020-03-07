@@ -31,6 +31,8 @@ export default class MapChart {
       .center([0,45])
       .translate([this.width /2, this.height /2])
       .scale((this.height / (2 * Math.PI))*1.5);
+
+    this.draw();
   }
 
   // draw countries
@@ -64,7 +66,8 @@ export default class MapChart {
       ) 
   }
 
-  changeRamp(domain, range) {
+  changeRamp(range) {
+    let domain = this.calcDomain()
     /*
     
     OPTION 1 FOR COLOR: scaleThreshold
@@ -90,8 +93,7 @@ export default class MapChart {
       .range(range);
 
     if (this.svg) {
-      this.svg.selectAll('.Country')
-        .attr("fill", d => this.colorScale(this.values[d.id]))
+      this.draw();
     }
   }
 
@@ -124,7 +126,7 @@ export default class MapChart {
   }
 */
   toggleCountrySelection(country) {
-    console.log(d3.event.target.total)
+    console.log(d3.event.target)
     if(!country) {
       // reset selected countries
       d3.selectAll('.Country.selected').classed('selected', false);
@@ -149,7 +151,12 @@ export default class MapChart {
     this.onCountriesSelection = callback;
   }
 
-  calcDomain(arr){
+  calcDomain(){
+    let arr = [];
+    for(let country in this.values ){
+      arr.push(this.values[country])
+    }
+    
     //compute the first usefull percentile
     let integer = true;
     var firstChunk = arr.length/7;
@@ -160,7 +167,6 @@ export default class MapChart {
     }
 
     var domain = new Array();
-  
     //sort the array of data
     arr.sort((a, b) => a - b);
     //console.log(arr)
@@ -204,6 +210,5 @@ export default class MapChart {
 
   set values(data) {
     this._values = data;
-    if (this.svg) this.draw();
   }
 }
