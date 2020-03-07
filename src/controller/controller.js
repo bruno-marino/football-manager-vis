@@ -12,7 +12,6 @@ export default class Controller {
     // register callback function for model upddate events
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
     this.model.bindCountriesListChanged(this.onCountriesListChanged.bind(this));
-    this.onRoleChange(0);
   }
   
   handleAddPlayer(player) {
@@ -35,6 +34,8 @@ export default class Controller {
     let role_scale = this.rolesettings[role_id].role_scale;
     let role_domain = this.rolesettings[role_id].role_domain;
     this.mapchart.changeRamp(role_domain,role_scale);
-    console.log(countryStrengthPerRole(rolesettings[role_id],this.model.players));
+    this.mapchart.updateData(
+      countryStrengthPerRole(rolesettings[role_id],this.model.players)
+    );
   }
 }

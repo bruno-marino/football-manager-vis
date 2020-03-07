@@ -30,8 +30,6 @@ export default class MapChart {
       .center([0,45])
       .translate([this.width /2, this.height /2])
       .scale((this.height / (2 * Math.PI))*1.5);
-
-    this.draw();
   }
 
   // draw countries
@@ -85,8 +83,12 @@ export default class MapChart {
     }
   }
 
-  updateData() {
+  updateData(data) {
+    this.data.forEach(d => {
+      d.total = data[d.id];
+    });
 
+    this.draw();
   }
 
   reset() {
