@@ -13,30 +13,38 @@
 </head>
 <body>
   <div id="root">
-    <h1>Visual Analytics: helping football talent scouts do their job</h1>
-    <h2>Marino &amp; Pepe</h2>
-
-    <!--<input type="hidden" id="colorscale" name="colorscale" value="1">-->
-    <div class="filter-box">
-      <div class="custom-select-wrapper">
-          <div class="custom-select">
-              <div class="custom-select__trigger">
-                <span id="first-scale" id="color_selection">
-                    <!-- fill automatically -->
-                </span> 
-                <div class="arrow"></div>
-              </div>
-              <div id="scale-container" class="custom-options">
-                  <!-- fill automatically -->
-                  <span class='custom-option selected' data-value='1'>
-                    <img class="role_img" src="/assets/img/role_1.png" height="24" width="24" alt="Goalkeepers">
-                    <span class="role_name_container">Goalkeepers</span>
-                  </span>
+    <div id="map_container">
+      <div class="filter-box">
+        <div class="custom-select-wrapper">
+            <div class="custom-select">
+                <div class="custom-select__trigger">
+                  <span id="first-scale" id="color_selection">
+                      <!-- fill automatically -->
+                  </span> 
+                  <div class="arrow"></div>
                 </div>
-          </div>
+                <div id="scale-container" class="custom-options">
+                    <!-- fill automatically -->
+                </div>
+            </div>
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+    <div class="bottom-margin"></div>
+    <div class="col-50">
+      <div id="scatter_container">
+        <div id="scatter">Scatterplot</div>
+      </div>
+    </div><div class="col-50">
+      <div id="radar_container">
+        <div id="radar">Radarchart</div>  
+      </div>
+      <div id="bar_container">
+        <div id="bar">Barchart</div>  
       </div>
     </div>
-    
   </div>
+  <div class="bottom-margin"></div>
 </body>
 </html>

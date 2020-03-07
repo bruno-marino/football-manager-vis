@@ -7,9 +7,7 @@ const app = function() {
   window.app = controller;
 
   loadData().then(() => {
-    const mapchartContainer = d3.select('#root')
-        .append('div')
-        .attr('id', 'map');
+    const mapchartContainer = d3.select('#map');
     
     controller.mapchart.init(mapchartContainer);
     controller.onRoleChange(0);

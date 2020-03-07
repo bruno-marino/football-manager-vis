@@ -183,7 +183,7 @@ export default class MapChart {
       domain.push(domain_value);
     }
     //console.log(domain)
-    return domain; //return an array of six value
+    return domain; //return an array of six values
   }
 
   // getters and setters

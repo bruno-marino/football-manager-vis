@@ -15,6 +15,36 @@ body {
   height: 450px;
 }
 
+.col-50{
+  display:inline-block;
+  width:50%;
+  box-sizing: border-box;
+  vertical-align:top;
+}
+.bottom-margin{
+  height:40px;
+}
+
+#scatter_container, #radar_container, #bar_container{
+  padding:10px;
+  width: 100%;
+
+}
+#scatter_container {
+  height: 500px;
+  background: lightgray;
+}
+
+#radar_container {
+  height: 250px;
+  background: lightgreen;
+}
+
+#bar_container {
+  height: 250px;
+  background: lightskyblue;
+}
+
 /* Button */
 .button{
   border: 2px solid #394a6d;
