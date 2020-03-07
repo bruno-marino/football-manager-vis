@@ -144,6 +144,32 @@ export default class MapChart {
     this.onCountriesSelection = callback;
   }
 
+  calcDomain(arr){
+    //ref: https://www.dummies.com/education/math/statistics/how-to-calculate-percentiles-in-statistics/
+    //compute the first usefull percentile
+    let integer = true;
+    var firstChunk = Math.round(arr.length/7);
+    var domain = new Array();
+  
+    //sort the array of data
+    arr.sort((a, b) => a - b);
+    //console.log(arr)
+    let domain_value = 0;
+    let domain_index = 0;
+  
+    for (var i = 1; i < 7; i++) {
+      domain_index = firstChunk * i;
+      if(integer){        
+        domain_value = (arr[domain_index] + arr[domain_index + 1])/2
+      }else{
+        domain_value = arr[domain_index];
+      }
+      domain.push(domain_value);
+    }
+    //console.log(domain)
+    return domain; //return an array of six value
+  }
+
   // getters and setters
   get width() {
     return this.container.node().getBoundingClientRect().width;
