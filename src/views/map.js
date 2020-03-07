@@ -3,7 +3,8 @@ import { timeThursday } from "d3";
 
 export default class MapChart {
   constructor(container) {
-    this._data = []; 
+    this._data = [];
+    this._values = []; 
     this.selected_countries = [];
     
     this.onCountriesSelection = () => {};
@@ -37,19 +38,30 @@ export default class MapChart {
     this.svg.select("g")
       .selectAll("path")
       .data(this._data)
-      .enter()
-      .append("path")
-      // draw each country
-      .attr("d", d3.geoPath()
-        .projection(this.projection)
-      )
-      // set the color of each country
-      .attr("fill", d => this.colorScale(d.total))
-      .style("vector-effect", "non-scaling-stroke") 
-      .attr("class", d => "Country")
-      //.on("mouseover", this.mouseOverCountry )
-      //.on("mouseleave", this.mouseLeaveCountry )
-      .on("click",  this.toggleCountrySelection.bind(this));
+      .join(
+        // new objects to be created
+        enter => enter.append("path")
+          // draw each country
+          .attr("d", d3.geoPath()
+            .projection(this.projection)
+          )
+          .style("vector-effect", "non-scaling-stroke") 
+          .attr("class", "Country")
+          //.on("mouseover", this.mouseOverCountry )
+          //.on("mouseleave", this.mouseLeaveCountry )
+          .on("click",  this.toggleCountrySelection.bind(this))
+          // set the color of each country
+          .attr("fill", d => this.values[d.id] ? this.colorScale(this.values[d.id]) : 'grey'),
+        update => update
+            .transition()
+            .duration(1000)
+            // set the color of each country
+            .attr("fill", d => this.values[d.id] ? this.colorScale(this.values[d.id]) : 'grey'),
+        exit => exit
+          .transition()
+          .duration(650)
+          .remove()
+      ) 
   }
 
   changeRamp(domain, range) {
@@ -79,16 +91,8 @@ export default class MapChart {
 
     if (this.svg) {
       this.svg.selectAll('.Country')
-        .attr("fill", d => this.colorScale(d.total))
+        .attr("fill", d => this.colorScale(this.values[d.id]))
     }
-  }
-
-  updateData(data) {
-    this.data.forEach(d => {
-      d.total = data[d.id];
-    });
-
-    this.draw();
   }
 
   reset() {
@@ -120,6 +124,7 @@ export default class MapChart {
   }
 */
   toggleCountrySelection(country) {
+    console.log(d3.event.target.total)
     if(!country) {
       // reset selected countries
       d3.selectAll('.Country.selected').classed('selected', false);
@@ -184,6 +189,15 @@ export default class MapChart {
 
   set data(data) {
     this._data = data;
+    if (this.svg) this.draw();
+  }
+
+  get values() {
+    return this._values;
+  }
+
+  set values(data) {
+    this._values = data;
     if (this.svg) this.draw();
   }
 }
