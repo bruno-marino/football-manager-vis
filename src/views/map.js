@@ -145,7 +145,6 @@ export default class MapChart {
   }
 
   calcDomain(arr){
-    //ref: https://www.dummies.com/education/math/statistics/how-to-calculate-percentiles-in-statistics/
     //compute the first usefull percentile
     let integer = true;
     var firstChunk = Math.round(arr.length/7);
