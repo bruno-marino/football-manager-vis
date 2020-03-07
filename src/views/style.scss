@@ -1,0 +1,12 @@
+.Country {
+  stroke: black;
+  stroke-width: 0.3;
+  opacity: 0.9;
+}
+.Country.selected, .country.selected:hover {
+  stroke-width: 3px;
+}
+.Country:hover {
+  stroke-width: 2px;
+  cursor: pointer; 
+}

@@ -7,7 +7,7 @@ app();
 /*
 to be removed and to be put in assets (maybe) or in another place
 */
-const roles_settings = window.app.rolessettings;
+const roles_settings = window.app.rolesettings;
 
 
 /* Dinamically create select box color scale */
@@ -18,7 +18,7 @@ const roles_settings = window.app.rolessettings;
 <span class="role_name_container">Goalkeepers</span>
 </span>
 */
-var role_j = roles_settings.settings(1);
+var role_j = roles_settings[0];
 var created_content = "";
 
 created_content = "<img class='role_img' src='/assets/" + role_j.img_path + "' height='24' width='24' alt='" + role_j.role_name + "'>";
@@ -27,9 +27,9 @@ document.getElementById("first-scale").innerHTML = created_content;
 
 
 created_content = "";
-for(var j = 1; j <= 4; j++){
-  role_j = roles_settings.settings(j);
-  if(j==1){
+for(var j = 0; j <= 3; j++){
+  role_j = roles_settings[j];
+  if(j==0){
     created_content = created_content + "<span class='custom-option selected' data-value='" + j + "'>";
   }else{
     created_content = created_content + "<span class='custom-option' data-value='" + j + "'>";
@@ -59,7 +59,7 @@ for (const option of document.querySelectorAll('.custom-option')) {
           this.closest('.custom-select').querySelector('.custom-select__trigger span').innerHTML = this.innerHTML;
           //console.log(this.innerHTML);
           //change color scale in the map
-          window.app.onRampChange(parseInt(this.getAttribute('data-value')));
+          window.app.onRoleChange(parseInt(this.getAttribute('data-value')));
       }
   })
 }
