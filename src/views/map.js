@@ -152,7 +152,13 @@ export default class MapChart {
   calcDomain(arr){
     //compute the first usefull percentile
     let integer = true;
-    var firstChunk = Math.round(arr.length/7);
+    var firstChunk = arr.length/7;
+    
+    if(!Number.isInteger(firstChunk)){
+      firstChunk = Math.round(firstChunk);
+      integer = false;
+    }
+
     var domain = new Array();
   
     //sort the array of data
