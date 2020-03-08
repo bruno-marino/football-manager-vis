@@ -11,6 +11,7 @@ const app = function() {
     
     controller.mapchart.init(mapchartContainer);
     controller.onRoleChange(0);
+    controller.barplot.init(d3.select('#bar'));
   });
 }
 

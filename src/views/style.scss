@@ -10,3 +10,18 @@
   stroke-width: 2px;
   cursor: pointer; 
 }
+
+#bar {
+  text {
+    font-size: 14px;
+  }
+
+  line {
+    stroke-width: 4px;
+    stroke: rgb(21, 74, 153);
+  }
+
+  circle {
+    fill: rgb(21, 74, 153);    
+  }
+}
