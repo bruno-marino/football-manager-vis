@@ -1,31 +1,16 @@
 import * as d3 from "d3";
-import { timeThursday } from "d3";
+import View from "./view";
 
-export default class MapChart {
+export default class MapChart extends View{
   constructor(container) {
-    this._data = [];
-    this._values = []; 
-    this.selected_countries = [];
-    
-    this.onCountriesSelection = () => {};
-
-    if (container)
-      this.init(container);
+    super(container, true);
+    this._values = [];
   }
 
-  // insert svg in container and init interaction events
   init(container) {    
-    this.container = container || this.container;
-    this.zoom = d3.zoom()
-        .on("zoom", this.zoomed.bind(this));
+    super.init(container);
 
-    this.svg = this.container.append("svg")
-      .attr("width",this.width)
-      .attr("height", this.height)
-      .on("click", () => { this.reset(); })
-      .call(this.zoom);
-
-    this.svg.append("g");     
+    this.svg.append("g");   
 
     this.projection = d3.geoMercator()
       .center([0,45])
@@ -51,7 +36,7 @@ export default class MapChart {
           .attr("class", "Country")
           //.on("mouseover", this.mouseOverCountry )
           //.on("mouseleave", this.mouseLeaveCountry )
-          .on("click",  this.toggleCountrySelection.bind(this))
+          .on("click", this.handleElemSelection.bind(this))
           // set the color of each country
           .attr("fill", d => this.values[d.id] ? this.colorScale(this.values[d.id]) : 'grey'),
         update => update
@@ -97,60 +82,6 @@ export default class MapChart {
     }
   }
 
-  reset() {
-    this.svg.transition().duration(750).call(
-      this.zoom.transform,
-      d3.zoomIdentity,
-      d3.zoomTransform(this.svg.node()).invert([this.width / 2, this.height / 2])
-    );
-  }
-  
-  zoomed() {
-    const {transform} = d3.event;
-    this.svg.select("g").attr("transform", transform);
-  }
-/*
-  mouseOverCountry() {
-    d3.selectAll(".Country")
-      .style("opacity", .5)
-      .style("cursor", "pointer");
-    d3.select(d3.event.target)
-      .style("opacity", 1)
-      .style("stroke-width", 2)
-  }
-
-  mouseLeaveCountry() {
-    d3.selectAll(".Country")
-      .style("opacity", .8)
-      .style("stroke-width", 0.3);
-  }
-*/
-  toggleCountrySelection(country) {
-    console.log(d3.event.target)
-    if(!country) {
-      // reset selected countries
-      d3.selectAll('.Country.selected').classed('selected', false);
-      this.selected_countries = [];
-    } else {
-      d3.event.stopPropagation();
-      if (this.selected_countries.includes(country.id)) {
-        this.selected_countries.splice(
-          this.selected_countries.findIndex(code => code == country.id),
-          1);
-      } else {
-        this.selected_countries.push(country.id)
-      }
-      d3.event.target.classList.toggle('selected')
-    }
-    
-    //perform visual change and give the selected countries to the controller
-    this.onCountriesSelection(this.selected_countries);
-  }
-
-  bindCountriesSelection(callback) {
-    this.onCountriesSelection = callback;
-  }
-
   calcDomain(){
     let arr = [];
     for(let country in this.values ){
@@ -184,24 +115,6 @@ export default class MapChart {
     }
     //console.log(domain)
     return domain; //return an array of six values
-  }
-
-  // getters and setters
-  get width() {
-    return this.container.node().getBoundingClientRect().width;
-  }
-  
-  get height() {
-    return this.container.node().getBoundingClientRect().height;
-  }
-  
-  get data() {
-    return this._data;
-  }
-
-  set data(data) {
-    this._data = data;
-    if (this.svg) this.draw();
   }
 
   get values() {
