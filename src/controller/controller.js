@@ -9,6 +9,7 @@ export default class Controller {
     this.model = model;
     this.mapchart = new views.mapchart();
     this.barplot = new views.barplot();
+    this.radarchart = new views.radarchart();
     this.rolesettings = rolesettings;
 
     // register callback function for model upddate events
