@@ -13,44 +13,7 @@ export default class RadarChart extends View {
       margin_y: 20,
     };    
 
-    this.data = [
-      {
-        axis: 'a',
-        value: 10
-      },
-      {
-        axis: 'b',
-        value: 10
-      },
-      {
-        axis: 'c',
-        value: 10
-      },
-      {
-        axis: 'd',
-        value: 10
-      },
-      {
-        axis: 'e',
-        value: 10
-      },
-      {
-        axis: 'f',
-        value: 10
-      },
-      {
-        axis: 'g',
-        value: 10
-      },
-      {
-        axis: 'verylongpropertiesname',
-        value: 10
-      },
-      {
-        axis: 'h',
-        value: 10
-      },
-    ]
+    this.data = []
 
     this.axis_scale = d3.scaleLinear();
   }
@@ -98,7 +61,7 @@ export default class RadarChart extends View {
 
     //---try changing data--
     this.draw()
-
+    /*
     setTimeout(() => {
         this.data = [
           {
@@ -115,7 +78,7 @@ export default class RadarChart extends View {
           },
         ]
 
-    }, 2000)
+    }, 2000)*/
   }
 
   // draw axis + labels, legend, circles and area 

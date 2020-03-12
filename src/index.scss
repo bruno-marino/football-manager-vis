@@ -15,12 +15,38 @@ body {
   height: 450px;
 }
 
+.col-10{
+  display:inline-block;
+  width:10%;
+  box-sizing: border-box;
+  vertical-align:top;
+}
+.col-20{
+  display:inline-block;
+  width:20%;
+  box-sizing: border-box;
+  vertical-align:top;
+}
 .col-50{
   display:inline-block;
   width:50%;
   box-sizing: border-box;
   vertical-align:top;
 }
+.col-70{
+  display:inline-block;
+  width:70%;
+  box-sizing: border-box;
+  vertical-align:top;
+}
+
+.col-80{
+  display:inline-block;
+  width:80%;
+  box-sizing: border-box;
+  vertical-align:top;
+}
+
 .bottom-margin{
   height:40px;
 }
@@ -225,3 +251,91 @@ body {
   line-height: 32px;
   margin-left: 10px;
 } 
+
+
+/* Range bar */
+/*customised range*/ input[type="range"].range
+{
+  cursor: pointer;
+  width: 100px !important;
+  -webkit-appearance: none;
+  z-index: 200;
+  width:50px;
+  border: 1px solid #e6e6e6;
+  background-color: #e6e6e6;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e6e6e6), to(#d2d2d2));
+  background-image: -webkit-linear-gradient(right, #e6e6e6, #d2d2d2);
+  background-image: -moz-linear-gradient(right, #e6e6e6, #d2d2d2);
+  background-image: -ms-linear-gradient(right, #e6e6e6, #d2d2d2);
+  background-image: -o-linear-gradient(right, #e6e6e6, #d2d2d2);
+}
+
+/*customised range when focusing on input */ input[type="range"].range:focus
+{
+  border: 0 !important;
+  outline: none !important;
+}
+
+/*customised range slider icon*/ input[type="range"].range::-webkit-slider-thumb
+{
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: -5px 0;
+  background-color: #555;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4DDBFF), to(#00CCFF));
+  background-image: -webkit-linear-gradient(right, #4DDBFF, #00CCFF);
+  background-image: -moz-linear-gradient(right, #4DDBFF, #00CCFF);
+  background-image: -ms-linear-gradient(right, #4DDBFF, #00CCFF);
+  background-image: -o-linear-gradient(right, #4DDBFF, #00CCFF);
+}
+
+/*setting round corners to the range */ input[type="range"].round {
+  border-radius: 20px;  
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+
+/*setting round corners to the range slider icon*/ input[type="range"].round::-webkit-slider-thumb {
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+/* set range from 0 - 1 vertically (lowest on top) */ .vertical-lowest-first
+{
+  -webkit-transform:rotate(90deg);
+  -moz-transform:rotate(90deg);
+  -o-transform:rotate(90deg);
+  -ms-transform:rotate(90deg);
+  transform:rotate(90deg);
+}
+
+.range-legend{
+  position:relative;
+  height:100px;
+}
+
+.rang-top, .rang-middle, .rang-bottom{
+  position:absolute;
+  font-size:10px;
+}
+.rang-top{
+  top:5px;
+}
+.rang-middle{
+  top:44px;
+}
+.rang-bottom{
+  bottom:5px;
+}
+
+.rang-adjust{
+  margin-top:45px;
+}
+
+.height-250{
+  height:250px;
+}

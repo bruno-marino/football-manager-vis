@@ -3,6 +3,7 @@ import model from '../model';
 import rolesettings from './rolesettings';
 import countryStrengthPerRole from './util/country-strength-per-role';
 import countriesAvgSetOfSkills from './util/countries-avg-set-of-skills';
+import radarSetOfSkills from './util/radar-set-of-skills';
 
 export default class Controller {
   constructor() {
@@ -42,5 +43,7 @@ export default class Controller {
 
   onCountriesSelection(countries) {
     this.barplot.data = countriesAvgSetOfSkills(countries, this.model.players);
+    this.radarchart.data = radarSetOfSkills("principal", countries, this.model.players);
+    console.log(this.radarchart.data);
   }
 }
