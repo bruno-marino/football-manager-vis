@@ -11,10 +11,7 @@ export default class RadarChart extends View {
       maxValue: 20,
       ToRight: 5,
       margin_y: 20,
-    };    
-
-    this.data = []
-
+    };   
     this.axis_scale = d3.scaleLinear();
   }
 
@@ -58,27 +55,6 @@ export default class RadarChart extends View {
 
     this.axis_scale.domain([0, 20]);
     this.axis_scale.range([0, this.height / 2 - this.cfg.margin_y]);
-
-    //---try changing data--
-    this.draw()
-    /*
-    setTimeout(() => {
-        this.data = [
-          {
-            axis: 'bella',
-            value: 10
-          },
-          {
-            axis: 'verylongpropertiesname',
-            value: 10
-          },
-          {
-            axis: 'ciao',
-            value: 10
-          },
-        ]
-
-    }, 2000)*/
   }
 
   // draw axis + labels, legend, circles and area 
@@ -188,21 +164,22 @@ export default class RadarChart extends View {
             return this.projectOnY(radius, i);
           });
         
-        let x_coordinate = 0;
-        let label_position = radius + 15
+        let i = 0;
+        let label_position = radius + 15;
         elems.selectAll('.axis_legend')
           .text(d => d.axis)
           .attr("transform", "translate(0, 5)")
           .attr("x", d => {
-            let i = this.getDatumIndex(d);
-            x_coordinate = this.projectOnX(label_position, i);
-            return x_coordinate;
+            i = this.getDatumIndex(d);
+            return this.projectOnX(label_position, i);
           })
           .attr("y", d => {
-            let i = this.getDatumIndex(d);
+            i = this.getDatumIndex(d);
             return this.projectOnY(label_position, i);
           })
-          .attr('text-anchor', () => {
+          .attr('text-anchor', (d) => {
+            i = this.getDatumIndex(d);
+            let x_coordinate = this.projectOnX(label_position, i)
             if (x_coordinate == this.width / 2 ) {
               return 'middle';
             } else if (x_coordinate > this.width / 2 ) { 
