@@ -11,6 +11,18 @@
   cursor: pointer; 
 }
 
+div.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 150px;                                 
+  padding: 2px;             
+  font-size: 12px;     
+  background: #FFFFE0;
+  border: 1px;      
+  border-radius: 8px;           
+  pointer-events: none;         
+}
+
 #bar {
   text {
     font-size: 14px;
@@ -66,3 +78,4 @@
     fill-opacity: 0.5;
   }
 }
+ 

@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import View from "./view";
+import Controller from "../controller/controller";
 
 export default class MapChart extends View{
   constructor(container) {
@@ -22,6 +23,14 @@ export default class MapChart extends View{
 
   // draw countries
   draw() {
+
+    var tooltip = d3.select("body").append("div")   
+    .attr("class", "tooltip")               
+    .style("opacity", 0);
+    var country_strenght = this._values;
+    
+    //console.log(country_strenght["ITA"]);
+
     this.svg.select("g")
       .selectAll("path")
       .data(this._data)
@@ -34,6 +43,26 @@ export default class MapChart extends View{
           )
           .style("vector-effect", "non-scaling-stroke") 
           .attr("class", "Country")
+
+          //ToolTip
+          
+          .on("mouseover", function(d) {
+            //console.log(d.id);
+            d3.select(this).transition().duration(300).style("opacity", 1);
+            tooltip.transition().duration(300)
+            .style("opacity", 1)
+            tooltip.html("<b>" + d.properties.name + "</b> <br> Strenght: " + country_strenght[d.id])
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY -30) + "px");
+          })
+          .on("mouseout", function() {
+            d3.select(this)
+            .transition().duration(300)
+            .style("opacity", 0.8);
+            tooltip.transition().duration(300)
+            .style("opacity", 0);
+          })
+
           //.on("mouseover", this.mouseOverCountry )
           //.on("mouseleave", this.mouseLeaveCountry )
           .on("click", this.handleElemSelection.bind(this))
