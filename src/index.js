@@ -10,7 +10,6 @@ to be removed and to be put in assets (maybe) or in another place
 
 const roles_settings = window.app.rolesettings;
 
-/* DOVE METTERE QUESTO CODICE????
 //Radar chart -Range selection
 var radar_type = new Array();
 radar_type["1"] = "principal";
@@ -20,12 +19,10 @@ radar_type["3"] = "mental";
 d3.select('#range-type') 
   .on('change', function() {
     var value = eval(d3.select(this).property('value'));
-    radarchart.data = radarSetOfSkills(radar_type[value], countries, this.model.players);
+    //radarchart.data = radarSetOfSkills(radar_type[value], countries, this.model.players);
+    window.app.onRadarTypeChange(radar_type[value]);
 });
 //End Radar chart -Range selection
-*
-
-
 
 /* Dinamically create select box color scale */
 

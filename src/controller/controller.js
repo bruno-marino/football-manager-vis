@@ -12,6 +12,7 @@ export default class Controller {
     this.barplot = new views.barplot();
     this.radarchart = new views.radarchart();
     this.rolesettings = rolesettings;
+    this.radar_type = 'principal';
 
     // register callback function for model upddate events
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
@@ -47,8 +48,32 @@ export default class Controller {
       this.barplot.data = data;
     });
       
-    radarSetOfSkills("principal", countries, this.model).then(data => {
+    radarSetOfSkills(this.radar_type, countries, this.model).then(data => {
       this.radarchart.data = data;
     });
+  }
+
+  onRadarTypeChange(radar_type) {
+    this.radar_type = radar_type;
+    let countries = this.mapchart.selected_elems;
+    radarSetOfSkills(this.radar_type, countries, this.model).then(data => {
+      this.radarchart.data = data;
+    });
+  }
+
+  get map_role() {
+    return this._map_role;
+  }
+
+  set map_role(role) {
+    this._map_role = role;
+  }
+
+  get radar_type() {
+    return this._radar_type;
+  }
+
+  set radar_type(type) {
+    this._radar_type = type;
   }
 }
