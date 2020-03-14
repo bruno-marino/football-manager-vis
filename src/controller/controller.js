@@ -42,8 +42,13 @@ export default class Controller {
   }
 
   onCountriesSelection(countries) {
-    this.barplot.data = countriesAvgSetOfSkills(countries, this.model.players);
-    this.radarchart.data = radarSetOfSkills("principal", countries, this.model.players);
-    console.log(this.radarchart.data);
+    
+    countriesAvgSetOfSkills(countries, this.model).then(data => {
+      this.barplot.data = data;
+    });
+      
+    radarSetOfSkills("principal", countries, this.model).then(data => {
+      this.radarchart.data = data;
+    });
   }
 }

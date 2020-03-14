@@ -5,6 +5,7 @@ class Model {
   constructor() {
     this.players = []
     this.playersById = {}
+    this.playersByCountry = {}
     this.countries = []
     this.countriesById = {}
 
@@ -23,8 +24,13 @@ class Model {
   //
   addPlayer(player) {
     //if (entry.id === undefined) throw new Error('Entry with missing id')
-    this.players.push(new Player(player))
-    this.playersById[player.UID] = this.players.length - 1
+    player = new Player(player)
+    this.players.push(player)
+    this.playersById[player.uid] = this.players.length - 1
+    if (!this.playersByCountry[player.country_code]) {
+      this.playersByCountry[player.country_code] = []
+    }
+    this.playersByCountry[player.country_code].push(player.uid)
     this.onPlayersListChanged()
   }
   updatePLayer(player) {
@@ -44,7 +50,7 @@ class Model {
   // countries
   addCountry(country) {
     this.countries.push(new Country(country));
-    this.countriesById[country.id] = this.countries.length -1;
+    //this.countriesById[country.id] = this.countries.length -1;
     this.onCountriesListChanged();
   }
 
