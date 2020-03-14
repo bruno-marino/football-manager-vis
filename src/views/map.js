@@ -27,9 +27,7 @@ export default class MapChart extends View{
     var tooltip = d3.select("body").append("div")   
     .attr("class", "tooltip")               
     .style("opacity", 0);
-    var country_strenght = this._values;
     
-    //console.log(country_strenght["ITA"]);
 
     this.svg.select("g")
       .selectAll("path")
@@ -46,12 +44,12 @@ export default class MapChart extends View{
 
           //ToolTip
           
-          .on("mouseover", function(d) {
+          .on("mouseover", (d, i, nodes) => {
             //console.log(d.id);
-            d3.select(this).transition().duration(300).style("opacity", 1);
+            d3.select(nodes[i]).transition().duration(300).style("opacity", 1);
             tooltip.transition().duration(300)
             .style("opacity", 1)
-            tooltip.html("<b>" + d.properties.name + "</b> <br> Strenght: " + country_strenght[d.id])
+            tooltip.html("<b>" + d.properties.name + "</b> <br> Strenght: " + parseFloat(this.values[d.id]).toFixed(2) )
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY -30) + "px");
           })
