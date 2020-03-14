@@ -77,9 +77,64 @@ export default class MapChart extends View{
       //.range(["#edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#41ae76", "#238b45", "#005824"]);
       .range(range);
 
+    this.legend(domain,range)
+
     if (this.svg) {
       this.draw();
     }
+
+  }
+
+  legend(domain,range){
+
+    let domain_clone = domain.slice() 
+
+    for (let i = 0; i < domain_clone.length; i++) {
+      domain_clone[i] = "< " + parseFloat(domain_clone[i]).toFixed(2)
+    }
+
+    domain_clone.push("> " + parseFloat(domain[domain.length - 1]).toFixed(2))
+
+    this.svg.append("rect")
+        .attr("class","legend-container")
+        .attr("x", 95)
+        .attr("y", 75) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("width", 90)
+        .attr("height", 200)
+        .style("fill", "#ffffff")
+        .style("stroke", "#000000")
+        .style("stroke-width", "1")
+        .text("Strenght");
+
+      this.svg.append("text")
+        .attr("x", 100)
+        .attr("y", 90)
+        .text("Strenght");
+
+    // Add one dot in the legend for each name.
+    var size = 20
+    this.svg.selectAll("mydots")
+      .data(range)
+      .enter()
+      .append("rect")
+        .attr("x", 100)
+        .attr("y", function(d,i){ return 100 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("width", size)
+        .attr("height", size)
+        .style("fill", function(d, i){ return range[i] })
+
+    // Add one dot in the legend for each name.
+    this.svg.selectAll("mylabels")
+      .data(domain_clone)
+      .enter()
+      .append("text")
+        .attr("x", 100 + size*1.2)
+        .attr("y", function(d,i){ return 100 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .style("fill", function(d){ return domain_clone[d.id] })
+        .text(function(d){ return d})
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle")
+  
   }
 
   calcDomain(){
