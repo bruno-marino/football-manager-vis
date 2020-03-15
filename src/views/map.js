@@ -50,7 +50,7 @@ export default class MapChart extends View{
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY -30) + "px");
           })
-          .on("mouseout", function() {
+          .on("mouseout", () => {
             this.tooltip.transition().duration(300)
             .style("opacity", 0);
           })
