@@ -18,16 +18,15 @@ export default class MapChart extends View{
       .translate([this.width /2, this.height /2])
       .scale((this.height / (2 * Math.PI))*1.5);
 
+    this.tooltip = d3.select("body").append("div")   
+    .attr("class", "tooltip")               
+    .style("opacity", 0);
+
     this.draw();
   }
 
   // draw countries
   draw() {
-
-    var tooltip = d3.select("body").append("div")   
-    .attr("class", "tooltip")               
-    .style("opacity", 0);
-    
 
     this.svg.select("g")
       .selectAll("path")
@@ -45,14 +44,14 @@ export default class MapChart extends View{
           //ToolTip
           
           .on("mouseover", d => {
-            tooltip.transition().duration(300)
+            this.tooltip.transition().duration(300)
             .style("opacity", 1)
-            tooltip.html("<b>" + d.properties.name + "</b> <br> Strenght: " + parseFloat(this.values[d.id]).toFixed(2) )
+            this.tooltip.html("<b>" + d.properties.name + "</b> <br> Strenght: " + parseFloat(this.values[d.id]).toFixed(2) )
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY -30) + "px");
           })
           .on("mouseout", function() {
-            tooltip.transition().duration(300)
+            this.tooltip.transition().duration(300)
             .style("opacity", 0);
           })
 
