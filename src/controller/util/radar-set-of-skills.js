@@ -1,7 +1,5 @@
-import roles from '../rolesettings'
-
 //skill_type can be (ex): principal, physical, mental 
-export default function radarSetOfSkills(skill_type, countries, model) {
+export default function radarSetOfSkills(skill_type, countries) {
   return new Promise( (resolve, reject) => {
     try {
       setTimeout(() => {
@@ -11,7 +9,7 @@ export default function radarSetOfSkills(skill_type, countries, model) {
         
         let concat_array = []
         // get mental attributes for each roles
-        roles.forEach(role => {
+        this.rolesettings.forEach(role => {
           // merged array
           if (!role.positions.includes('GK'))
             concat_array = [...concat_array, ...role.attributes[skill_type]];
@@ -26,8 +24,11 @@ export default function radarSetOfSkills(skill_type, countries, model) {
           count = 0;
 
           countries.forEach(country_code => {
-            model.playersByCountry[country_code].forEach(player_uid =>{
-              player = model.players[model.playersById[player_uid]];
+            if (!this.model.playersByCountry[country_code])
+              return
+            
+            this.model.playersByCountry[country_code].forEach(player_uid =>{
+              player = this.model.players[this.model.playersById[player_uid]];
               entry.value += parseInt(player[attribute]);
               count++;
             });

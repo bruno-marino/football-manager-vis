@@ -1,7 +1,7 @@
-export default function countryStrengthPerRole(role, players) {
+export default function countryStrengthPerRole(role) {
   let data = {};
   let total = {};
-  players.forEach(player => {
+  this.model.players.forEach(player => {
     // if the intersection of role positions and player positions is
     // empty => skip this player.
     if(role.positions.filter(pos => player.positions_desc.includes(pos)).length) {

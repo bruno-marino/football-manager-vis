@@ -1,6 +1,4 @@
-import roles from '../rolesettings'
-
-export default function countriesAvgSetOfSkills(countries, model) {
+export default function countriesAvgSetOfSkills(countries) {
   return new Promise( (resolve, reject) => {
     try {
       setTimeout(() => {
@@ -10,7 +8,7 @@ export default function countriesAvgSetOfSkills(countries, model) {
         
         let concat_array = []
         // get mental attributes for each roles
-        roles.forEach(role => {
+        this.rolesettings.forEach(role => {
           // merged array
           concat_array = [...concat_array, ...role.attributes.mental];
         })
@@ -23,8 +21,11 @@ export default function countriesAvgSetOfSkills(countries, model) {
           count = 0;
 
           countries.forEach(country_code => {
-            model.playersByCountry[country_code].forEach(player_uid =>{
-              player = model.players[model.playersById[player_uid]]
+            if(!this.model.playersByCountry[country_code])
+              return
+            
+            this.model.playersByCountry[country_code].forEach(player_uid =>{
+              player = this.model.players[this.model.playersById[player_uid]]
               entry.value += parseInt(player[attribute]);
               count++;
             });

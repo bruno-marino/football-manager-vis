@@ -38,17 +38,17 @@ export default class Controller {
 
   onRoleChange(role_id) {
     let role_scale = this.rolesettings[role_id].role_scale;
-    this.mapchart.values = countryStrengthPerRole(rolesettings[role_id],this.model.players);
+    this.mapchart.values = this.countryStrengthPerRole(rolesettings[role_id],this.model.players);
     this.mapchart.changeRamp(role_scale);
   }
 
   onCountriesSelection(countries) {
     
-    countriesAvgSetOfSkills(countries, this.model).then(data => {
+    this.countriesAvgSetOfSkills(countries, this.model).then(data => {
       this.barplot.data = data;
     });
       
-    radarSetOfSkills(this.radar_type, countries, this.model).then(data => {
+    this.radarSetOfSkills(this.radar_type, countries, this.model).then(data => {
       this.radarchart.data = data;
     });
   }
@@ -56,7 +56,7 @@ export default class Controller {
   onRadarTypeChange(radar_type) {
     this.radar_type = radar_type;
     let countries = this.mapchart.selected_elems;
-    radarSetOfSkills(this.radar_type, countries, this.model).then(data => {
+    this.radarSetOfSkills(this.radar_type, countries, this.model).then(data => {
       this.radarchart.data = data;
     });
   }
@@ -77,3 +77,7 @@ export default class Controller {
     this._radar_type = type;
   }
 }
+
+Controller.prototype.countriesAvgSetOfSkills = countriesAvgSetOfSkills;
+Controller.prototype.countryStrengthPerRole = countryStrengthPerRole;
+Controller.prototype.radarSetOfSkills = radarSetOfSkills;
