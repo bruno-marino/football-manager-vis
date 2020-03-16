@@ -53,6 +53,12 @@ export default class RadarChart extends View {
     this.svg.select('g').append("g").attr("id","axis_group")
     this.svg.select('g').append("g").attr("id", "circles_group")
 
+    //Tooltip
+    this.tooltip = this.container
+      .append("div")   
+      .attr("class", "tooltip")               
+      .style("opacity", 0);
+
     this.axis_scale.domain([0, 20]);
     this.axis_scale.range([0, this.height / 2 - this.cfg.margin_y]);
   }
@@ -67,7 +73,9 @@ export default class RadarChart extends View {
         // add an axis for each new axis in data
         enter => {
           let axis = enter.append('g')
-            .attr("class", "axis" );
+            .attr("class", "axis" )
+            .on('mouseover', d => this.showTooltip(d))
+            .on('mouseout', () => this.hideTooltip());
           
           axis.append("line")
             .attr("class", "line");
@@ -84,53 +92,8 @@ export default class RadarChart extends View {
         },
       )
 
-    // draw circles
-    this.svg.select("#circles_group")
-      .selectAll(".node")
-      .data(this.data)
-      .join(
-        enter => {
-          let nodes = enter.append("svg:circle")
-            .attr("class", "node")
-            .attr('r', this.cfg.radius)
-            .on('mouseover', function(d) {
-              let newX = parseFloat(d3.select(this).attr('cx')) - 10;
-              let newY = parseFloat(d3.select(this).attr('cy')) - 5;
-    
-              tooltip.attr('x', newX)
-                .attr('y', newY)
-                .text(d.value)
-                .transition(200)
-                .style('opacity', 1);
-
-              d3.select('#radar')
-                .select('.polygon')
-                .transition(200)
-                .style("fill-opacity", 0.7);
-            })
-            .on('mouseout', function() {
-              tooltip.transition(200)
-                .style('opacity', 0);
-              d3.select('#radar')
-                .selectAll("polygon")
-                .transition(200)
-                .style("fill-opacity", 0.2);
-            });
-
-          //Tooltip
-          let tooltip = this.svg.select('#circles_group')
-            .append('text').attr("class", "tooltip");
-
-          this.update(nodes, 'node');
-        },
-        update => {
-          update = update.transition().duration(1000);
-          this.update(update, 'node');
-        },
-      )
-
     // draw areas
-    this.svg.select('g')
+    this.svg.select('#circles_group')
       .selectAll(".area")
       .data([true])
       .join(
@@ -144,6 +107,39 @@ export default class RadarChart extends View {
           update = update.transition().duration(1000);
           this.update(update,'area');
         }
+      )
+
+    // draw circles
+    this.svg.select("#circles_group")
+      .selectAll(".node")
+      .data(this.data)
+      .join(
+        enter => {
+          let nodes = enter.append("svg:circle")
+            .attr("class", "node")
+            .attr('r', this.cfg.radius)
+            .on('mouseover', d => {
+              this.showTooltip(d);
+
+              d3.select('#radar')
+                .select('.polygon')
+                .transition(200)
+                .style("fill-opacity", 0.7);
+            })
+            .on('mouseout', () => {
+              this.hideTooltip()
+              d3.select('#radar')
+                .selectAll("polygon")
+                .transition(200)
+                .style("fill-opacity", 0.2);
+            });
+
+          this.update(nodes, 'node');
+        },
+        update => {
+          update = update.transition().duration(1000);
+          this.update(update, 'node');
+        },
       )
   }
 
@@ -207,6 +203,21 @@ export default class RadarChart extends View {
       case 'area':
         elems.attr("points", this.getPolygon(this.data))
     }
+  }
+
+  showTooltip(d) {
+    let newX = d3.event.pageX;
+    let newY = d3.event.pageY - 30;
+
+    this.tooltip
+      .style('left', newX + 'px')
+      .style('top', newY + 'px')
+      .text(d.value.toFixed(2))
+      .style('opacity', 1);
+  }
+
+  hideTooltip() {
+    this.tooltip.style('opacity', 0);
   }
 
   projectOnX(value, i) {
