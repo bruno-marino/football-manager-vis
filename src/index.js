@@ -41,7 +41,7 @@ document.getElementById("first-scale").innerHTML = created_content;
 
 
 created_content = "";
-for(var j = 0; j <= 3; j++){
+for(var j = 0; j <= 4; j++){
   role_j = roles_settings[j];
   if(j==0){
     created_content = created_content + "<span class='custom-option selected' data-value='" + j + "'>";
