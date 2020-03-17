@@ -7,16 +7,7 @@ export default function radarSetOfSkills(skill_type, countries) {
         let entry = {};
         let count = 0;
         
-        let concat_array = []
-        // get mental attributes for each roles
-        this.rolesettings.forEach(role => {
-          // merged array
-          if (!role.positions.includes('GK'))
-            concat_array = [...concat_array, ...role.attributes[skill_type]];
-        })
-      
-        // new array that holds union
-        let attributes = [...new Set(concat_array)];
+        let attributes = this.actualRole.attributes[skill_type];
         let player;
         // In case of only one player and no country passed, only feature of that player are considered
         attributes.forEach(attribute => {
@@ -29,6 +20,12 @@ export default function radarSetOfSkills(skill_type, countries) {
             
             this.model.playersByCountry[country_code].forEach(player_uid =>{
               player = this.model.players[this.model.playersById[player_uid]];
+
+              // if the intersection of selected role positions and player positions is
+              // empty => skip this player.
+              if(!this.actualRole.positions.filter(pos => player.positions_desc.includes(pos)).length)
+                return // equal to continue
+              
               entry.value += parseInt(player[attribute]);
               count++;
             });

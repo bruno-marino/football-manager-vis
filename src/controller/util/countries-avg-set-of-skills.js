@@ -5,16 +5,10 @@ export default function countriesAvgSetOfSkills(countries) {
         let results = [];
         let entry = {};
         let count = 0;
+        let attributes =  ['consistency','dirtiness','important_matches','injury_proness',
+          'versatility','adaptability','ambition','loyalty','pressure','professional',
+          'sportsmanship','temperament','controversy'];
         
-        let concat_array = []
-        // get mental attributes for each roles
-        this.rolesettings.forEach(role => {
-          // merged array
-          concat_array = [...concat_array, ...role.attributes.mental];
-        })
-
-        // new array that holds union
-        let attributes = [...new Set(concat_array)];
         let player;
         attributes.forEach(attribute => {
           entry = { "desc" : attribute, "value" : 0};
@@ -25,7 +19,13 @@ export default function countriesAvgSetOfSkills(countries) {
               return
             
             this.model.playersByCountry[country_code].forEach(player_uid =>{
-              player = this.model.players[this.model.playersById[player_uid]]
+              player = this.model.players[this.model.playersById[player_uid]];
+
+              // if the intersection of selected role positions and player positions is
+              // empty => skip this player.
+              if(!this.actualRole.positions.filter(pos => player.positions_desc.includes(pos)).length)
+                return // equal to continue
+              
               entry.value += parseInt(player[attribute]);
               count++;
             });

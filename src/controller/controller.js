@@ -13,6 +13,7 @@ export default class Controller {
     this.radarchart = new views.radarchart();
     this.rolesettings = rolesettings;
     this.radar_type = 'principal';
+    this._role_id = '0';
 
     // register callback function for model upddate events
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
@@ -37,27 +38,33 @@ export default class Controller {
   }
 
   onRoleChange(role_id) {
+    this.role_id = role_id;
     let role_scale = this.rolesettings[role_id].role_scale;
-    this.mapchart.values = this.countryStrengthPerRole(rolesettings[role_id],this.model.players);
+    this.mapchart.values = this.countryStrengthPerRole(this.rolesettings[role_id]);
     this.mapchart.changeRamp(role_scale);
+    this.onCountriesSelection(this.mapchart.selected_elems);
   }
 
   onCountriesSelection(countries) {
-    
-    this.countriesAvgSetOfSkills(countries, this.model).then(data => {
-      this.barplot.data = data;
-    });
-      
-    this.radarSetOfSkills(this.radar_type, countries, this.model).then(data => {
-      this.radarchart.data = data;
-    });
+    this.updateBarPlot(countries);
+    this.updateRadar(countries);
   }
 
   onRadarTypeChange(radar_type) {
     this.radar_type = radar_type;
     let countries = this.mapchart.selected_elems;
-    this.radarSetOfSkills(this.radar_type, countries, this.model).then(data => {
+    this.updateRadar(countries);
+  }
+
+  updateRadar(countries) {
+    this.radarSetOfSkills(this.radar_type, countries).then(data => {
       this.radarchart.data = data;
+    });
+  }
+
+  updateBarPlot(countries) {
+    this.countriesAvgSetOfSkills(countries).then(data => {
+      this.barplot.data = data;
     });
   }
 
@@ -75,6 +82,18 @@ export default class Controller {
 
   set radar_type(type) {
     this._radar_type = type;
+  }
+
+  get role_id() {
+    return this._role_id;
+  }
+
+  set role_id(id) {
+    this._role_id = id;
+  }
+
+  get actualRole() {
+    return this.rolesettings[this.role_id];
   }
 }
 
