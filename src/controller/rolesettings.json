@@ -7,7 +7,7 @@
     "positions": ["GK", "D", "WB", "M","DM","AM", "S"],
     "attributes": {
       "principal": ["aerial_ability","command_of_area","communication","handling","kicking","one_on_ones","reflexes","rushing_out","tendency_to_punch","throwing","long_throws","marking","heading","passing","tackling","crossing","corners","dribbling","technique","first_touch","free_kicks","long_shots","penalty_taking","finishing"],
-      "physical": ["agility","balance","jumping","strength","acceleration","natural_fitness","pace","stamina","jumping"],
+      "physical": ["agility","balance","jumping","strength","acceleration","natural_fitness","pace","stamina"],
       "mental": ["anticipation","bravery","composure", "concentration", "decisions", "determination", "positioning", "leadership", "off_the_ball","teamwork","vision","aggression"],
       "negative": ["eccentricity"]
     }
