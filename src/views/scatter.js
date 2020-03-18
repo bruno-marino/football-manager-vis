@@ -70,9 +70,13 @@ export default class Scatterplot extends View {
 
         //setting axes label
         this.svg.select('#axis-x-label')
+            .transition()
+            .duration(1000)
             .text(this.x_axis);
 
         this.svg.select('#axis-y-label')
+            .transition()
+            .duration(1000)
             .text(this.y_axis);
 
         //draw points
