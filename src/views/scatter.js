@@ -11,6 +11,14 @@ export default class Scatterplot extends View {
         this.x_axis = "crossing";
         this.y_axis = "kicking";
 
+        
+        this.data = [
+            {name: "Ronaldo", crossing: 12, kicking: 16 },
+            {name: "Messi", crossing: 13, kicking: 15 },
+            {name: "Bruno", crossing: 20, kicking: 19 },
+            {name: "Gianluca", crossing: 19, kicking: 20 }
+        ]
+        
         var margin = {top: 10, right: 30, bottom: 60, left: 60};
         var width = this.width - margin.left - margin.right;
         var height = this.height - margin.top - margin.bottom;
@@ -20,21 +28,21 @@ export default class Scatterplot extends View {
                 .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
         // Add X axis
-        var x = d3.scaleLinear()
+        this.x = d3.scaleLinear()
             .domain([0, 20])
             .range([ 0, width ]);
 
         // Add Y axis
-        var y = d3.scaleLinear()
+        this.y = d3.scaleLinear()
             .domain([0, 20])
             .range([ height, 0]);
 
         var x_bar = this.svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));          
+            .call(d3.axisBottom(this.x));          
             
         var y_bar = this.svg.append("g")
-            .call(d3.axisLeft(y));
+            .call(d3.axisLeft(this.y));
 
         //setting axes label
         x_bar.append('text')
@@ -55,10 +63,10 @@ export default class Scatterplot extends View {
 
         this.svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));          
+            .call(d3.axisBottom(this.x));          
             
         this.svg.append("g")
-            .call(d3.axisLeft(y));
+            .call(d3.axisLeft(this.y));
 
 
 
@@ -81,8 +89,8 @@ export default class Scatterplot extends View {
             .data(this.data)
             .enter()
             .append("circle")
-            .attr("cx", function (d) { return x( d[this.x_axis]); } )
-            .attr("cy", function (d) { return y( d[this.y_axis]); } )
+            .attr("cx", d => this.x( d[this.x_axis] ) )
+            .attr("cy", d => this.y( d[this.y_axis] ) )
             .attr("r", 1.5)
             .style("fill", "#69b3a2")    
 
