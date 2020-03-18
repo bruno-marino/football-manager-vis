@@ -49,6 +49,7 @@ export default class Controller {
   onCountriesSelection(countries) {
     this.updateBarPlot(countries);
     this.updateRadar(countries);
+    //this.scatterplot.data = this.model.players;
   }
 
   onRadarTypeChange(radar_type) {
