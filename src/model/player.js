@@ -10,6 +10,16 @@ export default class Player {
         this[feature.toLowerCase()] = player[feature];
       }
     })
+
+    //add the role id to the player
+    this["role_id"] = "";
+    rolesettings.forEach(role => {
+      if(role.positions.filter(pos => this.positions_desc.includes(pos)).length) {
+        this["role_id"] = role.role_id;
+      }
+    })
+
+
   }
 
   get avgGkSkill() {

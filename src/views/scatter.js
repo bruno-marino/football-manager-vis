@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import View from "./view";
+import rolesettings from '../controller/rolesettings.json'
 
 export default class Scatterplot extends View {
     constructor(container) {
@@ -65,13 +66,15 @@ export default class Scatterplot extends View {
             .attr("class", "tooltip")               
             .style("opacity", 0);
 
+        /*
         this.data = [
             {name: "Ronaldo", crossing: 12, kicking: 16 },
             {name: "Messi", crossing: 13, kicking: 15 },
             {name: "Bruno", crossing: 20, kicking: 19 },
             {name: "Gianluca", crossing: 19, kicking: 20 }
         ]
-
+        */
+        //console.log(this.data);
         this.draw();
     }
 
@@ -97,16 +100,22 @@ export default class Scatterplot extends View {
             .append("circle")
             .attr("cx", d => this.x( d[this.x_axis] ) )
             .attr("cy", d => this.y( d[this.y_axis] ) )
-            .attr("r", 10)
-            .style("fill", "#69b3a2")
+            .attr("r", 6)
+            .style("fill", d => {
+                if(d.role_id != ""){
+                    return rolesettings[parseInt(d.role_id)].color;
+                }else{
+                    return "#eeeeee";
+                }
+            } )
 
             //ToolTip
             .on("mouseover", d => {
                 this.tooltip.transition().duration(300)
                 .style("opacity", 1)
                 this.tooltip.html("<b>" + d["name"] + "</b> <br> " + this.x_axis
-                + ": " + parseFloat( d[this.x_axis]).toFixed(2) +"<br>" + this.y_axis
-                + ": " + parseFloat( d[this.y_axis]).toFixed(2))
+                + ": " + parseFloat( d[this.x_axis]) +"<br>" + this.y_axis
+                + ": " + parseFloat( d[this.y_axis]))
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY -30) + "px");
             })

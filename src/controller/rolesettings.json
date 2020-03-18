@@ -2,6 +2,7 @@
   {
     "role_id":  "0",
     "role_name": "All roles",
+    "color": "#88419d",
     "img_path": "/img/role_0.png",
     "role_scale": ["#edf8fb","#bfd3e6","#9ebcda","#8c96c6","#8c6bb1","#88419d","#6e016b"],
     "positions": ["GK", "D", "WB", "M","DM","AM", "S"],
@@ -15,6 +16,7 @@
   {
     "role_id":  "1",
     "role_name": "Goalkeepers",
+    "color": "fec44f",
     "img_path": "/img/role_1.png",
     "role_scale": ["#ffffd4","#fee391","#fec44f","#fe9929","#ec7014","#cc4c02","#8c2d04"],
     "positions": ["GK"],
@@ -28,6 +30,7 @@
   {
     "role_id":  "2",
     "role_name": "Defenders",
+    "color": "#0570b0",
     "img_path": "/img/role_2.png",
     "role_scale": ["#f1eef6","#d0d1e6","#a6bddb","#74a9cf","#3690c0","#0570b0","#034e7b"],
     "positions": ["D","WB"],
@@ -40,6 +43,7 @@
   {
     "role_id":  "3",
     "role_name": "Midfielders",
+    "color": "#238b45",
     "img_path": "/img/role_3.png",
     "role_scale": ["#edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#41ae76", "#238b45", "#005824"],
     "positions": ["M","DM","AM"],
@@ -52,6 +56,7 @@
   {
     "role_id":  "4",
     "role_name": "Strikers",
+    "color": "#d7301f",
     "img_path": "/img/role_4.png",
     "role_scale": ["#fef0d9","#fdd49e","#fdbb84","#fc8d59","#ef6548","#d7301f","#990000"],
     "positions": ["S"],
