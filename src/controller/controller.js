@@ -11,6 +11,7 @@ export default class Controller {
     this.mapchart = new views.mapchart();
     this.barplot = new views.barplot();
     this.radarchart = new views.radarchart();
+    this.scatterplot = new views.scatterplot();
     this.rolesettings = rolesettings;
     this.radar_type = 'principal';
     this._role_id = '0';

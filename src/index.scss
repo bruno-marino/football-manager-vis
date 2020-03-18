@@ -58,7 +58,6 @@ body {
 }
 #scatter_container {
   height: 500px;
-  background: lightgray;
 }
 
 #radar_container {
@@ -78,6 +77,9 @@ body {
   height:100%;
 }
 
+#scatter {
+  height:100%;
+}
 /* Button */
 .button{
   border: 2px solid #394a6d;
