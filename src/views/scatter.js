@@ -110,7 +110,7 @@ export default class Scatterplot extends View {
 
         });
 
-        console.log(max)
+
         //define scale for r of points (maybe this function has some problems)
         var sizeScale = d3.scaleLinear()
             .domain([min, max])
