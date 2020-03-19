@@ -81,6 +81,44 @@ export default class Scatterplot extends View {
     // draw countries
     draw() {
 
+        //+++ compute a matrix to give points size +++//
+
+        //Initialize matrix
+        var matrix = [];
+        for(var i=0; i<=20; i++) {
+            matrix[i] = [];
+            for(var j=0; j<=20; j++) {
+                matrix[i][j] = 0;
+            }
+        }
+
+        var x_i = 0
+        var y_i = 0
+        var current = 0
+        var max = 0
+        var min = 0
+        //conting point per matrix entry
+        this.data.forEach(element => {
+            y_i = parseInt(element[this.y_axis]);
+            x_i = parseInt(element[this.x_axis]);
+            current = matrix[y_i][x_i] + 1;
+            matrix[y_i][x_i] = current;
+
+            if(current > max){
+                max = current;
+            }
+
+        });
+
+        console.log(max)
+        //define scale for r of points (maybe this function has some problems)
+        var sizeScale = d3.scaleLinear()
+            .domain([min, max])
+            .range([1,16]);
+        //+++ end compute a matrix to give points size +++//
+        
+        //console.log(matrix);
+
         //setting axes label
         this.svg.select('#axis-x-label')
             .transition()
@@ -100,22 +138,25 @@ export default class Scatterplot extends View {
             .append("circle")
             .attr("cx", d => this.x( d[this.x_axis] ) )
             .attr("cy", d => this.y( d[this.y_axis] ) )
-            .attr("r", 6)
-            .style("fill", d => {
-                if(d.role_id != ""){
-                    return rolesettings[parseInt(d.role_id)].color;
-                }else{
-                    return "#eeeeee";
-                }
-            } )
-
+            .attr("r", d => sizeScale(matrix[parseInt(d[this.y_axis])][parseInt(d[this.x_axis])]) )
+            .style("fill", "#a2a2a2")
+            .style("opacity", "0.7")
+            .style("stroke", "#000000")
+            .style("stroke-width", 1)
             //ToolTip
             .on("mouseover", d => {
                 this.tooltip.transition().duration(300)
                 .style("opacity", 1)
+                /*
                 this.tooltip.html("<b>" + d["name"] + "</b> <br> " + this.x_axis
                 + ": " + parseFloat( d[this.x_axis]) +"<br>" + this.y_axis
                 + ": " + parseFloat( d[this.y_axis]))
+                
+                */
+                y_i = parseInt(d[this.y_axis])
+                x_i = parseInt(d[this.x_axis])
+                this.tooltip.html( "<b>Players number:</b> <br> "
+                + matrix[parseInt(d[this.y_axis])][parseInt(d[this.x_axis])] )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY -30) + "px");
             })
