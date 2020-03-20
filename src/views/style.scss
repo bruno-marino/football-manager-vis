@@ -83,4 +83,17 @@ div.tooltip {
     font-size:16px;
   }
 
+  circle {
+    opacity:0.5;
+  }
+
+  circle.selected, circle.selected:hover {
+    stroke-width: 3px;
+    opacity: 1;
+  }
+  circle:hover {
+    stroke-width: 2px;
+    opacity: 1;
+    cursor: pointer; 
+  }
 }

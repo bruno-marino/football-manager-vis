@@ -2,8 +2,9 @@ import views from '../views';
 import model from '../model';
 import rolesettings from './rolesettings';
 import countryStrengthPerRole from './util/country-strength-per-role';
-import countriesAvgSetOfSkills from './util/countries-avg-set-of-skills';
+import barplotSetOfSkills from './util/barplot-set-of-skill';
 import radarSetOfSkills from './util/radar-set-of-skills';
+import matrixBubbleChart from './util/matrix-bubble-chart';
 
 export default class Controller {
   constructor() {
@@ -20,6 +21,7 @@ export default class Controller {
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
     this.model.bindCountriesListChanged(this.onCountriesListChanged.bind(this));
     this.mapchart.bindElemSelection(this.onCountriesSelection.bind(this));
+    this.scatterplot.bindElemSelection(this.onBubbleSelection.bind(this));
   }
   
   handleAddPlayer(player) {
@@ -51,7 +53,19 @@ export default class Controller {
     let players = this.model.playersByCountries(countries)
     this.updateBarPlot(players);
     this.updateRadar(players);
+    this.updateScatter(players);
   }
+
+  onBubbleSelection(bubbles) {
+    let players = [];
+    bubbles.forEach(bubble => {
+      bubble.players_list.forEach(id => {
+        players.push(this.model.players[this.model.playersById[id]]);
+      });
+    });
+
+    this.updateBarPlot(players);
+    this.updateRadar(players);
   }
 
   onRadarTypeChange(radar_type) {
@@ -73,12 +87,10 @@ export default class Controller {
     });
   }
 
-  get map_role() {
-    return this._map_role;
-  }
-
-  set map_role(role) {
-    this._map_role = role;
+  updateScatter(players) {
+    this.matrixBubbleChart('crossing','kicking', players).then(data => {
+      this.scatterplot.data = data;
+    })
   }
 
   get radar_type() {
@@ -102,6 +114,7 @@ export default class Controller {
   }
 }
 
-Controller.prototype.countriesAvgSetOfSkills = countriesAvgSetOfSkills;
+Controller.prototype.countriesAvgSetOfSkills = barplotSetOfSkills;
 Controller.prototype.countryStrengthPerRole = countryStrengthPerRole;
 Controller.prototype.radarSetOfSkills = radarSetOfSkills;
+Controller.prototype.matrixBubbleChart = matrixBubbleChart;
