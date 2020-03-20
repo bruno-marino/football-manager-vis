@@ -1,4 +1,4 @@
-export default function barplotSetOfSkill(players) {
+export default function barplotSetOfSkills(players) {
   return new Promise( (resolve, reject) => {
     try {
       setTimeout(() => {
