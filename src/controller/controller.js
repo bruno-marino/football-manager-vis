@@ -47,25 +47,28 @@ export default class Controller {
   }
 
   onCountriesSelection(countries) {
-    this.updateBarPlot(countries);
-    this.updateRadar(countries);
-    this.scatterplot.data = this.model.players;
+    countries = countries.map(country => country.id);
+    let players = this.model.playersByCountries(countries)
+    this.updateBarPlot(players);
+    this.updateRadar(players);
+  }
   }
 
   onRadarTypeChange(radar_type) {
     this.radar_type = radar_type;
-    let countries = this.mapchart.selected_elems;
-    this.updateRadar(countries);
+    let countries = this.mapchart.selected_elems.map(country => country.id);
+    let players = this.model.playersByCountries(countries)
+    this.updateRadar(players);
   }
 
-  updateRadar(countries) {
-    this.radarSetOfSkills(this.radar_type, countries).then(data => {
+  updateRadar(players) {
+    this.radarSetOfSkills(this.radar_type, players).then(data => {
       this.radarchart.data = data;
     });
   }
 
-  updateBarPlot(countries) {
-    this.countriesAvgSetOfSkills(countries).then(data => {
+  updateBarPlot(players) {
+    this.countriesAvgSetOfSkills(players).then(data => {
       this.barplot.data = data;
     });
   }

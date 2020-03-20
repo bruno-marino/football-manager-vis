@@ -56,13 +56,13 @@ export default class View {
     } else {
       d3.event.stopPropagation();
       // if elem is already selected, deselect it
-      if (this.selected_elems.includes(elem.id)) {
+      if (this.selected_elems.includes(elem)) {
         this.selected_elems.splice(
-          this.selected_elems.findIndex(code => code == elem.id),
+          this.selected_elems.findIndex(elm => elm == elem),
           1);
       } else {
         // if it is not selected then select it
-        this.selected_elems.push(elem.id)
+        this.selected_elems.push(elem)
       }
       // toggle css class
       d3.event.target.classList.toggle('selected')

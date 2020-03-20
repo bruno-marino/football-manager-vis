@@ -85,4 +85,8 @@ export default class Player {
     */
     return result / num_attr;
   }
+
+  hasRole(role) {
+    return role.positions.filter(pos => this.positions_desc.includes(pos)).length === 0 ? false : true;
+  }
 }
