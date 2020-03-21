@@ -50,10 +50,10 @@ export default class Controller {
   }
 
   onCountriesSelection(countries) {
-    this.scatterplot.handleElemSelection();
+    this.scatterplot.resetSelection();
     countries = countries.map(country => country.id);
     let players = this.model.playersByCountries(countries);
-    //this.updateBarPlot(players);
+    this.updateBarPlot([]);
     this.updateRadar(players);
     this.updateScatter(players);
   }
@@ -67,8 +67,13 @@ export default class Controller {
       });
     });
 
-    this.updateBarPlot(players);
-    this.updateRadar(players);
+    this.updateBarPlot(players); 
+        
+    if (bubbles.length == 0) {
+      this.onCountriesSelection(this.mapchart.selected_elems);
+    } else {
+      this.updateRadar(players);
+    }
   }
 
   onRadarTypeChange(radar_type) {

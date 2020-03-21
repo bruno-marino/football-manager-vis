@@ -50,9 +50,7 @@ export default class View {
   handleElemSelection(elem) {
     // on empty selection deselect all
     if(!elem) {
-      // reset selected countries
-      this.svg.selectAll('.selected').classed('selected', false);
-      this.selected_elems = [];
+      this.resetSelection();
     } else {
       d3.event.stopPropagation();
       // if elem is already selected, deselect it
@@ -74,6 +72,12 @@ export default class View {
 
   bindElemSelection(callback) {
     this.onElemSelection = callback;
+  }
+
+  resetSelection() {
+    // reset selected elems
+    this.svg.selectAll('.selected').classed('selected', false);
+    this.selected_elems = [];
   }
 
   get width() {
