@@ -87,6 +87,10 @@ export default class View {
   get selected_elems() {
     return this._selected_elems;
   }
+
+  set selected_elems(elems) {
+    this._selected_elems = elems;
+  }
   
   get data() {
     return this._data;

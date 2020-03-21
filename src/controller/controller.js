@@ -45,18 +45,21 @@ export default class Controller {
     let role_scale = this.rolesettings[role_id].role_scale;
     this.mapchart.values = this.countryStrengthPerRole(this.rolesettings[role_id]);
     this.mapchart.changeRamp(role_scale);
-    this.onCountriesSelection(this.mapchart.selected_elems);
+    if(this.mapchart.selected_elems.length > 0)
+      this.onCountriesSelection(this.mapchart.selected_elems);
   }
 
   onCountriesSelection(countries) {
+    this.scatterplot.handleElemSelection();
     countries = countries.map(country => country.id);
-    let players = this.model.playersByCountries(countries)
-    this.updateBarPlot(players);
+    let players = this.model.playersByCountries(countries);
+    //this.updateBarPlot(players);
     this.updateRadar(players);
     this.updateScatter(players);
   }
 
   onBubbleSelection(bubbles) {
+    console.log(bubbles);
     let players = [];
     bubbles.forEach(bubble => {
       bubble.players_list.forEach(id => {
@@ -76,6 +79,7 @@ export default class Controller {
   }
 
   updateRadar(players) {
+    console.log(players);
     this.radarSetOfSkills(this.radar_type, players).then(data => {
       this.radarchart.data = data;
     });
