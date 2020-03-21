@@ -18,6 +18,8 @@ export default class RadarChart extends View {
   init(container) {
     super.init(container);
 
+    this.legend_label = "Selected countries";
+
     this.svg.append("g")
       //.attr("transform", "translate(" + this.cfg.TranslateX + "," + this.cfg.TranslateY + ")");
     
@@ -65,6 +67,11 @@ export default class RadarChart extends View {
 
   // draw axis + labels, legend, circles and area 
   draw() {
+
+    //Update legend text
+    d3.select('#radar-legend-color')
+    .text(this.legend_label);
+
     // draw axis + labels
     this.svg.select('#axis_group')
       .selectAll(".axis")
@@ -141,6 +148,7 @@ export default class RadarChart extends View {
           this.update(update, 'node');
         },
       )
+
   }
 
   update(elems, type) {
@@ -203,6 +211,7 @@ export default class RadarChart extends View {
       case 'area':
         elems.attr("points", this.getPolygon(this.data))
     }
+
   }
 
   showTooltip(d) {

@@ -53,9 +53,13 @@ export default class Controller {
     this.scatterplot.resetSelection();
     countries = countries.map(country => country.id);
     let players = this.model.playersByCountries(countries);
+    
+    this.radarchart.legend_label = "Selected countries";
+    
     this.updateBarPlot([]);
     this.updateRadar(players);
     this.updateScatter(players);
+    
   }
 
   onBubbleSelection(bubbles) {
@@ -67,6 +71,11 @@ export default class Controller {
       });
     });
 
+    if(players.length>0){
+      this.radarchart.legend_label = "Selected players";
+    }
+    this.radarchart.legend_label = "Selected players";
+    
     this.updateBarPlot(players); 
         
     if (bubbles.length == 0) {
