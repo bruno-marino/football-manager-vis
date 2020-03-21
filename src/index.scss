@@ -270,6 +270,7 @@ body {
   background-image: -moz-linear-gradient(right, #e6e6e6, #d2d2d2);
   background-image: -ms-linear-gradient(right, #e6e6e6, #d2d2d2);
   background-image: -o-linear-gradient(right, #e6e6e6, #d2d2d2);
+  margin-left: -35px;
 }
 
 /*customised range when focusing on input */ input[type="range"].range:focus
