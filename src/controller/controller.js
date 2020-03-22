@@ -49,6 +49,19 @@ export default class Controller {
       this.onCountriesSelection(this.mapchart.selected_elems);
   }
 
+  onAxisChange(x_axis, y_axis) {
+    let countries = this.mapchart.selected_elems.map(country => country.id);
+    let players = this.model.playersByCountries(countries);
+
+    if (this.scatterplot.selected_elems.length > 0 ) {
+      this.updateRadar(players);
+      this.scatterplot.resetSelection();
+      this.updateBarPlot([]);
+      this.radarchart.legend_label = "Selected countries";
+    }
+    this.updateScatter(players, x_axis, y_axis);
+  }
+
   onCountriesSelection(countries) {
     this.scatterplot.resetSelection();
     countries = countries.map(country => country.id);
@@ -59,11 +72,9 @@ export default class Controller {
     this.updateBarPlot([]);
     this.updateRadar(players);
     this.updateScatter(players);
-    
   }
 
   onBubbleSelection(bubbles) {
-    console.log(bubbles);
     let players = [];
     bubbles.forEach(bubble => {
       bubble.players_list.forEach(id => {
@@ -93,7 +104,6 @@ export default class Controller {
   }
 
   updateRadar(players) {
-    console.log(players);
     this.radarSetOfSkills(this.radar_type, players).then(data => {
       this.radarchart.data = data;
     });
@@ -105,8 +115,10 @@ export default class Controller {
     });
   }
 
-  updateScatter(players) {
-    this.matrixBubbleChart('crossing','kicking', players).then(data => {
+  updateScatter(players, x_axis, y_axis) {
+    this.scatterplot.x_axis = x_axis || this.scatterplot.x_axis;
+    this.scatterplot.y_axis = y_axis || this.scatterplot.y_axis;
+    this.matrixBubbleChart(this.scatterplot.x_axis, this.scatterplot.y_axis, players).then(data => {
       this.scatterplot.data = data;
     })
   }

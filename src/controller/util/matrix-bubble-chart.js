@@ -6,6 +6,8 @@ export default function matrixBubbleChart(x_axis, y_axis, players) {
         let y_i;
         let x_i;
 
+        x_axis = x_axis.trim();
+        y_axis = y_axis.trim();
         if(!players) {
           // if no selected countries, consider all players
           //this.model.players.forEach(player => matrixIncrease(player));

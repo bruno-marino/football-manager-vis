@@ -10,7 +10,7 @@ export default class Scatterplot extends View {
     init(container) {    
         super.init(container);
         this.x_axis = "aerial_ability";
-        this.y_axis = "aerial_ability ";
+        this.y_axis = "aerial_ability";
         this.pca = false;
 
         
