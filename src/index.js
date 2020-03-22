@@ -36,6 +36,25 @@ d3.select("#pca_check").on("change", function(){
     .classed("off", false);
   }
 });
+
+
+//Update settings
+d3.select("#apply-settings").on("click", function () {
+
+  //console.log(d3.select("#first-x-axis > span").text());
+
+  if(d3.select("#pca_check").property("checked")){
+    window.app.scatterplot.pca = true;
+  }else{
+    window.app.scatterplot.pca = false;
+    //get x and y features and update scatterplot
+    window.app.scatterplot.x_axis = d3.select("#first-x-axis > span").text();
+    window.app.scatterplot.y_axis = d3.select("#first-y-axis > span").text();
+  }
+  //Update scatterplot
+  //?????
+});
+
 //End Radar chart -Range selection
 
 /* Dinamically create select box color scale */
@@ -620,4 +639,4 @@ function update() {
 
 drawRadarCharts();
 
-d3.select("button").on("click", update);
+d3.select(".btnradar").on("click", update);
