@@ -22,6 +22,20 @@ d3.select('#range-type')
     //radarchart.data = radarSetOfSkills(radar_type[value], countries, this.model.players);
     window.app.onRadarTypeChange(radar_type[value]);
 });
+
+d3.select("#pca_check").on("change", function(){
+  if(d3.select("#pca_check").property("checked")){
+    //window.app.scatterplot.pca = true;
+    //make select boxes unselectable
+    d3.select("#scatter-settings").selectAll(".custom-select-wrapper")
+    .classed("off", true);
+  }else{
+    //window.app.scatterplot.pca = false;
+    //make select boxes selectable
+    d3.select("#scatter-settings").selectAll(".custom-select-wrapper")
+    .classed("off", false);
+  }
+});
 //End Radar chart -Range selection
 
 /* Dinamically create select box color scale */
@@ -96,9 +110,13 @@ document.getElementById("y-axis-container").innerHTML = created_content;
 /* Select box code */
 
 for (const dropdown of document.querySelectorAll(".custom-select-wrapper")) {
+  //check if the element has no off class
   dropdown.addEventListener('click', function () {
-      this.querySelector('.custom-select').classList.toggle('open');
+      if(!this.classList.contains("off")){
+        this.querySelector('.custom-select').classList.toggle('open');
+      }
   })
+
 }
 var graph_type;
 for (const option of document.querySelectorAll('.custom-option')) {

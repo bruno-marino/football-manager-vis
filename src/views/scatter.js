@@ -9,8 +9,10 @@ export default class Scatterplot extends View {
 
     init(container) {    
         super.init(container);
-        this.x_axis = "crossing";
-        this.y_axis = "kicking";
+        this.x_axis = "aerial_ability";
+        this.y_axis = "aerial_ability ";
+        this.pca = false;
+
         
         var margin = {top: 10, right: 30, bottom: 60, left: 60};
         var width = this.width - margin.left - margin.right;
