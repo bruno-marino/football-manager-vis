@@ -86,6 +86,43 @@ window.addEventListener('click', function (e) {
   }
 });
 
+
+//+++ Scatterplot selects +++//
+var all_features = [];
+
+//populate the selects
+const object = roles_settings[0]["attributes"];
+
+for (const [key, value] of Object.entries(object)) {
+  value.forEach(function(feature){
+    all_features.push(feature);
+  })
+}
+
+
+var f_count = 0;
+var first_content = "";
+created_content = "";
+all_features.forEach(function(feature){
+  if(f_count==0){
+    first_content =  "<span class='role_name_container'>" + feature + "</span>";
+    created_content = "<span class='custom-option selected' data-value='" + feature + "'> " + "<span class='role_name_container'> "+ feature +" </span> </span>";
+  }
+  else{
+    created_content += "<span class='custom-option' data-value='" + feature + "'> " + "<span class='role_name_container'> "+ feature +" </span> </span>";
+  }
+  f_count += 1;
+
+});
+
+document.getElementById("first-x-axis").innerHTML = first_content;
+document.getElementById("first-y-axis").innerHTML = first_content;
+
+document.getElementById("x-axis-container").innerHTML = created_content;
+document.getElementById("y-axis-container").innerHTML = created_content;
+
+
+
 /* End select box code */
 
 /* end to be removed and put in assets*/

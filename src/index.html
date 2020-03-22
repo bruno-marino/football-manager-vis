@@ -34,6 +34,44 @@
     <div class="bottom-margin"></div>
     <div class="col-50">
       <div id="scatter_container">
+        <div id="scatter-settings">
+
+          <label class="slct-container"> &nbsp;PCA
+            <input type="checkbox" checked="checked">
+            <span class="slct-checkmark"></span>
+          </label>
+
+          <div class="custom-select-wrapper">
+            <div class="custom-select">
+                <div class="custom-select__trigger">
+                  <span id="first-x-axis" id="color_selection">
+                      <!-- fill automatically -->
+                  </span> 
+                  <div class="arrow"></div>
+                </div>
+                <div id="x-axis-container" class="custom-options">
+                    <!-- fill automatically -->
+                </div>
+            </div>
+          </div>
+
+          <div class="custom-select-wrapper">
+            <div class="custom-select">
+                <div class="custom-select__trigger">
+                  <span id="first-y-axis" id="color_selection">
+                      <!-- fill automatically -->
+                  </span> 
+                  <div class="arrow"></div>
+                </div>
+                <div id="y-axis-container" class="custom-options">
+                    <!-- fill automatically -->
+                </div>
+            </div>
+          </div>
+
+          <button id="apply-settings" class="btn">Apply</button>
+
+        </div>
         <div id="scatter"></div>
       </div>
     </div><div class="col-50">
