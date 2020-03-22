@@ -429,6 +429,7 @@ body {
   left: 0;
   height: 36px;
   width: 36px;
+  border: 2px solid #394a6d;
   background-color: #eee;
 }
 
@@ -456,7 +457,7 @@ body {
 
 /* Style the checkmark/indicator */
 .slct-container .slct-checkmark:after {
-  left: 13px;
+  left: 11px;
   top: 5px;
   width: 10px;
   height: 20px;
