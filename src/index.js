@@ -57,36 +57,6 @@ for(var j = 0; j <= 4; j++){
 document.getElementById("scale-container").innerHTML = created_content;
 /* End dinamically create select box color scale */
 
-/* Select box code */
-
-for (const dropdown of document.querySelectorAll(".custom-select-wrapper")) {
-  dropdown.addEventListener('click', function () {
-      this.querySelector('.custom-select').classList.toggle('open');
-  })
-}
-
-for (const option of document.querySelectorAll('.custom-option')) {
-  option.addEventListener('click', function () {
-      if (!this.classList.contains('selected')) {
-          this.parentNode.querySelector('.custom-option.selected').classList.remove('selected');
-          this.classList.add('selected');
-          this.closest('.custom-select').querySelector('.custom-select__trigger span').innerHTML = this.innerHTML;
-          //console.log(this.innerHTML);
-          //change color scale in the map
-          window.app.onRoleChange(parseInt(this.getAttribute('data-value')));
-      }
-  })
-}
-
-window.addEventListener('click', function (e) {
-  for (const select of document.querySelectorAll('.custom-select')) {
-      if (!select.contains(e.target)) {
-          select.classList.remove('open');
-      }
-  }
-});
-
-
 //+++ Scatterplot selects +++//
 var all_features = [];
 
@@ -122,6 +92,39 @@ document.getElementById("x-axis-container").innerHTML = created_content;
 document.getElementById("y-axis-container").innerHTML = created_content;
 
 
+
+/* Select box code */
+
+for (const dropdown of document.querySelectorAll(".custom-select-wrapper")) {
+  dropdown.addEventListener('click', function () {
+      this.querySelector('.custom-select').classList.toggle('open');
+  })
+}
+var graph_type;
+for (const option of document.querySelectorAll('.custom-option')) {
+  option.addEventListener('click', function () {
+      if (!this.classList.contains('selected')) {
+          this.parentNode.querySelector('.custom-option.selected').classList.remove('selected');
+          this.classList.add('selected');
+          this.closest('.custom-select').querySelector('.custom-select__trigger span').innerHTML = this.innerHTML;
+          //console.log(this.innerHTML);
+          //change color scale in the map
+          //Update map only if select of its view change
+          graph_type = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+          if(graph_type.id=="map_container"){
+            window.app.onRoleChange(parseInt(this.getAttribute('data-value')));
+          }
+      }
+  })
+}
+
+window.addEventListener('click', function (e) {
+  for (const select of document.querySelectorAll('.custom-select')) {
+      if (!select.contains(e.target)) {
+          select.classList.remove('open');
+      }
+  }
+});
 
 /* End select box code */
 
