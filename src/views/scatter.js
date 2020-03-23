@@ -14,26 +14,33 @@ export default class Scatterplot extends View {
         this.pca = false;
 
         
-        var margin = {top: 10, right: 30, bottom: 60, left: 60};
-        var width = this.width - margin.left - margin.right;
-        var height = this.height - margin.top - margin.bottom;
+        this.margin = {top: 10, right: 30, bottom: 60, left: 60};
+        this.width_nomargin = this.width - this.margin.left - this.margin.right;
+        this.height_nomargin = this.height - this.margin.top - this.margin.bottom;
 
         // Update this.svg in ordert to contain axis
         this.svg = this.svg.append("g")
-                .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+                .attr("transform","translate(" + this.margin.left + "," + this.margin.top + ")");
+
+        var domain_start = 0;
+        var domain_end = 20;
+
+        if(this.pca){
+            domain_end = 10;//maybe 1?
+        }
 
         // Add X axis
         this.x = d3.scaleLinear()
-            .domain([0, 20])
-            .range([ 0, width ]);
+            .domain([domain_start, domain_end])
+            .range([ 0, this.width_nomargin ]);
 
         // Add Y axis
         this.y = d3.scaleLinear()
-            .domain([0, 20])
-            .range([ height, 0]);
+            .domain([domain_start, domain_end])
+            .range([ this.height_nomargin, 0]);
 
         var x_bar = this.svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(0," + this.height_nomargin + ")")
             .call(d3.axisBottom(this.x));          
             
         var y_bar = this.svg.append("g")
@@ -43,50 +50,68 @@ export default class Scatterplot extends View {
         x_bar.append('text')
             .attr('id', 'axis-x-label')
             .attr('class', 'axis-label')
-            .attr('x', width / 2)
-            .attr('y', (margin.left/2) + 10)
+            .attr('x', this.width_nomargin / 2)
+            .attr('y', (this.margin.left/2) + 10)
             .style("fill", "#000000");
-      
+        
         y_bar.append('text')
             .attr('id', 'axis-y-label')
             .attr('class', 'axis-label')
-            .attr('x', -height / 2)
-            .attr('y', -margin.bottom / 2)
+            .attr('x', -this.height_nomargin / 2)
+            .attr('y', -this.margin.bottom / 2)
             .attr('transform', `rotate(-90)`)
             .style("fill", "#000000") 
             .style('text-anchor', 'middle');
 
         this.svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + this.height_nomargin + ")")
             .call(d3.axisBottom(this.x));          
             
         this.svg.append("g")
+            .attr("class", "y axis")
             .call(d3.axisLeft(this.y));
-
 
         this.tooltip = this.container.append("div")   
             .attr("class", "tooltip")               
             .style("opacity", 0);
 
-        /*
-        this.data = [
-            {name: "Ronaldo", crossing: 12, kicking: 16 },
-            {name: "Messi", crossing: 13, kicking: 15 },
-            {name: "Bruno", crossing: 20, kicking: 19 },
-            {name: "Gianluca", crossing: 19, kicking: 20 }
-        ]
-        */
         //console.log(this.data);
         this.draw();
     }
 
     // draw countries
     draw() {
+      
+        // update x axis labels
+        this.x.domain(this.data.map(d => d.x));
+        this.svg.select('g.x.axis')
+            .transition()
+            .duration(1000)
+            .call(d3.axisBottom().scale(this.x));
+        
+        // update y axis labels
+        this.y.domain(this.data.map(d => d.y));
+        this.svg.select('g.y.axis')
+            .transition()
+            .duration(1000)
+            .call(d3.axisLeft().scale(this.y));
+
         var min = 0;
 
         // compute the max number of players in a single bubble
         // for each object in data, return the number of players in it and take the max
-        var max = Math.max.apply(null, this.data.map(obj => obj.players_list.length));
+        var max;
+        if(!this.pca){
+            max = Math.max.apply(null, this.data.map(obj => obj.players_list.length));
+        }else{
+            max = 10;
+            /*
+            min = Math.min(d3.min(this.data.x), d3.min(this.data.y));
+            max = Math.max(d3.max(this.data.x), d3.max(this.data.y));
+            */
+        }
+
 
         //define scale for r of points (maybe this function has some problems)
         this.sizeScale = d3.scaleLinear()
@@ -145,8 +170,8 @@ export default class Scatterplot extends View {
             .style("stroke-width", 1);
       }else{
         dots.transition().duration(1000)
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y)
+            .attr("cx", d => this.x(d.x))
+            .attr("cy", d => this.y(d.y))
             .attr("r", "5")
             .style("fill", "#a2a2a2")
             .style("opacity", "0.7")
