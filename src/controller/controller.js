@@ -151,4 +151,4 @@ Controller.prototype.countriesAvgSetOfSkills = barplotSetOfSkills;
 Controller.prototype.countryStrengthPerRole = countryStrengthPerRole;
 Controller.prototype.radarSetOfSkills = radarSetOfSkills;
 Controller.prototype.matrixBubbleChart = matrixBubbleChart;
-Controller.prototype.pcaScatterplotMatrix = getPcaEigenvectors;
+Controller.prototype.pcaScatterplotMatrix = pcaScatterplotMatrix;
