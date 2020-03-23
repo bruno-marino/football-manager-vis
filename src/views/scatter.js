@@ -22,29 +22,18 @@ export default class Scatterplot extends View {
         this.svg = this.svg.append("g")
                 .attr("transform","translate(" + this.margin.left + "," + this.margin.top + ")");
 
-        var domain_start = 0;
-        var domain_end = 20;
-
-        if(this.pca){
-            domain_end = 10;//maybe 1?
-        }
-
         // Add X axis
         this.x = d3.scaleLinear()
-            .domain([domain_start, domain_end])
             .range([ 0, this.width_nomargin ]);
 
         // Add Y axis
         this.y = d3.scaleLinear()
-            .domain([domain_start, domain_end])
             .range([ this.height_nomargin, 0]);
 
         var x_bar = this.svg.append("g")
-            .attr("transform", "translate(0," + this.height_nomargin + ")")
-            .call(d3.axisBottom(this.x));          
+            .attr("transform", "translate(0," + this.height_nomargin + ")");       
             
-        var y_bar = this.svg.append("g")
-            .call(d3.axisLeft(this.y));
+        var y_bar = this.svg.append("g");
 
         //setting axes label
         x_bar.append('text')
@@ -82,16 +71,22 @@ export default class Scatterplot extends View {
 
     // draw countries
     draw() {
+        var domain_start = 0;
+        var domain_end = 20;
+
+        if(this.pca){
+            domain_end = 10;//maybe 1?
+        }
       
         // update x axis labels
-        this.x.domain(this.data.map(d => d.x));
+        this.x.domain([domain_start, domain_end])
         this.svg.select('g.x.axis')
             .transition()
             .duration(1000)
             .call(d3.axisBottom().scale(this.x));
         
         // update y axis labels
-        this.y.domain(this.data.map(d => d.y));
+        this.y.domain([domain_start, domain_end])
         this.svg.select('g.y.axis')
             .transition()
             .duration(1000)
