@@ -89,4 +89,13 @@ export default class Player {
   hasRole(role) {
     return role.positions.filter(pos => this.positions_desc.includes(pos)).length === 0 ? false : true;
   }
+
+  get mainRole() {
+    // To do
+    // P portiere
+    // D difensore
+    // C centrocampista
+    // A attaccante
+    return 'P';
+  }
 }

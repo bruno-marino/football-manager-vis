@@ -5,6 +5,7 @@ import countryStrengthPerRole from './util/country-strength-per-role';
 import barplotSetOfSkills from './util/barplot-set-of-skill';
 import radarSetOfSkills from './util/radar-set-of-skills';
 import matrixBubbleChart from './util/matrix-bubble-chart';
+import pcaScatterplotMatrix from './util/pca';
 
 export default class Controller {
   constructor() {
@@ -116,6 +117,8 @@ export default class Controller {
   }
 
   updateScatter(players, x_axis, y_axis) {
+
+    // if pca activated then do something else and remove axis labels
     this.scatterplot.x_axis = x_axis || this.scatterplot.x_axis;
     this.scatterplot.y_axis = y_axis || this.scatterplot.y_axis;
     this.matrixBubbleChart(this.scatterplot.x_axis, this.scatterplot.y_axis, players).then(data => {
@@ -148,3 +151,4 @@ Controller.prototype.countriesAvgSetOfSkills = barplotSetOfSkills;
 Controller.prototype.countryStrengthPerRole = countryStrengthPerRole;
 Controller.prototype.radarSetOfSkills = radarSetOfSkills;
 Controller.prototype.matrixBubbleChart = matrixBubbleChart;
+Controller.prototype.pcaScatterplotMatrix = getPcaEigenvectors;
