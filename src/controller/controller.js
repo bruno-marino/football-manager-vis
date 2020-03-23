@@ -104,6 +104,13 @@ export default class Controller {
     this.updateRadar(players);
   }
 
+  onPcaActivation(){
+    let countries = this.mapchart.selected_elems.map(country => country.id);
+    let players = this.model.playersByCountries(countries);
+    this.scatterplot.pca = true;
+    this.updateScatter(players, "", "");
+  }
+
   updateRadar(players) {
     this.radarSetOfSkills(this.radar_type, players).then(data => {
       this.radarchart.data = data;
@@ -121,9 +128,19 @@ export default class Controller {
     // if pca activated then do something else and remove axis labels
     this.scatterplot.x_axis = x_axis || this.scatterplot.x_axis;
     this.scatterplot.y_axis = y_axis || this.scatterplot.y_axis;
-    this.matrixBubbleChart(this.scatterplot.x_axis, this.scatterplot.y_axis, players).then(data => {
-      this.scatterplot.data = data;
-    })
+
+    if(this.scatterplot.pca == true){
+      this.scatterplot.x_axis = "";
+      this.scatterplot.y_axis = "";
+
+      this.pcaScatterplotMatrix(players).then( data => {
+        this.scatterplot.data = data;
+      })
+    }else{
+      this.matrixBubbleChart(this.scatterplot.x_axis, this.scatterplot.y_axis, players).then(data => {
+        this.scatterplot.data = data;
+      })
+    } 
   }
 
   get radar_type() {

@@ -134,14 +134,25 @@ export default class Scatterplot extends View {
     }
 
     update(dots) {
-      dots.transition().duration(1000)
-        .attr("cx", d => this.x(d.x))
-        .attr("cy", d => this.y(d.y))
-        .attr("r", d => this.sizeScale(d.players_list.length))
-        .style("fill", "#a2a2a2")
-        .style("opacity", "0.7")
-        .style("stroke", "#000000")
-        .style("stroke-width", 1)
+      if(!this.pca){
+        dots.transition().duration(1000)
+            .attr("cx", d => this.x(d.x))
+            .attr("cy", d => this.y(d.y))
+            .attr("r", d => this.sizeScale(d.players_list.length))
+            .style("fill", "#a2a2a2")
+            .style("opacity", "0.7")
+            .style("stroke", "#000000")
+            .style("stroke-width", 1);
+      }else{
+        dots.transition().duration(1000)
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("r", "5")
+            .style("fill", "#a2a2a2")
+            .style("opacity", "0.7")
+            .style("stroke", "#000000")
+            .style("stroke-width", 1);
+      }
     }
 
     get x_ax() {

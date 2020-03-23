@@ -45,6 +45,9 @@ d3.select("#apply-settings").on("click", function () {
 
   if(d3.select("#pca_check").property("checked")){
     window.app.scatterplot.pca = true;
+    
+    window.app.onPcaActivation();
+
   }else{
     window.app.scatterplot.pca = false;
     //get x and y features and update scatterplot
