@@ -5,7 +5,7 @@ import countryStrengthPerRole from './util/country-strength-per-role';
 import barplotSetOfSkills from './util/barplot-set-of-skill';
 import radarSetOfSkills from './util/radar-set-of-skills';
 import matrixBubbleChart from './util/matrix-bubble-chart';
-import pcaScatterplotMatrix from './util/pca';
+import pcaScatterplotMatrix from './util/pca2';
 
 export default class Controller {
   constructor() {

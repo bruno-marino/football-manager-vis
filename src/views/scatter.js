@@ -71,22 +71,31 @@ export default class Scatterplot extends View {
 
     // draw countries
     draw() {
-        var domain_start = 0;
-        var domain_end = 20;
+        var domain_start_x = 0;
+        var domain_end_x = 20;
+        var domain_start_y = domain_start_x;
+        var domain_end_y = domain_end_x;
 
         if(this.pca){
-            domain_end = 10;//maybe 1?
+          let arr_x = this.data.map(elm => elm.x);
+          let arr_y = this.data.map(elm => elm.y);
+
+          domain_start_x = d3.min(arr_x);
+          domain_end_x = d3.max(arr_x);
+          
+          domain_start_y = d3.min(arr_y);
+          domain_end_y = d3.max(arr_y);
         }
       
         // update x axis labels
-        this.x.domain([domain_start, domain_end])
+        this.x.domain([domain_start_x, domain_end_x])
         this.svg.select('g.x.axis')
             .transition()
             .duration(1000)
             .call(d3.axisBottom().scale(this.x));
         
         // update y axis labels
-        this.y.domain([domain_start, domain_end])
+        this.y.domain([domain_start_y, domain_end_y])
         this.svg.select('g.y.axis')
             .transition()
             .duration(1000)
@@ -131,20 +140,23 @@ export default class Scatterplot extends View {
           .join(
             enter => {
               let circles = enter.append("circle")
-                //ToolTip
-                .on("mouseover", d => {
-                  this.tooltip.transition().duration(300)
-                  .style("opacity", 1)
-                  this.tooltip.html( "<b>Players number:</b> <br> "
-                  + d.players_list.length)
-                  .style("left", (d3.event.pageX) + "px")
-                  .style("top", (d3.event.pageY -30) + "px");
-                })
-                .on("mouseout", () => {
-                      this.tooltip.transition().duration(300)
-                      .style("opacity", 0);
-                })
                 .on("click", this.handleElemSelection.bind(this));
+                
+                if (!this.pca) {
+                  //ToolTip
+                  circles.on("mouseover", d => {
+                    this.tooltip.transition().duration(300)
+                    .style("opacity", 1)
+                    this.tooltip.html( "<b>Players number:</b> <br> "
+                    + d.players_list.length)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY -30) + "px");
+                  })
+                  .on("mouseout", () => {
+                        this.tooltip.transition().duration(300)
+                        .style("opacity", 0);
+                  })
+                }
 
               this.update(circles);
             },

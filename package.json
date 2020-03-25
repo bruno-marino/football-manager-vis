@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "d3": "5.14.2",
-    "normalize.css": "8.0.1",
-    "pca-js": "^1.0.2"
+    "ml-pca": "^4.0.1",
+    "normalize.css": "8.0.1"
   },
   "browserslist": [
     "last 2 versions",
