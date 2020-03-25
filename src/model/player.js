@@ -26,20 +26,27 @@ export default class Player {
 
   }
 
-  computeAvgGkSkill() {
+  computeAvgGkSkill() {//to be reviewed or deleted, actually not used
     let result = 0;
 
     rolesettings[1].attributes.principal.forEach(attr => {
       result += this[attr];
     });
 
+    
     rolesettings[1].attributes.negative.forEach(attr => {
       result += (1 - this[attr]);
     });
+    
     let num_attr = rolesettings[1].attributes.principal.length +
                    rolesettings[1].attributes.negative.length;
     
-    return result / num_attr; 
+    let final_result = 0;
+    if(result!=0){
+      final_result = result / num_attr;
+    }
+
+    return final_result;
   }
 
   get avgGkSkill() {
@@ -61,8 +68,8 @@ export default class Player {
   computeAvgRoleSkill(role) {
 
     //console.log(rolesettings[role]);
-    if(role.role_id=="1")
-      return this.computeAvgGkSkill();
+    //if(role.role_id=="1")
+      //return this.computeAvgGkSkill();
 
     let result = 0;
     role.attributes.principal.forEach(attr => {
@@ -83,7 +90,7 @@ export default class Player {
     let num_attr = 
       role.attributes.principal.length +
       role.attributes.mental.length +
-      role.attributes.physical.length
+      role.attributes.physical.length;
     /*
     let invalid_attr = [
       "uid","positions_desc","name","height","weight","nation_id","age","born","country_code"
