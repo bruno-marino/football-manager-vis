@@ -12,45 +12,58 @@ export default class Player {
     })
 
     //add the role id to the player
+    /* //old role id
     this["role_id"] = "";
     rolesettings.forEach(role => {
       if(role.positions.filter(pos => this.positions_desc.includes(pos)).length) {
         this["role_id"] = role.role_id;
       }
     })
+    */
 
+    //new role id based on points
+    this["role_id"] = this.mainRole();
 
   }
 
-  get avgGkSkill() {
+  computeAvgGkSkill() {
     let result = 0;
 
-    rolesettings[0].attributes.principal.forEach(attr => {
+    rolesettings[1].attributes.principal.forEach(attr => {
       result += this[attr];
     });
 
-    rolesettings[0].attributes.negative.forEach(attr => {
+    rolesettings[1].attributes.negative.forEach(attr => {
       result += (1 - this[attr]);
     });
-    let num_attr = rolesettings[0].attributes.principal.length +
-                   rolesettings[0].attributes.negative.length;
+    let num_attr = rolesettings[1].attributes.principal.length +
+                   rolesettings[1].attributes.negative.length;
     
     return result / num_attr; 
   }
 
+  get avgGkSkill() {
+    return this.computeAvgRoleSkill(rolesettings[1]);
+  }
+
   get avgDefSkill() {
-    return this.computeAvgRoleSkill(1);
+    return this.computeAvgRoleSkill(rolesettings[2]);
   }
 
   get avgMidSkill() {
-    return this.computeAvgRoleSkill(2);
+    return this.computeAvgRoleSkill(rolesettings[3]);
   }
 
   get avgAtkSkill() {
-    return this.computeAvgRoleSkill(3);
+    return this.computeAvgRoleSkill(rolesettings[4]);
   }
 
   computeAvgRoleSkill(role) {
+
+    //console.log(rolesettings[role]);
+    if(role.role_id=="1")
+      return this.computeAvgGkSkill();
+
     let result = 0;
     role.attributes.principal.forEach(attr => {
       if(!this[attr]) console.log(attr)
@@ -83,19 +96,45 @@ export default class Player {
       }
     })
     */
-    return result / num_attr;
+   let final_result = 0;
+   if(result!=0){
+      final_result = result / num_attr;
+   }
+
+    return final_result;
   }
 
   hasRole(role) {
     return role.positions.filter(pos => this.positions_desc.includes(pos)).length === 0 ? false : true;
   }
 
-  get mainRole() {
+  mainRole(){
+    let role_points = [
+      {"role_id": 0, "value": 0}, //for player without role
+      {"role_id": 1, "value": this.computeAvgRoleSkill(rolesettings[1])}, //Goalkeeper
+      {"role_id": 2, "value": this.computeAvgRoleSkill(rolesettings[2])}, //Defender
+      {"role_id": 3, "value": this.computeAvgRoleSkill(rolesettings[3])}, //Midfielder
+      {"role_id": 4, "value": this.computeAvgRoleSkill(rolesettings[4])}  //Striker
+    ]
+
+    let id_max = 0;
+
+    //get id having max skill value
+    role_points.forEach(row => {     
+      if(row.value > role_points[id_max].value){
+        id_max = row.role_id;
+      }      
+    })
+
+    return id_max;
+
+  }
+  get playerMainRole() {
     // To do
     // P portiere
     // D difensore
     // C centrocampista
     // A attaccante
-    return 'P';
+    return this.mainRole();
   }
 }
