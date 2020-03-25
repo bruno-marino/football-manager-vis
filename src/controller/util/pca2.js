@@ -35,7 +35,7 @@ export default function pcaScatterplotMatrix(players) {
           // init result entries
           result.push({
             id : player.uid,
-            role: player.mainRole,
+            role: player.playerMainRole,
             x : 0,
             y: 0,
           })

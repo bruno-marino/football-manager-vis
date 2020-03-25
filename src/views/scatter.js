@@ -180,7 +180,7 @@ export default class Scatterplot extends View {
             .attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
             .attr("r", "5")
-            .style("fill", "#a2a2a2")
+            .style("fill", d => rolesettings[d.role].color )
             .style("opacity", "0.7")
             .style("stroke", "#000000")
             .style("stroke-width", 1);
