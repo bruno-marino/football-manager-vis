@@ -27,8 +27,8 @@ export default function pcaScatterplotMatrix(players) {
         let matrix_row = [];
             
         players.forEach(player => {
-          if (!player.hasRole(this.actualRole))
-            return;
+          //if (!player.hasRole(this.actualRole))
+            //return;
           
           matrix_row = [];
           

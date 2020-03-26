@@ -12,6 +12,7 @@ export default class Scatterplot extends View {
         this.x_axis = "aerial_ability";
         this.y_axis = "aerial_ability";
         this.pca = false;
+        this.pca_role = "0";
 
         
         this.margin = {top: 10, right: 30, bottom: 60, left: 60};
@@ -166,6 +167,7 @@ export default class Scatterplot extends View {
     }
 
     update(dots) {
+
       if(!this.pca){
         dots.transition().duration(1000)
             .attr("cx", d => this.x(d.x))
@@ -177,13 +179,40 @@ export default class Scatterplot extends View {
             .style("stroke-width", 1);
       }else{
         dots.transition().duration(1000)
+          .filter(d => {
+                if(parseInt(this.pca_role) == 0 ) return true;
+                return parseInt(d.role) != parseInt(this.pca_role);
+            })
             .attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
-            .attr("r", "5")
+            .attr("r", "3")
             .style("fill", d => rolesettings[d.role].color )
-            .style("opacity", "0.7")
+            .style("opacity", d => {
+                if(parseInt(this.pca_role) == 0 ){ 
+                    return "0.7"; 
+                }else{
+                    return "0.2";
+                }
+            })
             .style("stroke", "#000000")
             .style("stroke-width", 1);
+
+        if(parseInt(this.pca_role)!=0){
+            
+            dots.transition().duration(1000)
+            .filter(d => {
+                  return parseInt(d.role) == parseInt(this.pca_role);
+              })
+              .attr("cx", d => this.x(d.x))
+              .attr("cy", d => this.y(d.y))
+              .attr("r", "3")
+              .style("fill", d => rolesettings[d.role].color )
+              .style("opacity", "0.8")
+              .style("stroke", "#000000")
+              .style("stroke-width", 1);
+            
+        }
+
       }
     }
 
