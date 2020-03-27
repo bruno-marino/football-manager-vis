@@ -11,6 +11,10 @@ export default function pcaScatterplotMatrix(players) {
           return;
         }
         let data = getPlayersMatrix(players, this.rolesettings[0].attributes);
+        if(data.length == 0) {
+          resolve(result);
+          return;
+        }
         const pca = new PCA(data, { method: 'covarianceMatrix', scale: true, ignoreZeroVariance: true });
         const new_data = pca.predict(data, { nComponents: 2 } );
 
@@ -29,9 +33,15 @@ export default function pcaScatterplotMatrix(players) {
         players.forEach(player => {
           //if (!player.hasRole(this.actualRole))
             //return;
+          if (this.actualRole.role_id != 1 && player.hasRole(this.rolesettings[1])) {
+            return;
+          } 
+          else if (this.actualRole.role_id == 1 && !player.hasRole(this.rolesettings[1])) {
+            return
+          }
           
           matrix_row = [];
-          
+
           // init result entries
           result.push({
             id : player.uid,
