@@ -17,7 +17,6 @@ export default class Controller {
     this.rolesettings = rolesettings;
     this.radar_type = 'principal';
     this._role_id = '0';
-    this.role_id = '0';
 
     // register callback function for model upddate events
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
@@ -45,9 +44,8 @@ export default class Controller {
   onRoleChange(role_id) {
     this.role_id = role_id;
     this.scatterplot.pca_role = role_id;
-    let role_scale = this.rolesettings[role_id].role_scale;
-    this.mapchart.values = this.countryStrengthPerRole(this.rolesettings[role_id]);
-    this.mapchart.changeRamp(role_scale);
+    this.mapchart.values = this.countryStrengthPerRole();
+    this.mapchart.changeRamp(this.actualRole.role_scale);
     if(this.mapchart.selected_elems.length > 0)
       this.onCountriesSelection(this.mapchart.selected_elems);
   }

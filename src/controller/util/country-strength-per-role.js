@@ -1,15 +1,13 @@
-export default function countryStrengthPerRole(role) {
+export default function countryStrengthPerRole() {
   let data = {};
   let total = {};
   this.model.players.forEach(player => {
-    // if the intersection of role positions and player positions is
-    // empty => skip this player.
-    if(role.positions.filter(pos => player.positions_desc.includes(pos)).length) {
+    if(player.hasRole(this.actualRole)) {
       if (!data[player.country_code]) {
         data[player.country_code] = [];
       }
 
-     data[player.country_code].push(player.computeAvgRoleSkill(role));
+     data[player.country_code].push(player.computeAvgRoleSkill(this.actualRole));
     }
   });
   
