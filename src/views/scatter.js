@@ -75,11 +75,14 @@ export default class Scatterplot extends View {
             .style("opacity", 0);
 
         // Add brushing
-        this.brush = this.svg.call( d3.brush()  // Add the brush feature using the d3.brush function
+        this.brush = d3.brush()  // Add the brush feature using the d3.brush function
             .extent( [ [0,0], [this.width,this.height] ] ) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
             .on("start brush", this.updateBrush.bind(this)) // Each time the brush selection changes, trigger the 'updateChart' function
-            .on("end", this.endBrush.bind(this))    
-        )
+            .on("end", this.endBrush.bind(this));
+
+        this.svg.append('g')
+          .attr('id', 'brush')
+          .call(this.brush);
 
         //console.log(this.data);
         this.draw();
@@ -214,6 +217,11 @@ export default class Scatterplot extends View {
         let circles = this.svg.selectAll('circle');
         //console.log(d3.event);
         let extent = d3.event.selection
+
+        if(!extent && d3.event.sourceEvent.type === 'end') {
+          return
+        }
+
         circles.classed("brush_selected", d => { 
             if(!this.pca || this.pca_role == d.role || this.pca_role==0){
                 return this.isBrushed(extent,this.x(d.x), this.y(d.y) ) 
@@ -226,6 +234,7 @@ export default class Scatterplot extends View {
 
     // A function that return TRUE or FALSE according if a dot is in the selection or not
     isBrushed(brush_coords, cx, cy) {
+        if (!brush_coords) return false
         var x0 = brush_coords[0][0],
         x1 = brush_coords[1][0],
         y0 = brush_coords[0][1],
@@ -233,22 +242,18 @@ export default class Scatterplot extends View {
         return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;    // This return TRUE or FALSE depending on if the points is in the selected area
     }
 
-    endBrush(){
-        
+    endBrush() {
         let extent = d3.event.selection
-        //console.log(extent);
         // If no selection, back to initial coordinate. Otherwise, update X axis domain
         if(!extent){
-            if (!this.idleTimeout) return this.idleTimeout = setTimeout(this.idled, 350); // This allows to wait a little bit
+            if (!this.idleTimeout) return this.idleTimeout = setTimeout(() => this.idled(), 350); // This allows to wait a little bit
             this.x.domain([ this.domain_start_x,this.domain_end_x])
             this.y.domain([ this.domain_start_y,this.domain_end_y])
         }else{
           this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
-          this.y.domain([ this.y.invert(extent[0][1]), this.y.invert(extent[1][1]) ])
-          //the following row is to fix
-          //this.svg.call(this.brush.move, null) // This remove the grey brush area as soon as the selection has been done
+          this.y.domain([ this.y.invert(extent[1][1]), this.y.invert(extent[0][1]) ])
+          this.svg.select('#brush').call(this.brush.move, null) // This remove the grey brush area as soon as the selection has been done
         }
-    
         // Update axis and circle position
         this.svg.select('g.x.axis').transition().duration(1000).call(d3.axisBottom(this.x))
         this.svg.select('g.y.axis').transition().duration(1000).call(d3.axisLeft(this.y))
@@ -265,7 +270,6 @@ export default class Scatterplot extends View {
            })*/
           .attr("cx", d => this.x(d.x) )
           .attr("cy", d => this.y(d.y) )
-    
     }
 
     idled(){
