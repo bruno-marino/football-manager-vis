@@ -9,11 +9,19 @@ export default class Scatterplot extends View {
 
     init(container) {    
         super.init(container);
+
         this.x_axis = "aerial_ability";
         this.y_axis = "aerial_ability";
+
         this.pca = false;
         this.pca_role = "0";
+        
+        this.idleTimeout = null;
 
+        this.domain_start_x = 0;
+        this.domain_end_x = 20;
+        this.domain_start_y = this.domain_start_x;
+        this.domain_end_y = this.domain_end_x;
         
         this.margin = {top: 10, right: 30, bottom: 60, left: 60};
         this.width_nomargin = this.width - this.margin.left - this.margin.right;
@@ -67,9 +75,10 @@ export default class Scatterplot extends View {
             .style("opacity", 0);
 
         // Add brushing
-        this.svg.call( d3.brush()  // Add the brush feature using the d3.brush function
+        this.brush = this.svg.call( d3.brush()  // Add the brush feature using the d3.brush function
             .extent( [ [0,0], [this.width,this.height] ] ) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
             .on("start brush", this.updateBrush.bind(this)) // Each time the brush selection changes, trigger the 'updateChart' function
+            .on("end", this.endBrush.bind(this))    
         )
 
         //console.log(this.data);
@@ -79,31 +88,31 @@ export default class Scatterplot extends View {
 
     // draw countries
     draw() {
-        var domain_start_x = 0;
-        var domain_end_x = 20;
-        var domain_start_y = domain_start_x;
-        var domain_end_y = domain_end_x;
+        this.domain_start_x = 0;
+        this.domain_end_x = 20;
+        this.domain_start_y = this.domain_start_x;
+        this.domain_end_y = this.domain_end_x;
 
         if(this.pca){
           let arr_x = this.data.map(elm => elm.x);
           let arr_y = this.data.map(elm => elm.y);
 
-          domain_start_x = d3.min(arr_x);
-          domain_end_x = d3.max(arr_x);
+          this.domain_start_x = d3.min(arr_x);
+          this.domain_end_x = d3.max(arr_x);
           
-          domain_start_y = d3.min(arr_y);
-          domain_end_y = d3.max(arr_y);
+          this.domain_start_y = d3.min(arr_y);
+          this.domain_end_y = d3.max(arr_y);
         }
       
         // update x axis labels
-        this.x.domain([domain_start_x, domain_end_x])
+        this.x.domain([this.domain_start_x, this.domain_end_x])
         this.svg.select('g.x.axis')
             .transition()
             .duration(1000)
             .call(d3.axisBottom().scale(this.x));
         
         // update y axis labels
-        this.y.domain([domain_start_y, domain_end_y])
+        this.y.domain([this.domain_start_y, this.domain_end_y])
         this.svg.select('g.y.axis')
             .transition()
             .duration(1000)
@@ -212,16 +221,55 @@ export default class Scatterplot extends View {
                 return false;
             }
         } )
-        
+
     }
 
-     // A function that return TRUE or FALSE according if a dot is in the selection or not
+    // A function that return TRUE or FALSE according if a dot is in the selection or not
     isBrushed(brush_coords, cx, cy) {
         var x0 = brush_coords[0][0],
         x1 = brush_coords[1][0],
         y0 = brush_coords[0][1],
         y1 = brush_coords[1][1];
         return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;    // This return TRUE or FALSE depending on if the points is in the selected area
+    }
+
+    endBrush(){
+        
+        let extent = d3.event.selection
+        //console.log(extent);
+        // If no selection, back to initial coordinate. Otherwise, update X axis domain
+        if(!extent){
+            if (!this.idleTimeout) return this.idleTimeout = setTimeout(this.idled, 350); // This allows to wait a little bit
+            this.x.domain([ this.domain_start_x,this.domain_end_x])
+            this.y.domain([ this.domain_start_y,this.domain_end_y])
+        }else{
+          this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
+          this.y.domain([ this.y.invert(extent[0][1]), this.y.invert(extent[1][1]) ])
+          //the following row is to fix
+          //this.svg.call(this.brush.move, null) // This remove the grey brush area as soon as the selection has been done
+        }
+    
+        // Update axis and circle position
+        this.svg.select('g.x.axis').transition().duration(1000).call(d3.axisBottom(this.x))
+        this.svg.select('g.y.axis').transition().duration(1000).call(d3.axisLeft(this.y))
+        this.svg
+          .selectAll("circle")//.selectAll(".brush_selected")
+          .transition().duration(1000)
+          /*
+          .filter(d => {
+            if(!this.pca || this.pca_role == d.role || this.pca_role==0){
+                return true; 
+            }else{
+                return false;
+            }
+           })*/
+          .attr("cx", d => this.x(d.x) )
+          .attr("cy", d => this.y(d.y) )
+    
+    }
+
+    idled(){
+        this.idleTimeout = null;
     }
 
     get x_ax() {
