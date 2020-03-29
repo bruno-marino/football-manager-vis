@@ -66,8 +66,15 @@ export default class Scatterplot extends View {
             .attr("class", "tooltip")               
             .style("opacity", 0);
 
+        // Add brushing
+        this.svg.call( d3.brush()  // Add the brush feature using the d3.brush function
+            .extent( [ [0,0], [this.width,this.height] ] ) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+            .on("start brush", this.updateBrush.bind(this)) // Each time the brush selection changes, trigger the 'updateChart' function
+        )
+
         //console.log(this.data);
         this.draw();
+    
     }
 
     // draw countries
@@ -164,6 +171,7 @@ export default class Scatterplot extends View {
 
             update => this.update(update),
           );
+
     }
 
     update(dots) {
@@ -184,9 +192,36 @@ export default class Scatterplot extends View {
             .attr("r", "3")
             .style("fill", d => rolesettings[d.role].color )
             .style("opacity", d => (d.role == this.pca_role) || this.pca_role == 0 ? "0.8" : "0.2")
+            .style("stroke", "none");//resetting stroke
+            //.on("end", this.brushsing);
+            /*
             .style("stroke", "#000000")
             .style("stroke-width", 1);
+            */
       }
+    }
+
+    updateBrush(){
+        let circles = this.svg.selectAll('circle');
+        //console.log(d3.event);
+        let extent = d3.event.selection
+        circles.classed("brush_selected", d => { 
+            if(!this.pca || this.pca_role == d.role || this.pca_role==0){
+                return this.isBrushed(extent,this.x(d.x), this.y(d.y) ) 
+            }else{
+                return false;
+            }
+        } )
+        
+    }
+
+     // A function that return TRUE or FALSE according if a dot is in the selection or not
+    isBrushed(brush_coords, cx, cy) {
+        var x0 = brush_coords[0][0],
+        x1 = brush_coords[1][0],
+        y0 = brush_coords[0][1],
+        y1 = brush_coords[1][1];
+        return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;    // This return TRUE or FALSE depending on if the points is in the selected area
     }
 
     get x_ax() {

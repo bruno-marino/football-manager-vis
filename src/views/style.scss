@@ -96,4 +96,9 @@ div.tooltip {
     opacity: 1;
     cursor: pointer; 
   }
+  .brush_selected {
+    opacity: 1 !important;
+    stroke: black;
+    stroke-width: 1px;
+  }
 }
