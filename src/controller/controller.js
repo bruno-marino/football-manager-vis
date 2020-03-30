@@ -22,7 +22,7 @@ export default class Controller {
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
     this.model.bindCountriesListChanged(this.onCountriesListChanged.bind(this));
     this.mapchart.bindElemSelection(this.onCountriesSelection.bind(this));
-    this.scatterplot.bindElemSelection(this.onBubbleSelection.bind(this));
+    this.scatterplot.bindElemSelection(this.onScatterSelection.bind(this));
   }
   
   handleAddPlayer(player) {
@@ -73,6 +73,22 @@ export default class Controller {
     this.updateBarPlot([]);
     this.updateRadar(players);
     this.updateScatter(players);
+  }
+
+  onScatterSelection(elems) {
+    // check if elems are bubbles or players
+    if ( elems.length == 0 || elems[0].players_list) {
+      this.onBubbleSelection(elems);
+    } else {
+      let players = [];
+      elems.forEach(elm => {
+        players.push(this.model.players[this.model.playersById[elm.id]]);
+      })
+
+      this.updateBarPlot(players);
+      this.updateRadar(players);
+      this.radarchart.legend_label = "Selected players";
+    }
   }
 
   onBubbleSelection(bubbles) {

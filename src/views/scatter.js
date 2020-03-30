@@ -99,7 +99,7 @@ export default class Scatterplot extends View {
     
     }
 
-    // draw countries
+    // draw dots
     draw() {
         this.domain_start_x = 0;
         this.domain_end_x = 20;
@@ -216,11 +216,6 @@ export default class Scatterplot extends View {
             .style("fill", d => rolesettings[d.role].color )
             .style("opacity", d => (d.role == this.pca_role) || this.pca_role == 0 ? "0.8" : "0.2")
             .style("stroke", "none");//resetting stroke
-            //.on("end", this.brushsing);
-            /*
-            .style("stroke", "#000000")
-            .style("stroke-width", 1);
-            */
       }
     }
 
@@ -260,9 +255,13 @@ export default class Scatterplot extends View {
             if (!this.idleTimeout) return this.idleTimeout = setTimeout(() => this.idled(), 350); // This allows to wait a little bit
             this.x.domain([ this.domain_start_x,this.domain_end_x])
             this.y.domain([ this.domain_start_y,this.domain_end_y])
+            this.resetSelection();
+            this.handleElemSelection();
         }else{
           this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
           this.y.domain([ this.y.invert(extent[1][1]), this.y.invert(extent[0][1]) ])
+          this.handleElemSelection(this.svg.selectAll('.brush_selected').nodes().map(e => e.__data__));
+
           this.svg.select('#brush').call(this.brush.move, null) // This remove the grey brush area as soon as the selection has been done
         }
         // Update axis and circle position
