@@ -47,23 +47,33 @@ export default class View {
     this.svg.select("g").attr("transform", transform);
   }
 
-  handleElemSelection(elem) {
-    // on empty selection deselect all
-    if(!elem) {
-      this.resetSelection();
-    } else {
-      d3.event.stopPropagation();
+  handleElemSelection(elems) {
+    try{ d3.event.stopPropagation() } catch {}
+    const manageElem = (e) => {
       // if elem is already selected, deselect it
-      if (this.selected_elems.includes(elem)) {
+      if (this.selected_elems.includes(e)) {
         this.selected_elems.splice(
-          this.selected_elems.findIndex(elm => elm == elem),
+          this.selected_elems.findIndex(elm => elm == e),
           1);
       } else {
         // if it is not selected then select it
-        this.selected_elems.push(elem)
+        this.selected_elems.push(e)
       }
       // toggle css class
-      d3.event.target.classList.toggle('selected')
+      try { d3.event.target.classList.toggle('selected') } catch {}
+    }
+
+    // on empty selection deselect all
+    if(!elems) {
+      this.resetSelection();
+    } else {
+      if (elems.length > 1) {
+        elems.forEach(e => manageElem(e));
+      } else {
+        manageElem(elems);
+      }
+
+      
     }
     
     // call callback and give the selected elems (to the controller)
