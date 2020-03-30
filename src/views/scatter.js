@@ -26,7 +26,7 @@ export default class Scatterplot extends View {
         this.margin = {top: 10, right: 30, bottom: 60, left: 60};
         this.width_nomargin = this.width - this.margin.left - this.margin.right;
         this.height_nomargin = this.height - this.margin.top - this.margin.bottom;
-
+        let real_svg = this.svg;
         // Update this.svg in ordert to contain axis
         this.svg = this.svg.append("g")
                 .attr("transform","translate(" + this.margin.left + "," + this.margin.top + ")");
@@ -39,8 +39,7 @@ export default class Scatterplot extends View {
         this.y = d3.scaleLinear()
             .range([ this.height_nomargin, 0]);
 
-        var x_bar = this.svg.append("g")
-            .attr("transform", "translate(0," + this.height_nomargin + ")");       
+        var x_bar = this.svg.append("g");    
             
         var y_bar = this.svg.append("g");
 
@@ -49,7 +48,7 @@ export default class Scatterplot extends View {
             .attr('id', 'axis-x-label')
             .attr('class', 'axis-label')
             .attr('x', this.width_nomargin / 2)
-            .attr('y', (this.margin.left/2) + 10)
+            .attr('y', this.height - (this.margin.bottom/2))
             .style("fill", "#000000");
         
         y_bar.append('text')
@@ -82,7 +81,16 @@ export default class Scatterplot extends View {
 
         this.svg.append('g')
           .attr('id', 'brush')
+          .attr("clip-path", "url(#clip)")
           .call(this.brush);
+
+        real_svg.append("defs").append("svg:clipPath")
+          .attr("id", "clip")
+          .append("svg:rect")
+          .attr("width", this.width_nomargin )
+          .attr("height", this.height_nomargin )
+          .attr("x", 0)
+          .attr("y", 0);
 
         //console.log(this.data);
         this.draw();
@@ -155,7 +163,8 @@ export default class Scatterplot extends View {
             .text(this.y_axis);
 
         //draw points
-        this.svg.selectAll("circle")
+        this.svg.select('#brush')
+          .selectAll("circle")
           .data(this.data)
           .join(
             enter => {
