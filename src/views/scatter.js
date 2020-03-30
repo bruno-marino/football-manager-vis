@@ -80,8 +80,10 @@ export default class Scatterplot extends View {
             .on("end", this.endBrush.bind(this));
 
         this.svg.append('g')
-          .attr('id', 'brush')
+          .attr('id', 'dots_area')
           .attr("clip-path", "url(#clip)")
+          .append('g')
+          .attr('id', 'brush')
           .call(this.brush);
 
         real_svg.append("defs").append("svg:clipPath")
@@ -163,7 +165,7 @@ export default class Scatterplot extends View {
             .text(this.y_axis);
 
         //draw points
-        this.svg.select('#brush')
+        this.svg.select('#dots_area')
           .selectAll("circle")
           .data(this.data)
           .join(
