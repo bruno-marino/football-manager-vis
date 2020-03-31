@@ -13,8 +13,88 @@
 </head>
 <body>
   <div id="root">
-    <h1>Visual Analytics: helping football talent scout do their job</h1>
-    <h2>Marino &amp; Pepe</h2>
+    <div id="map_container">
+      <div class="filter-box">
+        <div class="custom-select-wrapper">
+            <div class="custom-select">
+                <div class="custom-select__trigger">
+                  <span id="first-scale" id="color_selection">
+                      <!-- fill automatically -->
+                  </span> 
+                  <div class="arrow"></div>
+                </div>
+                <div id="scale-container" class="custom-options">
+                    <!-- fill automatically -->
+                </div>
+            </div>
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+    <div class="bottom-margin"></div>
+    <div class="col-50">
+      <div id="scatter_container">
+        <div id="scatter-settings">
+
+          <label class="slct-container"> &nbsp;PCA
+            <input id="pca_check" type="checkbox">
+            <span class="slct-checkmark"></span>
+          </label>
+
+          <div class="custom-select-wrapper">
+            <span class="what-axes">x axis</span>
+            <div class="custom-select">
+                <div class="custom-select__trigger">
+                  <span id="first-x-axis" id="color_selection">
+                      <!-- fill automatically -->
+                  </span> 
+                  <div class="arrow"></div>
+                </div>
+                <div id="x-axis-container" class="custom-options">
+                    <!-- fill automatically -->
+                </div>
+            </div>
+          </div>
+
+          <div class="custom-select-wrapper">
+            <span class="what-axes">y axis</span>
+            <div class="custom-select">
+                <div class="custom-select__trigger">
+                  <span id="first-y-axis" id="color_selection">
+                      <!-- fill automatically -->
+                  </span> 
+                  <div class="arrow"></div>
+                </div>
+                <div id="y-axis-container" class="custom-options">
+                    <!-- fill automatically -->
+                </div>
+            </div>
+          </div>
+
+          <button id="apply-settings" class="btn">Apply</button>
+
+        </div>
+        <div id="scatter"></div>
+      </div>
+    </div><div class="col-50">
+      <div id="radar_container">
+        <div class="col-80 height-250"><div id="radar"></div></div><div class="col-20 range-legend">
+          <div class="radar-legend"><span class="radar-legend-square"></span>
+            <span id="radar-legend-color">Selected countries</span></div>
+          <input id="range-type" class="range vertical-lowest-first round rang-adjust" type="range" min="1" max="3" step="1" value="1">
+          <span class="rang-top">Principal</span>
+          <span class="rang-middle">Physical</span>
+          <span class="rang-bottom">Mental</span>
+        </div>
+      </div>
+      <div id="bar_container">
+        <div id="bar"></div>  
+      </div>
+    </div>
   </div>
+  <div class="bottom-margin"></div>
+  <button id="update" class="btnradar">Update</button>
+  <div class="big radarChart" id="chart-radar" width="600" height="400"></div>
+  <div class="bottom-margin"></div>
 </body>
 </html>
