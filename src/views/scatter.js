@@ -206,16 +206,16 @@ export default class Scatterplot extends View {
             .attr("r", d => this.sizeScale(d.players_list.length))
             .style("fill", "#a2a2a2")
             .style("opacity", "0.7")
-            .style("stroke", "#000000")
-            .style("stroke-width", 1);
+            .attr("class", "bubble");
       }else{
+        dots.classed("bubble", false);
+        
         dots.transition().duration(300)
             .attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
             .attr("r", "3")
             .style("fill", d => rolesettings[d.role].color )
-            .style("opacity", d => (d.role == this.pca_role) || this.pca_role == 0 ? "0.8" : "0.2")
-            .style("stroke", "none");//resetting stroke
+            .style("opacity", d => (d.role == this.pca_role) || this.pca_role == 0 ? "0.8" : "0.2");       
       }
     }
 

@@ -85,18 +85,20 @@ div.tooltip {
 
   circle {
     opacity:0.5;
+    stroke:black;
+    stroke-width: 0.2px;
   }
 
   circle.selected, circle.selected:hover {
-    stroke-width: 3px;
+    stroke-width: 1px;
     opacity: 1;
   }
-  circle:hover {
+  circle.bubble:hover {
     stroke-width: 2px;
     opacity: 1;
     cursor: pointer; 
   }
-  .brush_selected {
+  circle.brush_selected {
     opacity: 1 !important;
     stroke: black;
     stroke-width: 1px;
