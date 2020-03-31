@@ -66,16 +66,12 @@ export default class View {
     // on empty selection deselect all
     if(!elems) {
       this.resetSelection();
+    } else if (elems.length >= 1) {
+      elems.forEach(e => manageElem(e));
     } else {
-      if (elems.length > 1) {
-        elems.forEach(e => manageElem(e));
-      } else {
-        manageElem(elems);
-      }
-
-      
+      manageElem(elems);
     }
-    
+
     // call callback and give the selected elems (to the controller)
     this.onElemSelection(this.selected_elems);
   }
