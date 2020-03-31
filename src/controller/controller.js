@@ -51,7 +51,6 @@ export default class Controller {
   }
 
   onAxisChange(x_axis, y_axis) {
-    let coming_from_pca = this.scatterplot.pca;
     this.scatterplot.pca = false;
 
     let countries = this.mapchart.selected_elems.map(country => country.id);
@@ -117,7 +116,30 @@ export default class Controller {
   onRadarTypeChange(radar_type) {
     this.radar_type = radar_type;
     let countries = this.mapchart.selected_elems.map(country => country.id);
-    let players = this.model.playersByCountries(countries)
+
+    let players = [];
+    let selected = this.scatterplot.selected_elems;
+    console.log(selected)
+    // if something is selected don't consider countries averages
+    if (selected.length > 0) {
+      if (selected[0].players_list) {
+        // take players from scatter bubbles
+        selected.forEach(bubble => {
+          bubble.players_list.forEach(id => {
+            players.push(this.model.players[this.model.playersById[id]]);
+          });
+        });
+      } else {
+        console.log('ok')
+        // take players from individual ids
+        selected.forEach(elm => {
+          players.push(this.model.players[this.model.playersById[elm.id]]);
+        })
+      }
+    } else {
+      players = this.model.playersByCountries(countries)
+    }
+    
     this.updateRadar(players);
   }
 

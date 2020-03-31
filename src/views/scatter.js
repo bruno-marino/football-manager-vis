@@ -221,7 +221,6 @@ export default class Scatterplot extends View {
     }
 
     updateBrush(){
-        super.resetSelection();
         let circles = this.svg.selectAll('circle');
         //console.log(d3.event);
         let extent = d3.event.selection
@@ -259,6 +258,7 @@ export default class Scatterplot extends View {
             this.y.domain([ this.domain_start_y,this.domain_end_y])
             this.handleElemSelection();
         } else {
+            super.resetSelection();
             this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
             this.y.domain([ this.y.invert(extent[1][1]), this.y.invert(extent[0][1]) ])
             
