@@ -44,12 +44,12 @@ d3.select("#apply-settings").on("click", function () {
   //console.log(d3.select("#first-x-axis > span").text());
 
   if(d3.select("#pca_check").property("checked")){
-    window.app.scatterplot.pca = true;
+    //window.app.scatterplot.pca = true;
     
     window.app.onPcaActivation();
 
   }else{
-    window.app.scatterplot.pca = false;
+    //window.app.scatterplot.pca = false;
     //get x and y features and update scatterplot
     //window.app.scatterplot.x_axis = d3.select("#first-x-axis > span").text();
     //window.app.scatterplot.y_axis = d3.select("#first-y-axis > span").text();

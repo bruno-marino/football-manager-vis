@@ -172,22 +172,23 @@ export default class Scatterplot extends View {
             enter => {
               let circles = enter.append("circle")
                 .on("click", this.handleElemSelection.bind(this));
-                
-                if (!this.pca) {
                   //ToolTip
-                  circles.on("mouseover", d => {
+                circles.on("mouseover", d => {
+                  if (!this.pca) {
                     this.tooltip.transition().duration(300)
                     .style("opacity", 1)
                     this.tooltip.html( "<b>Players number:</b> <br> "
                     + d.players_list.length)
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY -30) + "px");
-                  })
-                  .on("mouseout", () => {
-                        this.tooltip.transition().duration(300)
-                        .style("opacity", 0);
-                  })
-                }
+                  }
+                })
+                .on("mouseout", () => {
+                  if (!this.pca) {
+                      this.tooltip.transition().duration(300)
+                      .style("opacity", 0);
+                  }
+                })
 
               this.update(circles);
             },
@@ -220,6 +221,7 @@ export default class Scatterplot extends View {
     }
 
     updateBrush(){
+        super.resetSelection();
         let circles = this.svg.selectAll('circle');
         //console.log(d3.event);
         let extent = d3.event.selection
@@ -255,14 +257,16 @@ export default class Scatterplot extends View {
             if (!this.idleTimeout) return this.idleTimeout = setTimeout(() => this.idled(), 350); // This allows to wait a little bit
             this.x.domain([ this.domain_start_x,this.domain_end_x])
             this.y.domain([ this.domain_start_y,this.domain_end_y])
-            this.resetSelection();
             this.handleElemSelection();
-        }else{
-          this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
-          this.y.domain([ this.y.invert(extent[1][1]), this.y.invert(extent[0][1]) ])
-          this.handleElemSelection(this.svg.selectAll('.brush_selected').nodes().map(e => e.__data__));
-
-          this.svg.select('#brush').call(this.brush.move, null) // This remove the grey brush area as soon as the selection has been done
+        } else {
+            this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
+            this.y.domain([ this.y.invert(extent[1][1]), this.y.invert(extent[0][1]) ])
+            
+            let dots = this.svg.selectAll('.brush_selected').nodes().map(e => e.__data__);
+            // set dots to null at empty brush
+            dots = dots.length > 0 ? dots : null
+            this.handleElemSelection(dots) // when dots is null this is equal to reset the scatter, see controller onScatterSelection
+            this.svg.select('#brush').call(this.brush.move, null); // This remove the grey brush area as soon as the selection has been done            
         }
         // Update axis and circle position
         this.svg.select('g.x.axis').transition().duration(1000).call(d3.axisBottom(this.x))
@@ -270,16 +274,13 @@ export default class Scatterplot extends View {
         this.svg
           .selectAll("circle")//.selectAll(".brush_selected")
           .transition().duration(1000)
-          /*
-          .filter(d => {
-            if(!this.pca || this.pca_role == d.role || this.pca_role==0){
-                return true; 
-            }else{
-                return false;
-            }
-           })*/
           .attr("cx", d => this.x(d.x) )
           .attr("cy", d => this.y(d.y) )
+    }
+
+    resetSelection() {
+      super.resetSelection();
+      this.svg.selectAll('.brush_selected').classed('brush_selected', false);
     }
 
     idled(){

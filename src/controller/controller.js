@@ -51,15 +51,16 @@ export default class Controller {
   }
 
   onAxisChange(x_axis, y_axis) {
+    let coming_from_pca = this.scatterplot.pca;
+    this.scatterplot.pca = false;
+
     let countries = this.mapchart.selected_elems.map(country => country.id);
     let players = this.model.playersByCountries(countries);
 
-    if (this.scatterplot.selected_elems.length > 0 ) {
       this.updateRadar(players);
       this.scatterplot.resetSelection();
       this.updateBarPlot([]);
       this.radarchart.legend_label = "Selected countries";
-    }
     this.updateScatter(players, x_axis, y_axis);
   }
 
@@ -121,10 +122,8 @@ export default class Controller {
   }
 
   onPcaActivation(){
-    let countries = this.mapchart.selected_elems.map(country => country.id);
-    let players = this.model.playersByCountries(countries);
     this.scatterplot.pca = true;
-    this.updateScatter(players, "", "");
+    this.onCountriesSelection(this.mapchart.selected_elems);
   }
 
   updateRadar(players) {
@@ -134,7 +133,7 @@ export default class Controller {
   }
 
   updateBarPlot(players) {
-    this.countriesAvgSetOfSkills(players).then(data => {
+    this.barplotSetOfSkills(players).then(data => {
       this.barplot.data = data;
     });
   }
@@ -181,7 +180,7 @@ export default class Controller {
   }
 }
 
-Controller.prototype.countriesAvgSetOfSkills = barplotSetOfSkills;
+Controller.prototype.barplotSetOfSkills = barplotSetOfSkills;
 Controller.prototype.countryStrengthPerRole = countryStrengthPerRole;
 Controller.prototype.radarSetOfSkills = radarSetOfSkills;
 Controller.prototype.matrixBubbleChart = matrixBubbleChart;
