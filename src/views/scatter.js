@@ -174,20 +174,25 @@ export default class Scatterplot extends View {
                 .on("click", this.handleElemSelection.bind(this));
                   //ToolTip
                 circles.on("mouseover", d => {
-                  if (!this.pca) {
-                    this.tooltip.transition().duration(300)
+                  this.tooltip.transition().duration(300)
                     .style("opacity", 1)
+                  if (!this.pca) {
                     this.tooltip.html( "<b>Players number:</b> <br> "
                     + d.players_list.length)
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY -30) + "px");
+                  }else{
+                    this.tooltip.html( "<b>"
+                    + d.name +"</b>")
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY -30) + "px");                
                   }
                 })
                 .on("mouseout", () => {
-                  if (!this.pca) {
+                  //if (!this.pca) {
                       this.tooltip.transition().duration(300)
                       .style("opacity", 0);
-                  }
+                  //}
                 })
 
               this.update(circles);

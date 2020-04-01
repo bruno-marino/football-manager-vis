@@ -44,10 +44,11 @@ export default function pcaScatterplotMatrix(players) {
 
           // init result entries
           result.push({
-            id : player.uid,
+            id: player.uid,
             role: player.role_id,
-            x : 0,
+            x: 0,
             y: 0,
+            name: player.name,
           })
           
           for (const [key, value] of Object.entries(attributes)) {
