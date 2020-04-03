@@ -14,15 +14,19 @@ export default class Controller {
     this.barplot = new views.barplot();
     this.radarchart = new views.radarchart();
     this.scatterplot = new views.scatterplot();
+    this.bubblechart = new views.scatterplot();
     this.rolesettings = rolesettings;
     this.radar_type = 'principal';
     this._role_id = '0';
+    this.scatterplot.x_axis = "";
+    this.scatterplot.y_axis = "";
 
     // register callback function for model upddate events
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
     this.model.bindCountriesListChanged(this.onCountriesListChanged.bind(this));
     this.mapchart.bindElemSelection(this.onCountriesSelection.bind(this));
     this.scatterplot.bindElemSelection(this.onScatterSelection.bind(this));
+    this.bubblechart.bindElemSelection(this.onScatterSelection.bind(this));
   }
   
   handleAddPlayer(player) {
@@ -51,20 +55,20 @@ export default class Controller {
   }
 
   onAxisChange(x_axis, y_axis) {
-    this.scatterplot.pca = false;
+    this.bubblechart.pca = false;
 
     let countries = this.mapchart.selected_elems.map(country => country.id);
     let players = this.model.playersByCountries(countries);
 
       this.updateRadar(players);
-      this.scatterplot.resetSelection();
+      this.bubblechart.resetSelection();
       this.updateBarPlot([]);
       this.radarchart.legend_label = "Selected countries";
     this.updateScatter(players, x_axis, y_axis);
   }
 
   onCountriesSelection(countries) {
-    this.scatterplot.resetSelection();
+    this.bubblechart.resetSelection();
     countries = countries.map(country => country.id);
     let players = this.model.playersByCountries(countries);
     
@@ -118,7 +122,7 @@ export default class Controller {
     let countries = this.mapchart.selected_elems.map(country => country.id);
 
     let players = [];
-    let selected = this.scatterplot.selected_elems;
+    let selected = this.bubblechart.selected_elems;
     console.log(selected)
     // if something is selected don't consider countries averages
     if (selected.length > 0) {
@@ -142,12 +146,12 @@ export default class Controller {
     
     this.updateRadar(players);
   }
-
+/*
   onPcaActivation(){
     this.scatterplot.pca = true;
     this.onCountriesSelection(this.mapchart.selected_elems);
   }
-
+*/
   updateRadar(players) {
     this.radarSetOfSkills(this.radar_type, players).then(data => {
       this.radarchart.data = data;
@@ -163,10 +167,10 @@ export default class Controller {
   updateScatter(players, x_axis, y_axis) {
 
     // if pca activated then do something else and remove axis labels
-    this.scatterplot.x_axis = x_axis || this.scatterplot.x_axis;
-    this.scatterplot.y_axis = y_axis || this.scatterplot.y_axis;
+    this.bubblechart.x_axis = x_axis || this.bubblechart.x_axis;
+    this.bubblechart.y_axis = y_axis || this.bubblechart.y_axis;
 
-    if(this.scatterplot.pca == true){
+    if(this.bubblechart.pca == true){
 
       this.scatterplot.x_axis = "";
       this.scatterplot.y_axis = "";
@@ -175,8 +179,8 @@ export default class Controller {
         this.scatterplot.data = data;
       })
     }else{
-      this.matrixBubbleChart(this.scatterplot.x_axis, this.scatterplot.y_axis, players).then(data => {
-        this.scatterplot.data = data;
+      this.matrixBubbleChart(this.bubblechart.x_axis, this.bubblechart.y_axis, players).then(data => {
+        this.bubblechart.data = data;
       })
     } 
   }

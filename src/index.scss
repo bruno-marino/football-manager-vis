@@ -47,6 +47,10 @@ body {
   vertical-align:top;
 }
 
+.vertical-bottom{
+  vertical-align: bottom;
+}
+
 .bottom-margin{
   height:40px;
 }
@@ -80,9 +84,10 @@ body {
 #scatter-settings{
   height: 50px;
 }
-#scatter {
+#scatter, #bubble {
   height:450px;;
 }
+
 /* Button */
 .button{
   border: 2px solid #394a6d;

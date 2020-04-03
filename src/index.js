@@ -22,7 +22,7 @@ d3.select('#range-type')
     //radarchart.data = radarSetOfSkills(radar_type[value], countries, this.model.players);
     window.app.onRadarTypeChange(radar_type[value]);
 });
-
+/*
 d3.select("#pca_check").on("change", function(){
   if(d3.select("#pca_check").property("checked")){
     //window.app.scatterplot.pca = true;
@@ -57,7 +57,7 @@ d3.select("#apply-settings").on("click", function () {
   }
   //Update scatterplot
   //?????
-});
+});*/
 
 //End Radar chart -Range selection
 
@@ -154,6 +154,9 @@ for (const option of document.querySelectorAll('.custom-option')) {
           graph_type = this.parentNode.parentNode.parentNode.parentNode.parentNode;
           if(graph_type.id=="map_container"){
             window.app.onRoleChange(parseInt(this.getAttribute('data-value')));
+          }else{
+            //Update Bubblechart axis
+            window.app.onAxisChange(d3.select("#first-x-axis > span").text(), d3.select("#first-y-axis > span").text())
           }
       }
   })

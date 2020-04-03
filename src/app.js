@@ -14,6 +14,7 @@ const app = function() {
     controller.barplot.init(d3.select('#bar'));
     controller.radarchart.init(d3.select('#radar'));
     controller.scatterplot.init(d3.select('#scatter'));
+    controller.bubblechart.init(d3.select('#bubble'));
   });
 }
 
