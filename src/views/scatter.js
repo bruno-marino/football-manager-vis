@@ -5,6 +5,8 @@ import rolesettings from '../controller/rolesettings.json'
 export default class Scatterplot extends View {
     constructor(container) {
         super(container);
+
+        
     }
 
     init(container) {    

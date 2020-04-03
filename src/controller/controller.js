@@ -18,8 +18,6 @@ export default class Controller {
     this.rolesettings = rolesettings;
     this.radar_type = 'principal';
     this._role_id = '0';
-    this.scatterplot.x_axis = "";
-    this.scatterplot.y_axis = "";
 
     // register callback function for model upddate events
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
@@ -27,6 +25,7 @@ export default class Controller {
     this.mapchart.bindElemSelection(this.onCountriesSelection.bind(this));
     this.scatterplot.bindElemSelection(this.onScatterSelection.bind(this));
     this.bubblechart.bindElemSelection(this.onScatterSelection.bind(this));
+
   }
   
   handleAddPlayer(player) {
@@ -64,7 +63,7 @@ export default class Controller {
       this.bubblechart.resetSelection();
       this.updateBarPlot([]);
       this.radarchart.legend_label = "Selected countries";
-    this.updateScatter(players, x_axis, y_axis);
+      this.updateBubble(players, x_axis, y_axis);
   }
 
   onCountriesSelection(countries) {
@@ -77,6 +76,7 @@ export default class Controller {
     this.updateBarPlot([]);
     this.updateRadar(players);
     this.updateScatter(players);
+    this.updateBubble(players);
   }
 
   onScatterSelection(elems) {
@@ -146,7 +146,8 @@ export default class Controller {
     
     this.updateRadar(players);
   }
-/*
+
+  /*
   onPcaActivation(){
     this.scatterplot.pca = true;
     this.onCountriesSelection(this.mapchart.selected_elems);
@@ -164,25 +165,26 @@ export default class Controller {
     });
   }
 
-  updateScatter(players, x_axis, y_axis) {
+  updateBubble(players, x_axis, y_axis) {
 
-    // if pca activated then do something else and remove axis labels
     this.bubblechart.x_axis = x_axis || this.bubblechart.x_axis;
     this.bubblechart.y_axis = y_axis || this.bubblechart.y_axis;
+    this.matrixBubbleChart(this.bubblechart.x_axis, this.bubblechart.y_axis, players).then(data => {
+      this.bubblechart.data = data;
+    })
+    
+  }
 
-    if(this.bubblechart.pca == true){
+  updateScatter(players) {
 
-      this.scatterplot.x_axis = "";
-      this.scatterplot.y_axis = "";
+    this.scatterplot.x_axis = "";
+    this.scatterplot.y_axis = "";
+    this.scatterplot.pca = true;
 
-      this.pcaScatterplotMatrix(players).then( data => {
-        this.scatterplot.data = data;
-      })
-    }else{
-      this.matrixBubbleChart(this.bubblechart.x_axis, this.bubblechart.y_axis, players).then(data => {
-        this.bubblechart.data = data;
-      })
-    } 
+    this.pcaScatterplotMatrix(players).then( data => {
+      this.scatterplot.data = data;
+    })
+
   }
 
   get radar_type() {
