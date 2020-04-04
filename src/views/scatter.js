@@ -11,7 +11,7 @@ export default class Scatterplot extends View {
 
     init(container) {    
         super.init(container);
-
+        
         this.x_axis = "aerial_ability";
         this.y_axis = "aerial_ability";
 
@@ -292,6 +292,22 @@ export default class Scatterplot extends View {
 
     idled(){
         this.idleTimeout = null;
+    }
+
+    highlight(highlighted_data){
+
+      //remove to all circle "selected" class
+      this.svg.selectAll(".selected")
+        .classed("selected", false);
+
+      //if highlighted data array is not empty
+      if(Array.isArray(highlighted_data) && highlighted_data.length){
+        //add selected class to right data
+        this.svg.selectAll("circle")
+          .data(highlighted_data)
+          .classed("selected", true);
+      }
+
     }
 
     get x_ax() {

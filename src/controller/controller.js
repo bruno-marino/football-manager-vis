@@ -83,6 +83,8 @@ export default class Controller {
     // check if elems are bubbles or players
     if ( elems.length == 0 || elems[0].players_list) {
       this.onBubbleSelection(elems);
+      //this.bubblechart.highlight([]);
+      return;
     } else {
       let players = [];
       elems.forEach(elm => {
@@ -92,6 +94,9 @@ export default class Controller {
       this.updateBarPlot(players);
       this.updateRadar(players);
       this.radarchart.legend_label = "Selected players";
+      
+      this.highlightBubble(players);
+      
     }
   }
 
@@ -115,6 +120,8 @@ export default class Controller {
     } else {
       this.updateRadar(players);
     }
+
+    this.highlightScatter(players);
   }
 
   onRadarTypeChange(radar_type) {
@@ -183,6 +190,22 @@ export default class Controller {
 
     this.pcaScatterplotMatrix(players).then( data => {
       this.scatterplot.data = data;
+    })
+
+  }
+
+  highlightBubble(players){
+    
+    this.matrixBubbleChart(this.bubblechart.x_axis, this.bubblechart.y_axis, players).then(data => {
+      this.bubblechart.highlight(data);
+    })
+    
+  }
+
+  highlightScatter(players){
+
+    this.pcaScatterplotMatrix(players).then( data => {
+      this.scatterplot.highlight(data);
     })
 
   }
