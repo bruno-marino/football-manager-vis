@@ -6,13 +6,19 @@ export default class Scatterplot extends View {
     constructor(container, isPca) {
         super(container);
       this.pca = isPca;
+
+      this.x_axis = "aerial_ability";
+      this.y_axis = "aerial_ability";
+
+      if(isPca){
+        this.x_axis = "";
+        this.y_axis = "";
+      }
+
     }
 
     init(container) {    
         super.init(container);
-        
-        this.x_axis = "aerial_ability";
-        this.y_axis = "aerial_ability";
 
         this.pca_role = "0";
         
