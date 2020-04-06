@@ -3,10 +3,9 @@ import View from "./view";
 import rolesettings from '../controller/rolesettings.json'
 
 export default class Scatterplot extends View {
-    constructor(container) {
+    constructor(container, isPca) {
         super(container);
-
-        
+      this.pca = isPca;
     }
 
     init(container) {    
@@ -15,7 +14,6 @@ export default class Scatterplot extends View {
         this.x_axis = "aerial_ability";
         this.y_axis = "aerial_ability";
 
-        this.pca = false;
         this.pca_role = "0";
         
         this.idleTimeout = null;
@@ -302,12 +300,30 @@ export default class Scatterplot extends View {
 
       //if highlighted data array is not empty
       if(Array.isArray(highlighted_data) && highlighted_data.length){
-        //add selected class to right data
-        this.svg.selectAll("circle")
-          .data(highlighted_data)
-          .classed("selected", true);
-      }
+        if (this.pca) {
+          //add selected class to right data
+          /*
+          this.svg.selectAll("circle")
+            .data(highlighted_data, d => d.id)
+            .classed("selected", true);
+          */
+          
+          this.svg.selectAll("circle")
+            .filter( d => highlighted_data.includes(d.id))
+            .classed("selected",true)
 
+        } else {
+          this.svg.selectAll("circle")
+            .each(function(d) {
+              for( let id of highlighted_data) {
+                if(d.players_list.includes(id)) {
+                  this.classList.add('selected'); //'this' now referes to html elem of d
+                  return;
+                }
+              }
+            })
+        }
+      }
     }
 
     get x_ax() {

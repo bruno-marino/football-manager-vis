@@ -13,7 +13,7 @@ export default class Controller {
     this.mapchart = new views.mapchart();
     this.barplot = new views.barplot();
     this.radarchart = new views.radarchart();
-    this.scatterplot = new views.scatterplot();
+    this.scatterplot = new views.scatterplot( null , true);
     this.bubblechart = new views.scatterplot();
     this.rolesettings = rolesettings;
     this.radar_type = 'principal';
@@ -186,7 +186,6 @@ export default class Controller {
 
     this.scatterplot.x_axis = "";
     this.scatterplot.y_axis = "";
-    this.scatterplot.pca = true;
 
     this.pcaScatterplotMatrix(players).then( data => {
       this.scatterplot.data = data;
@@ -195,19 +194,12 @@ export default class Controller {
   }
 
   highlightBubble(players){
-    
-    this.matrixBubbleChart(this.bubblechart.x_axis, this.bubblechart.y_axis, players).then(data => {
-      this.bubblechart.highlight(data);
-    })
-    
+    this.bubblechart.highlight(players.map( p => p.uid ));
   }
 
   highlightScatter(players){
-
-    this.pcaScatterplotMatrix(players).then( data => {
-      this.scatterplot.highlight(data);
-    })
-
+    let id_array = players.map( p => p.uid );
+    this.scatterplot.highlight(id_array);
   }
 
   get radar_type() {
