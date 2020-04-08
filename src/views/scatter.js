@@ -170,13 +170,75 @@ export default class Scatterplot extends View {
             .duration(1000)
             .text(this.y_axis);
 
+        //need to check the two dimensions
+        let drawed_points_x = {};
+        let drawed_points_y = {};
+        let minimum_distance = 400.0;
+
+        let x_1=0, y_1 = 0, n_decimal = 0, computed_distance=0.0, rounded=0.0;
+    
+
         //draw points
         this.svg.select('#dots_area')
           .selectAll("circle")
           .data(this.data)
           .join(
             enter => {
-              let circles = enter.append("circle")
+              let circles = enter.filter( d => {
+
+
+                x_1 = this.x(d.x);
+                y_1 = this.y(d.y);
+    
+                //check line parallel to y axes proximity
+                rounded = this.round(x_1,n_decimal);
+                if(typeof drawed_points_x[rounded] === 'undefined') {
+                    // does not exist
+                    drawed_points_x[rounded] = Array();
+                    drawed_points_x[rounded].push(y_1);
+                }
+                else {
+                    // does exist
+                    //check if near y exist
+                    drawed_points_x[rounded].forEach(y_2 => {
+                      //here x_2 == x_1
+                      computed_distance = this.euclideanDist( x_1, y_1, x_1, y_2);
+                      //console.log(computed_distance);
+                      if(computed_distance < minimum_distance){
+                        //console.log(false);
+                        return false;
+                      }
+                    });
+                }
+    
+                //check line parallel to x axes proximity
+                rounded = this.round(y_1,n_decimal);
+                if(typeof drawed_points_y[rounded] === 'undefined') {
+                    // does not exist
+                    drawed_points_y[rounded] = Array();
+                    drawed_points_y[rounded].push(x_1);
+                }
+                else {
+                    // does exist
+                    //check if near x exist
+                    drawed_points_y[rounded].forEach(x_2 => {
+                      //here y_2 == y_1
+                      computed_distance = this.euclideanDist( x_1, y_1, x_2, y_1);
+                      //console.log(computed_distance);
+                      if(computed_distance < minimum_distance){
+                        //console.log(false);
+                        return false;
+                      }
+                    });
+                }
+    
+                //if I survive to previous condition.. ok let's draw the point
+                //console.log(true);
+                return true;
+    
+              }
+              )
+              .append("circle")
                 .on("click", this.handleElemSelection.bind(this));
                   //ToolTip
                 circles.on("mouseover", d => {
@@ -279,6 +341,9 @@ export default class Scatterplot extends View {
             this.handleElemSelection(dots) // when dots is null this is equal to reset the scatter, see controller onScatterSelection
             this.svg.select('#brush').call(this.brush.move, null); // This remove the grey brush area as soon as the selection has been done            
         }
+
+        this.draw();
+
         // Update axis and circle position
         this.svg.select('g.x.axis').transition().duration(1000).call(d3.axisBottom(this.x))
         this.svg.select('g.y.axis').transition().duration(1000).call(d3.axisLeft(this.y))
@@ -330,6 +395,31 @@ export default class Scatterplot extends View {
             })
         }
       }
+    }
+
+  /**
+   * return the euclidean distance between two points.
+   *
+   * @param {number} x1		x position of first point
+   * @param {number} y1		y position of first point
+   * @param {number} x2		x position of second point
+   * @param {number} y2		y position of second point
+   * @return {number} 		distance between given points
+   */
+    euclideanDist( x1, y1, x2, y2 ){
+	
+        var 	xs = x2 - x1,
+          ys = y2 - y1;		
+        
+        xs *= xs;
+        ys *= ys;
+         
+        return Math.sqrt( xs + ys );
+ 
+    }
+
+    round(number, n_decimal){
+      return parseFloat(number).toFixed(n_decimal);
     }
 
     get x_ax() {
