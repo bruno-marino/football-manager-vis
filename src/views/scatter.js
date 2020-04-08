@@ -173,9 +173,9 @@ export default class Scatterplot extends View {
         //need to check the two dimensions
         let drawed_points_x = {};
         let drawed_points_y = {};
-        let minimum_distance = 400.0;
+        let minimum_distance = 100.0;
 
-        let x_1=0, y_1 = 0, n_decimal = 0, computed_distance=0.0, rounded=0.0;
+        let x_1=0, y_1 = 0, n_decimal = 0, computed_distance=0.0, rounded=0.0, too_near=false;
     
 
         //draw points
@@ -186,12 +186,14 @@ export default class Scatterplot extends View {
             enter => {
               let circles = enter.filter( d => {
 
+                //return false;
 
                 x_1 = this.x(d.x);
                 y_1 = this.y(d.y);
     
                 //check line parallel to y axes proximity
                 rounded = this.round(x_1,n_decimal);
+                too_near=false;
                 if(typeof drawed_points_x[rounded] === 'undefined') {
                     // does not exist
                     drawed_points_x[rounded] = Array();
@@ -206,12 +208,17 @@ export default class Scatterplot extends View {
                       //console.log(computed_distance);
                       if(computed_distance < minimum_distance){
                         //console.log(false);
-                        return false;
+                        too_near = true;
+                        //break;
                       }
                     });
                 }
+
+                if(too_near)
+                  return false;
     
                 //check line parallel to x axes proximity
+                too_near=false;
                 rounded = this.round(y_1,n_decimal);
                 if(typeof drawed_points_y[rounded] === 'undefined') {
                     // does not exist
@@ -227,11 +234,14 @@ export default class Scatterplot extends View {
                       //console.log(computed_distance);
                       if(computed_distance < minimum_distance){
                         //console.log(false);
-                        return false;
+                        too_near = true;
+                        //break;
                       }
                     });
                 }
     
+                if(too_near)
+                  return false;
                 //if I survive to previous condition.. ok let's draw the point
                 //console.log(true);
                 return true;
@@ -342,7 +352,7 @@ export default class Scatterplot extends View {
             this.svg.select('#brush').call(this.brush.move, null); // This remove the grey brush area as soon as the selection has been done            
         }
 
-        this.draw();
+        //this.draw();
 
         // Update axis and circle position
         this.svg.select('g.x.axis').transition().duration(1000).call(d3.axisBottom(this.x))
