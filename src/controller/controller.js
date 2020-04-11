@@ -24,7 +24,7 @@ export default class Controller {
     this.model.bindCountriesListChanged(this.onCountriesListChanged.bind(this));
     this.mapchart.bindElemSelection(this.onCountriesSelection.bind(this));
     this.scatterplot.bindElemSelection(this.onScatterSelection.bind(this));
-    this.bubblechart.bindElemSelection(this.onScatterSelection.bind(this));
+    this.bubblechart.bindElemSelection(this.onBubbleSelection.bind(this));
 
   }
   
@@ -54,20 +54,22 @@ export default class Controller {
   }
 
   onAxisChange(x_axis, y_axis) {
-    this.bubblechart.pca = false;
 
     let countries = this.mapchart.selected_elems.map(country => country.id);
     let players = this.model.playersByCountries(countries);
 
-      this.updateRadar(players);
-      this.bubblechart.resetSelection();
-      this.updateBarPlot([]);
-      this.radarchart.legend_label = "Selected countries";
-      this.updateBubble(players, x_axis, y_axis);
+    this.updateRadar(players);
+    this.bubblechart.resetBrush();
+    this.scatterplot.resetBrush();
+    this.updateBarPlot([]);
+    this.radarchart.legend_label = "Selected countries";
+    this.updateBubble(players, x_axis, y_axis);
   }
 
   onCountriesSelection(countries) {
-    this.bubblechart.resetSelection();
+    this.scatterplot.resetBrush();
+    this.bubblechart.resetBrush();
+
     countries = countries.map(country => country.id);
     let players = this.model.playersByCountries(countries);
     
@@ -80,13 +82,19 @@ export default class Controller {
   }
 
   onScatterSelection(elems) {
-    // check if elems are bubbles or players
-    if ( elems.length == 0 || elems[0].players_list) {
-      this.onBubbleSelection(elems);
-      //this.bubblechart.highlight([]);
-      return;
+    this.bubblechart.resetBrush();
+
+    let players = [];
+    if ( elems.length == 0) {
+      let countries = this.mapchart.selected_elems.map(country => country.id);
+      players = this.model.playersByCountries(countries);
+      
+      this.radarchart.legend_label = "Selected countries";
+      
+      this.updateBarPlot([]);
+      this.updateRadar(players);
     } else {
-      let players = [];
+      players = [];
       elems.forEach(elm => {
         players.push(this.model.players[this.model.playersById[elm.id]]);
       })
@@ -94,34 +102,37 @@ export default class Controller {
       this.updateBarPlot(players);
       this.updateRadar(players);
       this.radarchart.legend_label = "Selected players";
-      
       this.highlightBubble(players);
-      
     }
   }
 
   onBubbleSelection(bubbles) {
+    this.scatterplot.resetBrush();
+
     let players = [];
-    bubbles.forEach(bubble => {
-      bubble.players_list.forEach(id => {
-        players.push(this.model.players[this.model.playersById[id]]);
-      });
-    });
-
-    if(players.length>0){
-      this.radarchart.legend_label = "Selected players";
-    }
-    this.radarchart.legend_label = "Selected players";
-    
-    this.updateBarPlot(players); 
-        
     if (bubbles.length == 0) {
-      this.onCountriesSelection(this.mapchart.selected_elems);
-    } else {
+      let countries = this.mapchart.selected_elems.map(country => country.id);
+      players = this.model.playersByCountries(countries);
+      
+      this.radarchart.legend_label = "Selected countries";
+      
+      this.updateBarPlot([]);
       this.updateRadar(players);
-    }
 
-    this.highlightScatter(players);
+    } else {
+
+      bubbles.forEach(bubble => {
+        bubble.players_list.forEach(id => {
+          players.push(this.model.players[this.model.playersById[id]]);
+        });
+      });
+
+      this.updateRadar(players);
+      this.updateBarPlot(players); 
+      this.radarchart.legend_label = "Selected players";
+      this.highlightScatter(players);
+    }
+    
   }
 
   onRadarTypeChange(radar_type) {
@@ -130,7 +141,6 @@ export default class Controller {
 
     let players = [];
     let selected = this.bubblechart.selected_elems;
-    console.log(selected)
     // if something is selected don't consider countries averages
     if (selected.length > 0) {
       if (selected[0].players_list) {
@@ -141,7 +151,6 @@ export default class Controller {
           });
         });
       } else {
-        console.log('ok')
         // take players from individual ids
         selected.forEach(elm => {
           players.push(this.model.players[this.model.playersById[elm.id]]);
@@ -198,8 +207,7 @@ export default class Controller {
   }
 
   highlightScatter(players){
-    let id_array = players.map( p => p.uid );
-    this.scatterplot.highlight(id_array);
+    this.scatterplot.highlight(players.map( p => p.uid ));
   }
 
   get radar_type() {

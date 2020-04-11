@@ -82,7 +82,7 @@ export default class Scatterplot extends View {
         // Add brushing
         this.brush = d3.brush()  // Add the brush feature using the d3.brush function
             .extent( [ [0,0], [this.width,this.height] ] ) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
-            .on("start brush", this.updateBrush.bind(this)) // Each time the brush selection changes, trigger the 'updateChart' function
+            //.on("start brush", this.updateBrush.bind(this)) // Each time the brush selection changes, trigger the 'updateChart' function
             .on("end", this.endBrush.bind(this));
 
         this.svg.append('g')
@@ -99,44 +99,45 @@ export default class Scatterplot extends View {
           .attr("height", this.height_nomargin )
           .attr("x", 0)
           .attr("y", 0);
-
-        //console.log(this.data);
-        this.draw();
-    
-    }
-
-    // draw dots
-    draw() {
+        
+        
         this.domain_start_x = 0;
         this.domain_end_x = 20;
         this.domain_start_y = this.domain_start_x;
         this.domain_end_y = this.domain_end_x;
 
-        if(this.pca){
-          let arr_x = this.data.map(elm => elm.x);
-          let arr_y = this.data.map(elm => elm.y);
+        //console.log(this.data);
+        this.draw();
+    }
 
-          this.domain_start_x = d3.min(arr_x);
-          this.domain_end_x = d3.max(arr_x);
+    // draw dots
+    draw(doSampling) {
+        if (doSampling) {
+            if(this.pca) {
+              let arr_x = this.data.map(elm => elm.x);
+              let arr_y = this.data.map(elm => elm.y);
+
+              this.domain_start_x = d3.min(arr_x);
+              this.domain_end_x = d3.max(arr_x);
+              
+              this.domain_start_y = d3.min(arr_y);
+              this.domain_end_y = d3.max(arr_y);
+            }
           
-          this.domain_start_y = d3.min(arr_y);
-          this.domain_end_y = d3.max(arr_y);
+            // update x axis labels
+            this.x.domain([this.domain_start_x, this.domain_end_x])
+            this.svg.select('g.x.axis')
+                .transition()
+                .duration(1000)
+                .call(d3.axisBottom().scale(this.x));
+            
+            // update y axis labels
+            this.y.domain([this.domain_start_y, this.domain_end_y])
+            this.svg.select('g.y.axis')
+                .transition()
+                .duration(1000)
+                .call(d3.axisLeft().scale(this.y));
         }
-      
-        // update x axis labels
-        this.x.domain([this.domain_start_x, this.domain_end_x])
-        this.svg.select('g.x.axis')
-            .transition()
-            .duration(1000)
-            .call(d3.axisBottom().scale(this.x));
-        
-        // update y axis labels
-        this.y.domain([this.domain_start_y, this.domain_end_y])
-        this.svg.select('g.y.axis')
-            .transition()
-            .duration(1000)
-            .call(d3.axisLeft().scale(this.y));
-
         var min = 0;
 
         // compute the max number of players in a single bubble
@@ -168,89 +169,33 @@ export default class Scatterplot extends View {
         this.svg.select('#axis-y-label')
             .transition()
             .duration(1000)
-            .text(this.y_axis);
+            .text(this.y_axis);  
 
+        // sampling
         //need to check the two dimensions
-        let drawed_points_x = {};
-        let drawed_points_y = {};
-        let minimum_distance = 100.0;
-
-        let x_1=0, y_1 = 0, n_decimal = 0, computed_distance=0.0, rounded=0.0, too_near=false;
-    
-
+        this.drawed_points_x = {};
+        this.drawed_points_y = {};
+        
+        this.svg.select('#dots_area')
+          .selectAll("circle")
+          .remove();
         //draw points
         this.svg.select('#dots_area')
           .selectAll("circle")
           .data(this.data)
           .join(
             enter => {
-              let circles = enter.filter( d => {
-
-                //return false;
-
-                x_1 = this.x(d.x);
-                y_1 = this.y(d.y);
-    
-                //check line parallel to y axes proximity
-                rounded = this.round(x_1,n_decimal);
-                too_near=false;
-                if(typeof drawed_points_x[rounded] === 'undefined') {
-                    // does not exist
-                    drawed_points_x[rounded] = Array();
-                    drawed_points_x[rounded].push(y_1);
-                }
-                else {
-                    // does exist
-                    //check if near y exist
-                    drawed_points_x[rounded].forEach(y_2 => {
-                      //here x_2 == x_1
-                      computed_distance = this.euclideanDist( x_1, y_1, x_1, y_2);
-                      //console.log(computed_distance);
-                      if(computed_distance < minimum_distance){
-                        //console.log(false);
-                        too_near = true;
-                        //break;
-                      }
-                    });
-                }
-
-                if(too_near)
-                  return false;
-    
-                //check line parallel to x axes proximity
-                too_near=false;
-                rounded = this.round(y_1,n_decimal);
-                if(typeof drawed_points_y[rounded] === 'undefined') {
-                    // does not exist
-                    drawed_points_y[rounded] = Array();
-                    drawed_points_y[rounded].push(x_1);
-                }
-                else {
-                    // does exist
-                    //check if near x exist
-                    drawed_points_y[rounded].forEach(x_2 => {
-                      //here y_2 == y_1
-                      computed_distance = this.euclideanDist( x_1, y_1, x_2, y_1);
-                      //console.log(computed_distance);
-                      if(computed_distance < minimum_distance){
-                        //console.log(false);
-                        too_near = true;
-                        //break;
-                      }
-                    });
-                }
-    
-                if(too_near)
-                  return false;
-                //if I survive to previous condition.. ok let's draw the point
-                //console.log(true);
-                return true;
-    
-              }
-              )
-              .append("circle")
-                .on("click", this.handleElemSelection.bind(this));
-                  //ToolTip
+              // active sampling based on flags
+              enter = doSampling && this.pca ? enter.filter(d => this.sample(d)) : enter;
+              
+              let circles = enter.append("circle")
+                .on("click", d => {
+                  this.resetBrush();
+                  this.resetSelection();
+                  this.handleElemSelection(d);
+                });
+              
+                //ToolTip
                 circles.on("mouseover", d => {
                   this.tooltip.transition().duration(300)
                     .style("opacity", 1)
@@ -284,7 +229,7 @@ export default class Scatterplot extends View {
     update(dots) {
 
       if(!this.pca){
-        dots.transition().duration(300)
+        dots
             .attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
             .attr("r", d => this.sizeScale(d.players_list.length))
@@ -294,7 +239,7 @@ export default class Scatterplot extends View {
       }else{
         dots.classed("bubble", false);
         
-        dots.transition().duration(300)
+        dots
             .attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
             .attr("r", "3")
@@ -302,7 +247,7 @@ export default class Scatterplot extends View {
             .style("opacity", d => (d.role == this.pca_role) || this.pca_role == 0 ? "0.8" : "0.2");       
       }
     }
-
+/*
     updateBrush(){
         let circles = this.svg.selectAll('circle');
         //console.log(d3.event);
@@ -321,7 +266,7 @@ export default class Scatterplot extends View {
         } )
 
     }
-
+*/
     // A function that return TRUE or FALSE according if a dot is in the selection or not
     isBrushed(brush_coords, cx, cy) {
         if (!brush_coords) return false
@@ -330,30 +275,52 @@ export default class Scatterplot extends View {
         y0 = brush_coords[0][1],
         y1 = brush_coords[1][1];
         return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;    // This return TRUE or FALSE depending on if the points is in the selected area
+        return (
+            cx >= 0 && cx <= this.width_nomargin && 
+            cy >= 0 && cy <= this.height_nomargin
+        )
     }
 
     endBrush() {
         let extent = d3.event.selection
         // If no selection, back to initial coordinate. Otherwise, update X axis domain
         if(!extent){
-            if (!this.idleTimeout) return this.idleTimeout = setTimeout(() => this.idled(), 350); // This allows to wait a little bit
-            this.x.domain([ this.domain_start_x,this.domain_end_x])
-            this.y.domain([ this.domain_start_y,this.domain_end_y])
-            this.handleElemSelection();
+            //if (!this.idleTimeout) return this.idleTimeout = setTimeout(() => this.idled(), 350); // This allows to wait a little bit
+            //this.x.domain([ this.domain_start_x,this.domain_end_x])
+            //this.y.domain([ this.domain_start_y,this.domain_end_y])
+            if (d3.event.sourceEvent && 
+                d3.event.sourceEvent.type !== 'end' && 
+                d3.event.sourceEvent.type !==  'click')
+              this.handleElemSelection();
         } else {
-            super.resetSelection();
-            this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
-            this.y.domain([ this.y.invert(extent[1][1]), this.y.invert(extent[0][1]) ])
+            this.resetSelection();
+            //this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
+            //this.y.domain([ this.y.invert(extent[1][1]), this.y.invert(extent[0][1]) ])
+            //this.svg.select('#brush').call(this.brush.move, null); // This remove the grey brush area as soon as the selection has been done
             
-            let dots = this.svg.selectAll('.brush_selected').nodes().map(e => e.__data__);
+            // select all the players from data, not only those visible
+            let dots = this.data.filter(d => {
+              if(!this.pca || this.pca_role == d.role || this.pca_role==0){
+                return this.isBrushed(extent, this.x(d.x), this.y(d.y))
+              } else {
+                return false
+              }
+            })
+            
+            // apply class to visible players
+            this.svg.selectAll('circle')
+              .classed('brush_selected',  d => {
+                if(!this.pca || this.pca_role == d.role || this.pca_role==0){
+                  return this.isBrushed(extent, this.x(d.x), this.y(d.y))
+                } else {
+                  return false
+                }
+              });
             // set dots to null at empty brush
             dots = dots.length > 0 ? dots : null
-            this.handleElemSelection(dots) // when dots is null this is equal to reset the scatter, see controller onScatterSelection
-            this.svg.select('#brush').call(this.brush.move, null); // This remove the grey brush area as soon as the selection has been done            
+            this.handleElemSelection(dots);
         }
-
-        //this.draw();
-
+        /*
         // Update axis and circle position
         this.svg.select('g.x.axis').transition().duration(1000).call(d3.axisBottom(this.x))
         this.svg.select('g.y.axis').transition().duration(1000).call(d3.axisLeft(this.y))
@@ -362,11 +329,17 @@ export default class Scatterplot extends View {
           .transition().duration(1000)
           .attr("cx", d => this.x(d.x) )
           .attr("cy", d => this.y(d.y) )
+        */        
     }
 
     resetSelection() {
       super.resetSelection();
       this.svg.selectAll('.brush_selected').classed('brush_selected', false);
+    }
+
+    resetBrush() {
+      this.svg.select('#brush').call(this.brush.move, null);
+      this.resetSelection();
     }
 
     idled(){
@@ -407,6 +380,67 @@ export default class Scatterplot extends View {
       }
     }
 
+    sample(d) {
+        let minimum_distance = 150.0;
+        let x_1=0, y_1 = 0, n_decimal = 0, computed_distance=0.0, rounded_x = 0.0, rounded_y = 0.0, too_near=false;
+        //return false;
+
+        x_1 = this.x(d.x);
+        y_1 = this.y(d.y);
+
+        //check line parallel to y axes proximity
+        rounded_x = this.round(x_1,n_decimal);
+        too_near=false;
+        if(typeof this.drawed_points_x[rounded_x] === 'undefined') {
+            // does not exist
+            this.drawed_points_x[rounded_x] = Array();
+        }
+
+        // does exist
+        //check if near y exist
+        for (let y_2 of this.drawed_points_x[rounded_x]) {
+          //here x_2 == x_1
+          computed_distance = this.euclideanDist( x_1, y_1, x_1, y_2);
+          //console.log(computed_distance);
+          if(computed_distance < minimum_distance){
+            //console.log(false);
+            too_near = true;
+            break;
+          }
+        }
+
+        if(too_near)
+          return false;
+        
+        //check line parallel to x axes proximity
+        too_near=false;
+        rounded_y = this.round(y_1,n_decimal);
+        if(typeof this.drawed_points_y[rounded_y] === 'undefined') {
+            // does not exist
+            this.drawed_points_y[rounded_y] = Array();
+        }
+
+        // does exist
+        //check if near x exist
+        for ( let x_2 of this.drawed_points_y[rounded_y]) {
+          //here y_2 == y_1
+          computed_distance = this.euclideanDist( x_1, y_1, x_2, y_1);
+          //console.log(computed_distance);
+          if(computed_distance < minimum_distance){
+            //console.log(false);
+            too_near = true;
+            break;
+          }
+        }
+        
+        if(too_near)
+          return false;
+        //if I survive to previous condition.. ok let's draw the point
+        this.drawed_points_y[rounded_y].push(x_1);
+        this.drawed_points_x[rounded_x].push(y_1);
+        return true;
+    }
+
   /**
    * return the euclidean distance between two points.
    *
@@ -432,6 +466,31 @@ export default class Scatterplot extends View {
       return parseFloat(number).toFixed(n_decimal);
     }
 
+    // override
+    handleElemSelection(elems) {
+      try{ d3.event.stopPropagation() } catch {}
+      const manageElem = (e) => {
+        if (!this.selected_elems.includes(e)) {
+          // if it is not selected then select it
+          this.selected_elems.push(e)
+          try { d3.event.target.classList.add('selected') } catch {}
+        }
+      }
+  
+      // on empty selection deselect all
+      if(!elems) {
+        this.resetSelection();
+      } else if (elems.length >= 1) {
+        elems.forEach(e => manageElem(e));
+      } else {
+        this.resetSelection();
+        manageElem(elems);
+      }
+  
+      // call callback and give the selected elems (to the controller)
+      this.onElemSelection(this.selected_elems);
+    }
+
     get x_ax() {
         return this.x_axis;
     }
@@ -446,6 +505,15 @@ export default class Scatterplot extends View {
     
     set y_ax(val) {
         this.y_axis = val;
+    }
+
+    get data() {
+      return this._data;
+    }
+
+    set data(data) {
+      this._data = data;
+      if (this.svg) this.draw(true);
     }
 
 }
