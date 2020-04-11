@@ -16,7 +16,7 @@
   {
     "role_id":  "1",
     "role_name": "Goalkeepers",
-    "color": "fec44f",
+    "color": "#fec44f",
     "img_path": "/img/role_1.png",
     "role_scale": ["#ffffd4","#fee391","#fec44f","#fe9929","#ec7014","#cc4c02","#8c2d04"],
     "positions": ["GK"],
