@@ -483,3 +483,33 @@ body {
   text-align: center;
   color: grey;
 }
+
+#zoom-button {
+  margin:0 auto;
+  text-align:center;
+  height:50px;
+  opacity:20%;
+
+  img {
+    width: 28px;
+    height: auto;
+  }
+
+  span {
+    display: block;
+    font-size: 12px;
+    padding:5px;
+  }
+
+  #button-wrapper {
+    display: inline-block;
+  }
+}
+
+#zoom-button.enabled {
+  opacity:100%;
+
+  #button-wrapper {
+    cursor: pointer;
+  }
+}

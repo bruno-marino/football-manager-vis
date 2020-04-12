@@ -26,6 +26,7 @@ export default class Controller {
     this.scatterplot.bindElemSelection(this.onScatterSelection.bind(this));
     this.bubblechart.bindElemSelection(this.onBubbleSelection.bind(this));
 
+    this.zoom_button = document.querySelector('#zoom-button');
   }
   
   handleAddPlayer(player) {
@@ -93,6 +94,7 @@ export default class Controller {
       
       this.updateBarPlot([]);
       this.updateRadar(players);
+      this.zoom_button.classList.remove('enabled')
     } else {
       players = [];
       elems.forEach(elm => {
@@ -103,6 +105,7 @@ export default class Controller {
       this.updateRadar(players);
       this.radarchart.legend_label = "Selected players";
       this.highlightBubble(players);
+      this.zoom_button.classList.add('enabled');
     }
   }
 
@@ -133,6 +136,7 @@ export default class Controller {
       this.highlightScatter(players);
     }
     
+    this.zoom_button.classList.remove('enabled'); 
   }
 
   onRadarTypeChange(radar_type) {
@@ -208,6 +212,10 @@ export default class Controller {
 
   highlightScatter(players){
     this.scatterplot.highlight(players.map( p => p.uid ));
+  }
+
+  zoomBrush() {
+    this.scatterplot.zoomBrush();
   }
 
   get radar_type() {

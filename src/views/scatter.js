@@ -229,7 +229,7 @@ export default class Scatterplot extends View {
     update(dots) {
 
       if(!this.pca){
-        dots
+        dots.transition(300)
             .attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
             .attr("r", d => this.sizeScale(d.players_list.length))
@@ -239,7 +239,7 @@ export default class Scatterplot extends View {
       }else{
         dots.classed("bubble", false);
         
-        dots
+        dots.transition(300)
             .attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
             .attr("r", "3")
@@ -283,15 +283,25 @@ export default class Scatterplot extends View {
 
     endBrush() {
         let extent = d3.event.selection
-        // If no selection, back to initial coordinate. Otherwise, update X axis domain
+        // If no selection, back to initial coordinate. Otherwise, select players
         if(!extent){
-            //if (!this.idleTimeout) return this.idleTimeout = setTimeout(() => this.idled(), 350); // This allows to wait a little bit
-            //this.x.domain([ this.domain_start_x,this.domain_end_x])
-            //this.y.domain([ this.domain_start_y,this.domain_end_y])
-            if (d3.event.sourceEvent && 
-                d3.event.sourceEvent.type !== 'end' && 
-                d3.event.sourceEvent.type !==  'click')
-              this.handleElemSelection();
+          if (d3.event.sourceEvent && 
+            d3.event.sourceEvent.type !== 'end' && 
+            d3.event.sourceEvent.type !==  'click')
+            this.handleElemSelection();
+
+          if (!this.idleTimeout) return this.idleTimeout = setTimeout(() => this.idled(), 350); // This allows to wait a little bit
+          this.x.domain([ this.domain_start_x,this.domain_end_x])
+          this.y.domain([ this.domain_start_y,this.domain_end_y])
+
+          this.draw(true);
+          this.svg.select('g.x.axis').transition().duration(300).call(d3.axisBottom(this.x));
+          this.svg.select('g.y.axis').transition().duration(300).call(d3.axisLeft(this.y));
+          this.svg
+            .selectAll("circle")//.selectAll(".brush_selected")
+            .transition().duration(300)
+            .attr("cx", d => this.x(d.x) )
+            .attr("cy", d => this.y(d.y) )
         } else {
             this.resetSelection();
             //this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
@@ -489,6 +499,25 @@ export default class Scatterplot extends View {
   
       // call callback and give the selected elems (to the controller)
       this.onElemSelection(this.selected_elems);
+    }
+
+    zoomBrush() {
+      let point0 = this.svg.select('rect.handle--nw'); //north west
+      let point1 = this.svg.select('rect.handle--se'); //south east
+      
+      this.x.domain([ this.x.invert(point0.attr('x')), this.x.invert(point1.attr('x')) ]);
+      this.y.domain([ this.y.invert(point1.attr('y')), this.y.invert(point0.attr('y')) ]);
+
+      this.draw();
+      this.svg.select('g.x.axis').transition().duration(300).call(d3.axisBottom(this.x));
+      this.svg.select('g.y.axis').transition().duration(300).call(d3.axisLeft(this.y));
+      this.svg
+        .selectAll("circle")//.selectAll(".brush_selected")
+        .transition().duration(300)
+        .attr("cx", d => this.x(d.x) )
+        .attr("cy", d => this.y(d.y) )
+      
+      this.resetBrush();
     }
 
     get x_ax() {

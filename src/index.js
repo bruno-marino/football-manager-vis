@@ -172,4 +172,8 @@ window.addEventListener('click', function (e) {
 
 /* End select box code */
 
+let zoom_button = document.querySelector('#zoom-button');
+zoom_button.addEventListener('click', () => {
+  zoom_button.classList.contains('enabled') ? window.app.zoomBrush() : null;
+})
 /* end to be removed and put in assets*/
