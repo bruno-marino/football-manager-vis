@@ -173,8 +173,8 @@ export default class Scatterplot extends View {
 
         // sampling
         //need to check the two dimensions
-        this.drawed_points_x = {};
-        this.drawed_points_y = {};
+        this.drawed_points_x = [];
+        this.drawed_points_y = [];
         
         this.svg.select('#dots_area')
           .selectAll("circle")
@@ -398,17 +398,21 @@ export default class Scatterplot extends View {
         x_1 = this.x(d.x);
         y_1 = this.y(d.y);
 
-        //check line parallel to y axes proximity
         rounded_x = this.round(x_1,n_decimal);
         too_near=false;
-        if(typeof this.drawed_points_x[rounded_x] === 'undefined') {
+        //check if this role exist
+        if(typeof this.drawed_points_x[d.role] === 'undefined') {
+          this.drawed_points_x[d.role] = {};
+        }
+        //check line parallel to y axes proximity
+        if(typeof this.drawed_points_x[d.role][rounded_x] === 'undefined') {
             // does not exist
-            this.drawed_points_x[rounded_x] = Array();
+            this.drawed_points_x[d.role][rounded_x] = Array();
         }
 
         // does exist
         //check if near y exist
-        for (let y_2 of this.drawed_points_x[rounded_x]) {
+        for (let y_2 of this.drawed_points_x[d.role][rounded_x]) {
           //here x_2 == x_1
           computed_distance = this.euclideanDist( x_1, y_1, x_1, y_2);
           //console.log(computed_distance);
@@ -422,17 +426,22 @@ export default class Scatterplot extends View {
         if(too_near)
           return false;
         
-        //check line parallel to x axes proximity
+
         too_near=false;
         rounded_y = this.round(y_1,n_decimal);
-        if(typeof this.drawed_points_y[rounded_y] === 'undefined') {
+        //check if this role exist
+        if(typeof this.drawed_points_y[d.role] === 'undefined') {
+          this.drawed_points_y[d.role] = {};
+        }
+        //check line parallel to x axes proximity
+        if(typeof this.drawed_points_y[d.role][rounded_y] === 'undefined') {
             // does not exist
-            this.drawed_points_y[rounded_y] = Array();
+            this.drawed_points_y[d.role][rounded_y] = Array();
         }
 
         // does exist
         //check if near x exist
-        for ( let x_2 of this.drawed_points_y[rounded_y]) {
+        for ( let x_2 of this.drawed_points_y[d.role][rounded_y]) {
           //here y_2 == y_1
           computed_distance = this.euclideanDist( x_1, y_1, x_2, y_1);
           //console.log(computed_distance);
@@ -446,8 +455,8 @@ export default class Scatterplot extends View {
         if(too_near)
           return false;
         //if I survive to previous condition.. ok let's draw the point
-        this.drawed_points_y[rounded_y].push(x_1);
-        this.drawed_points_x[rounded_x].push(y_1);
+        this.drawed_points_y[d.role][rounded_y].push(x_1);
+        this.drawed_points_x[d.role][rounded_x].push(y_1);
         return true;
     }
 
