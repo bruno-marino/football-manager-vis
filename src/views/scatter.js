@@ -207,7 +207,7 @@ export default class Scatterplot extends View {
                   }else{
                     this.tooltip.html( "<b>"
                     + d.name +"</b>")
-                    .style("left", (d3.event.pageX) + "px")
+                    .style("left", (d3.event.pageX - 152) + "px")
                     .style("top", (d3.event.pageY -30) + "px");                
                   }
                 })
