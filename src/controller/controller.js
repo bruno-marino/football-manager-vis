@@ -145,6 +145,7 @@ export default class Controller {
 
     let players = [];
     let selected = this.bubblechart.selected_elems;
+    let scatter_selected = this.scatterplot.selected_elems;
     // if something is selected don't consider countries averages
     if (selected.length > 0) {
       if (selected[0].players_list) {
@@ -160,6 +161,12 @@ export default class Controller {
           players.push(this.model.players[this.model.playersById[elm.id]]);
         })
       }
+    }
+    else if (scatter_selected.length > 0) { 
+        // take players from individual ids
+        scatter_selected.forEach(elm => {
+          players.push(this.model.players[this.model.playersById[elm.id]]);
+        })
     } else {
       players = this.model.playersByCountries(countries)
     }
@@ -174,9 +181,13 @@ export default class Controller {
   }
 */
   updateRadar(players) {
+    //check how many players are selected
     this.radarSetOfSkills(this.radar_type, players).then(data => {
       this.radarchart.data = data;
     });
+
+    this.radarchart.players_number = players.length;
+    this.radarchart.updateColor();
   }
 
   updateBarPlot(players) {

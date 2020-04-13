@@ -18,6 +18,8 @@ export default class RadarChart extends View {
   init(container) {
     super.init(container);
 
+    this.players_number = 100;
+
     this.legend_label = "Selected countries";
 
     this.svg.append("g")
@@ -68,6 +70,9 @@ export default class RadarChart extends View {
   // draw axis + labels, legend, circles and area 
   draw() {
 
+
+    //console.log(this.data);
+
     //Update legend text
     d3.select('#radar-legend-color')
     .text(this.legend_label);
@@ -116,6 +121,10 @@ export default class RadarChart extends View {
         }
       )
 
+    let color = "#88419D";
+    if(this.players_number==1)
+      color = "#1f77b4";
+
     // draw circles
     this.svg.select("#circles_group")
       .selectAll(".node")
@@ -124,6 +133,7 @@ export default class RadarChart extends View {
         enter => {
           let nodes = enter.append("svg:circle")
             .attr("class", "node")
+            .attr("fill", color )
             .attr('r', this.cfg.radius)
             .on('mouseover', d => {
               this.showTooltip(d);
@@ -279,5 +289,23 @@ export default class RadarChart extends View {
     })
     
     return poly.join(' ');
+  }
+
+  updateColor(){
+    //console.log(this.players_number);
+
+    let color = "#88419D";
+    if(this.players_number == 1)
+      color = "#1F77B4";
+
+    this.svg.selectAll(".area")
+      .style("fill", color)
+      .style("stroke", color);
+    
+      this.svg.selectAll(".node")
+      .attr("fill", color);
+
+      d3.select(".radar-legend-square")
+      .style("background", color);
   }
 }
