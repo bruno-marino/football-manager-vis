@@ -5,7 +5,7 @@ export default function barplotSetOfSkills(players) {
         let results = [];
         let entry = {};
         let count = 0;
-        let attributes =  ['consistency','dirtiness','important_matches','injury_proness',
+        let attributes =  ['consistency','dirtiness',
           'versatility','adaptability','ambition','loyalty','pressure','professional',
           'sportsmanship','temperament','controversy'];
         
