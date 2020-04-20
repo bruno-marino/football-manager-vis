@@ -2,7 +2,7 @@ export default function countryStrengthPerRole() {
   let data = {};
   let total = {};
   this.model.players.forEach(player => {
-    if(player.hasRole(this.actualRole)) {
+    if(this.isValidPlayer(player)) {
       if (!data[player.country_code]) {
         data[player.country_code] = [];
       }

@@ -14,7 +14,7 @@ export default function radarSetOfSkills(skill_type, players) {
           count = 0;
 
           players.forEach(player => {
-            if(!player.hasRole(this.actualRole))
+            if(!this.isValidPlayer(player))
               return // equal to continue
             
             entry.value += parseInt(player[attribute]);

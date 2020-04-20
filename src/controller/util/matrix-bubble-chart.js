@@ -16,7 +16,7 @@ export default function matrixBubbleChart(x_axis, y_axis, players) {
           // otherwise consider selected countries
           players.forEach(player => {
             // if player has not the actual role then skip
-            if(!player.hasRole(this.actualRole))
+            if(!this.isValidPlayer(player))
               return // equal to continue
 
             y_i = parseInt(player[y_axis]);

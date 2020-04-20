@@ -64,14 +64,16 @@ class Model {
     this.onEntriesListChanged()
   }
 
-  playersByCountries(countries) {
+  playersByCountries(countries, isValid = () => true) {
     let result = [];
     countries.forEach(country_code => {
       if (!this.playersByCountry[country_code])
         return
       
       this.playersByCountry[country_code].forEach(player_uid => {
-        result.push(this.players[this.playersById[player_uid]]);
+        let p = this.players[this.playersById[player_uid]];
+        if (isValid(p))
+          result.push(p);
       })
     })
 

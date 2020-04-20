@@ -18,6 +18,7 @@ export default class Controller {
     this.rolesettings = rolesettings;
     this.radar_type = 'principal';
     this._role_id = '0';
+    this.ageRange = [10,50];
 
     // register callback function for model upddate events
     this.model.bindPlayersListChanged(this.onPlayersListChanged.bind(this));
@@ -57,7 +58,7 @@ export default class Controller {
   onAxisChange(x_axis, y_axis) {
 
     let countries = this.mapchart.selected_elems.map(country => country.id);
-    let players = this.model.playersByCountries(countries);
+    let players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
 
     this.updateRadar(players);
     this.bubblechart.resetBrush();
@@ -72,13 +73,13 @@ export default class Controller {
     this.bubblechart.resetBrush();
 
     countries = countries.map(country => country.id);
-    let players = this.model.playersByCountries(countries);
+    let players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
     
     this.radarchart.legend_label = "Selected countries";
     
     this.updateBarPlot([]);
     this.updateRadar(players);
-    this.updateScatter(players);
+    this.updateScatter(this.model.playersByCountries(countries, this.isInAgeRange.bind(this)));
     this.updateBubble(players);
   }
 
@@ -88,7 +89,7 @@ export default class Controller {
     let players = [];
     if ( elems.length == 0) {
       let countries = this.mapchart.selected_elems.map(country => country.id);
-      players = this.model.playersByCountries(countries);
+      players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
       
       this.radarchart.legend_label = "Selected countries";
       
@@ -115,7 +116,7 @@ export default class Controller {
     let players = [];
     if (bubbles.length == 0) {
       let countries = this.mapchart.selected_elems.map(country => country.id);
-      players = this.model.playersByCountries(countries);
+      players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
       
       this.radarchart.legend_label = "Selected countries";
       
@@ -168,7 +169,7 @@ export default class Controller {
           players.push(this.model.players[this.model.playersById[elm.id]]);
         })
     } else {
-      players = this.model.playersByCountries(countries)
+      players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this))
     }
     
     this.updateRadar(players);
@@ -227,6 +228,24 @@ export default class Controller {
 
   zoomBrush() {
     this.scatterplot.zoomBrush();
+  }
+
+  changeAgeRange(min, max) {
+    this.ageRange = [min, max];
+    console.log(this.countryStrengthPerRole());
+    this.mapchart.values = this.countryStrengthPerRole();
+    this.mapchart.changeRamp(this.actualRole.role_scale);
+    if (this.mapchart.selected_elems.length > 0)
+      this.onCountriesSelection(this.mapchart.selected_elems);
+  }
+
+  isValidPlayer(player) {
+    return player.hasRole(this.actualRole) && this.isInAgeRange(player);
+  }
+
+  isInAgeRange(player) {
+    return player.age >= this.ageRange[0] &&
+           player.age <= this.ageRange[1];
   }
 
   get radar_type() {
