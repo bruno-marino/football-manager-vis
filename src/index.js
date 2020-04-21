@@ -237,15 +237,13 @@ thumbs[1].addEventListener("mousedown", function(evt) {
   isDragging1 = true;
 }, false);
 container.addEventListener("mouseup", function(evt) {
-  isDragging0 = false;
-  isDragging1 = false;
+  if (isDragging0 || isDragging1) {
+    var theValue0 = inputsRy.theValue[0];
+    var theValue1 = inputsRy.theValue[1];
 
-  var theValue0 = inputsRy.theValue[0];
-  var theValue1 = inputsRy.theValue[1];
-
-  window.app.changeAgeRange(theValue0, theValue1);
-}, false);
-container.addEventListener("mouseout", function(evt) {
+    window.app.changeAgeRange(theValue0, theValue1);
+  }
+  
   isDragging0 = false;
   isDragging1 = false;
 }, false);
