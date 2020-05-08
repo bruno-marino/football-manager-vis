@@ -279,7 +279,7 @@ body {
   vertical-align:middle;
   line-height: 32px;
   margin-left: 10px;
-} 
+}
 
 
 /* Range bar */
@@ -321,7 +321,7 @@ body {
 }
 
 /*setting round corners to the range */ input[type="range"].round {
-  border-radius: 20px;  
+  border-radius: 20px;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
@@ -532,11 +532,11 @@ body {
     margin: 0px;
     cursor: pointer;
     /*width:200px;*/
-    
+
     padding-left: 30%;
     padding-right: 30%;
     /*height:6px;*/
-    
+
     background-color: #afafaf;
     border-radius: 10px;
     box-sizing: border-box;
@@ -551,7 +551,7 @@ body {
     border-color: white;
     border-style: solid;
     /*border-width:4px; width:16px; height:16px;*/
-    
+
     background-color: #305c91;
     background-color: rgba(100, 100, 100, 1);
     border-radius: 50%;
@@ -591,4 +591,26 @@ body {
     text-align: center;
 
   }
+}
+
+.loader {
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 0.7s linear infinite;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-40px,-40px);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#main {
+  visibility: hidden;
 }

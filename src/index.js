@@ -4,10 +4,6 @@ import app from './app';
 import * as d3 from "d3"
 app();
 
-/*
-to be removed and to be put in assets (maybe) or in another place
-*/
-
 const roles_settings = window.app.rolesettings;
 
 //Radar chart -Range selection
@@ -16,59 +12,12 @@ radar_type["1"] = "principal";
 radar_type["2"] = "physical";
 radar_type["3"] = "mental";
 
-d3.select('#range-type') 
+d3.select('#range-type')
   .on('change', function() {
     var value = eval(d3.select(this).property('value'));
     //radarchart.data = radarSetOfSkills(radar_type[value], countries, this.model.players);
     window.app.onRadarTypeChange(radar_type[value]);
 });
-/*
-d3.select("#pca_check").on("change", function(){
-  if(d3.select("#pca_check").property("checked")){
-    //window.app.scatterplot.pca = true;
-    //make select boxes unselectable
-    d3.select("#scatter-settings").selectAll(".custom-select-wrapper")
-    .classed("off", true);
-  }else{
-    //window.app.scatterplot.pca = false;
-    //make select boxes selectable
-    d3.select("#scatter-settings").selectAll(".custom-select-wrapper")
-    .classed("off", false);
-  }
-});
-
-
-//Update settings
-d3.select("#apply-settings").on("click", function () {
-
-  //console.log(d3.select("#first-x-axis > span").text());
-
-  if(d3.select("#pca_check").property("checked")){
-    //window.app.scatterplot.pca = true;
-    
-    window.app.onPcaActivation();
-
-  }else{
-    //window.app.scatterplot.pca = false;
-    //get x and y features and update scatterplot
-    //window.app.scatterplot.x_axis = d3.select("#first-x-axis > span").text();
-    //window.app.scatterplot.y_axis = d3.select("#first-y-axis > span").text();
-    window.app.onAxisChange(d3.select("#first-x-axis > span").text(), d3.select("#first-y-axis > span").text())
-  }
-  //Update scatterplot
-  //?????
-});*/
-
-//End Radar chart -Range selection
-
-/* Dinamically create select box color scale */
-
-/* sample to be injected
-<span class='custom-option selected' data-value='1'>
-<img class="role_img" src="/assets/img/role_1.png" height="24" width="24" alt="Goalkeepers">
-<span class="role_name_container">Goalkeepers</span>
-</span>
-*/
 var role_j = roles_settings[0];
 var created_content = "";
 
@@ -148,7 +97,7 @@ for (const option of document.querySelectorAll('.custom-option')) {
           this.parentNode.querySelector('.custom-option.selected').classList.remove('selected');
           this.classList.add('selected');
           this.closest('.custom-select').querySelector('.custom-select__trigger span').innerHTML = this.innerHTML;
-          //console.log(this.innerHTML);
+
           //change color scale in the map
           //Update map only if select of its view change
           graph_type = this.parentNode.parentNode.parentNode.parentNode.parentNode;
@@ -182,7 +131,7 @@ zoom_button.addEventListener('click', () => {
 var inputsRy = {
   sliderWidth: 300,
   minRange: 0,
-  maxRange: 60, 
+  maxRange: 60,
   outputWidth:30, // output width
   thumbWidth: 20, // thumb width
   thumbBorderWidth: 4,
@@ -211,7 +160,6 @@ var thumbs = document.querySelectorAll(".thumb");
 for (var i = 0; i < thumbs.length; i++) {
 
   thumbs[i].style.width = thumbs[i].style.height = inputsRy.thumbWidth + "px";
-  console.log(inputsRy.thumbWidth + "px");
   thumbs[i].style.borderWidth = inputsRy.thumbBorderWidth + "px";
   thumbs[i].style.top = -(inputsRy.thumbWidth / 2 + inputsRy.thumbBorderWidth - inputsRy.trackHeight / 2 - 4) + "px";
   thumbs[i].style.left = (inputsRy.theValue[i] - inputsRy.minRange) * rangeK - (thumbRealWidth / 2) + "px";
@@ -219,7 +167,6 @@ for (var i = 0; i < thumbs.length; i++) {
 }
 var outputs = document.querySelectorAll(".output");
 for (var i = 0; i < outputs.length; i++) {
-  console.log(thumbs[i])
   outputs[i].style.width = outputs[i].style.height = outputs[i].style.lineHeight = outputs[i].style.left = inputsRy.outputWidth + "px";
   outputs[i].style.top = -(Math.sqrt(2 * inputsRy.outputWidth * inputsRy.outputWidth) + inputsRy.thumbWidth / 2 - inputsRy.trackHeight / 2) + "px";
   outputs[i].style.left = (inputsRy.theValue[i] - inputsRy.minRange) * rangeK - inputsRy.outputWidth / 2 + "px";
@@ -243,7 +190,7 @@ container.addEventListener("mouseup", function(evt) {
 
     window.app.changeAgeRange(theValue0, theValue1);
   }
-  
+
   isDragging0 = false;
   isDragging1 = false;
 }, false);
@@ -289,5 +236,3 @@ function oMousePos(elmt, evt) {
     y: Math.round(evt.clientY - ClientRect.top)
   }
 }
-
-/* end to be removed and put in assets*/

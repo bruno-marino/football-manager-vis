@@ -7,19 +7,19 @@
 }
 .Country:hover {
   stroke-width: 2px;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
-div.tooltip {   
-  position: absolute;           
-  text-align: center;           
-  width: 150px;                                 
-  padding: 5px;             
-  font-size: 12px;     
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 150px;
+  padding: 5px;
+  font-size: 12px;
   background: #FFFFE0;
-  border: 1px;      
-  border-radius: 8px;           
-  pointer-events: none;         
+  border: 1px;
+  border-radius: 8px;
+  pointer-events: none;
 }
 
 #bar {
@@ -33,7 +33,7 @@ div.tooltip {
   }
 
   circle {
-    fill: rgb(21, 74, 153);    
+    fill: rgb(21, 74, 153);
   }
 }
 
@@ -63,7 +63,7 @@ div.tooltip {
     opacity: 0;
   }
 
-  
+
   .node{
     //fill: #88419D;// #1f77b4;
   }
@@ -91,13 +91,14 @@ div.tooltip {
   }
 
   circle.selected, circle.selected:hover {
-    stroke-width: 1px;
+    stroke-width: 2px;
+    stroke: black;
     opacity: 1;
   }
   circle.bubble:hover {
     stroke-width: 2px;
     opacity: 1;
-    cursor: pointer; 
+    cursor: pointer;
   }
   circle.brush_selected {
     opacity: 1 !important;

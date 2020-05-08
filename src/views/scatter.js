@@ -17,18 +17,18 @@ export default class Scatterplot extends View {
 
     }
 
-    init(container) {    
+    init(container) {
         super.init(container);
 
         this.pca_role = "0";
-        
+
         this.idleTimeout = null;
 
         this.domain_start_x = 0;
         this.domain_end_x = 20;
         this.domain_start_y = this.domain_start_x;
         this.domain_end_y = this.domain_end_x;
-        
+
         this.margin = {top: 10, right: 30, bottom: 60, left: 60};
         this.width_nomargin = this.width - this.margin.left - this.margin.right;
         this.height_nomargin = this.height - this.margin.top - this.margin.bottom;
@@ -45,8 +45,8 @@ export default class Scatterplot extends View {
         this.y = d3.scaleLinear()
             .range([ this.height_nomargin, 0]);
 
-        var x_bar = this.svg.append("g");    
-            
+        var x_bar = this.svg.append("g");
+
         var y_bar = this.svg.append("g");
 
         //setting axes label
@@ -56,27 +56,27 @@ export default class Scatterplot extends View {
             .attr('x', this.width_nomargin / 2)
             .attr('y', this.height - (this.margin.bottom/2))
             .style("fill", "#000000");
-        
+
         y_bar.append('text')
             .attr('id', 'axis-y-label')
             .attr('class', 'axis-label')
             .attr('x', -this.height_nomargin / 2)
             .attr('y', -this.margin.bottom / 2)
             .attr('transform', `rotate(-90)`)
-            .style("fill", "#000000") 
+            .style("fill", "#000000")
             .style('text-anchor', 'middle');
 
         this.svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + this.height_nomargin + ")")
-            .call(d3.axisBottom(this.x));          
-            
+            .call(d3.axisBottom(this.x));
+
         this.svg.append("g")
             .attr("class", "y axis")
             .call(d3.axisLeft(this.y));
 
-        this.tooltip = this.container.append("div")   
-            .attr("class", "tooltip")               
+        this.tooltip = this.container.append("div")
+            .attr("class", "tooltip")
             .style("opacity", 0);
 
         // Add brushing
@@ -99,14 +99,13 @@ export default class Scatterplot extends View {
           .attr("height", this.height_nomargin )
           .attr("x", 0)
           .attr("y", 0);
-        
-        
+
+
         this.domain_start_x = 0;
         this.domain_end_x = 20;
         this.domain_start_y = this.domain_start_x;
         this.domain_end_y = this.domain_end_x;
 
-        //console.log(this.data);
         this.draw();
     }
 
@@ -119,18 +118,18 @@ export default class Scatterplot extends View {
 
               this.domain_start_x = d3.min(arr_x);
               this.domain_end_x = d3.max(arr_x);
-              
+
               this.domain_start_y = d3.min(arr_y);
               this.domain_end_y = d3.max(arr_y);
             }
-          
+
             // update x axis labels
             this.x.domain([this.domain_start_x, this.domain_end_x])
             this.svg.select('g.x.axis')
                 .transition()
                 .duration(1000)
                 .call(d3.axisBottom().scale(this.x));
-            
+
             // update y axis labels
             this.y.domain([this.domain_start_y, this.domain_end_y])
             this.svg.select('g.y.axis')
@@ -159,7 +158,7 @@ export default class Scatterplot extends View {
             .domain([min, max])
             .range([1,16]);
         //+++ end compute a matrix to give points size +++//
-        
+
         //setting axes label
         this.svg.select('#axis-x-label')
             .transition()
@@ -169,13 +168,13 @@ export default class Scatterplot extends View {
         this.svg.select('#axis-y-label')
             .transition()
             .duration(1000)
-            .text(this.y_axis);  
+            .text(this.y_axis);
 
         // sampling
         //need to check the two dimensions
         this.drawed_points_x = [];
         this.drawed_points_y = [];
-        
+
         this.svg.select('#dots_area')
           .selectAll("circle")
           .remove();
@@ -187,14 +186,14 @@ export default class Scatterplot extends View {
             enter => {
               // active sampling based on flags
               enter = doSampling && this.pca ? enter.filter(d => this.sample(d)) : enter;
-              
+
               let circles = enter.append("circle")
                 .on("click", d => {
                   this.resetBrush();
                   this.resetSelection();
                   this.handleElemSelection(d);
                 });
-              
+
                 //ToolTip
                 circles.on("mouseover", d => {
                   this.tooltip.transition().duration(300)
@@ -208,7 +207,7 @@ export default class Scatterplot extends View {
                     this.tooltip.html( "<b>"
                     + d.name +"</b>")
                     .style("left", (d3.event.pageX - 152) + "px")
-                    .style("top", (d3.event.pageY -30) + "px");                
+                    .style("top", (d3.event.pageY -30) + "px");
                   }
                 })
                 .on("mouseout", () => {
@@ -238,35 +237,16 @@ export default class Scatterplot extends View {
             .attr("class", "bubble");
       }else{
         dots.classed("bubble", false);
-        
+
         dots.transition(300)
             .attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
             .attr("r", "3")
             .style("fill", d => rolesettings[d.role].color )
-            .style("opacity", d => (d.role == this.pca_role) || this.pca_role == 0 ? "0.8" : "0.2");       
+            .style("opacity", d => (d.role == this.pca_role) || this.pca_role == 0 ? "0.8" : "0.2");
       }
     }
-/*
-    updateBrush(){
-        let circles = this.svg.selectAll('circle');
-        //console.log(d3.event);
-        let extent = d3.event.selection
 
-        if(!extent && d3.event.sourceEvent.type === 'end') {
-          return
-        }
-
-        circles.classed("brush_selected", d => { 
-            if(!this.pca || this.pca_role == d.role || this.pca_role==0){
-                return this.isBrushed(extent,this.x(d.x), this.y(d.y) ) 
-            }else{
-                return false;
-            }
-        } )
-
-    }
-*/
     // A function that return TRUE or FALSE according if a dot is in the selection or not
     isBrushed(brush_coords, cx, cy) {
         if (!brush_coords) return false
@@ -275,18 +255,14 @@ export default class Scatterplot extends View {
         y0 = brush_coords[0][1],
         y1 = brush_coords[1][1];
         return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;    // This return TRUE or FALSE depending on if the points is in the selected area
-        return (
-            cx >= 0 && cx <= this.width_nomargin && 
-            cy >= 0 && cy <= this.height_nomargin
-        )
     }
 
     endBrush() {
         let extent = d3.event.selection
         // If no selection, back to initial coordinate. Otherwise, select players
         if(!extent){
-          if (d3.event.sourceEvent && 
-            d3.event.sourceEvent.type !== 'end' && 
+          if (d3.event.sourceEvent &&
+            d3.event.sourceEvent.type !== 'end' &&
             d3.event.sourceEvent.type !==  'click')
             this.handleElemSelection();
 
@@ -307,7 +283,7 @@ export default class Scatterplot extends View {
             //this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
             //this.y.domain([ this.y.invert(extent[1][1]), this.y.invert(extent[0][1]) ])
             //this.svg.select('#brush').call(this.brush.move, null); // This remove the grey brush area as soon as the selection has been done
-            
+
             // select all the players from data, not only those visible
             let dots = this.data.filter(d => {
               if(!this.pca || this.pca_role == d.role || this.pca_role==0){
@@ -316,7 +292,7 @@ export default class Scatterplot extends View {
                 return false
               }
             })
-            
+
             // apply class to visible players
             this.svg.selectAll('circle')
               .classed('brush_selected',  d => {
@@ -339,7 +315,7 @@ export default class Scatterplot extends View {
           .transition().duration(1000)
           .attr("cx", d => this.x(d.x) )
           .attr("cy", d => this.y(d.y) )
-        */        
+        */
     }
 
     resetSelection() {
@@ -371,7 +347,7 @@ export default class Scatterplot extends View {
             .data(highlighted_data, d => d.id)
             .classed("selected", true);
           */
-          
+
           this.svg.selectAll("circle")
             .filter( d => highlighted_data.includes(d.id))
             .classed("selected",true)
@@ -415,9 +391,9 @@ export default class Scatterplot extends View {
         for (let y_2 of this.drawed_points_x[d.role][rounded_x]) {
           //here x_2 == x_1
           computed_distance = this.euclideanDist( x_1, y_1, x_1, y_2);
-          //console.log(computed_distance);
+
           if(computed_distance < minimum_distance){
-            //console.log(false);
+
             too_near = true;
             break;
           }
@@ -425,7 +401,7 @@ export default class Scatterplot extends View {
 
         if(too_near)
           return false;
-        
+
 
         too_near=false;
         rounded_y = this.round(y_1,n_decimal);
@@ -444,14 +420,14 @@ export default class Scatterplot extends View {
         for ( let x_2 of this.drawed_points_y[d.role][rounded_y]) {
           //here y_2 == y_1
           computed_distance = this.euclideanDist( x_1, y_1, x_2, y_1);
-          //console.log(computed_distance);
+
           if(computed_distance < minimum_distance){
-            //console.log(false);
+
             too_near = true;
             break;
           }
         }
-        
+
         if(too_near)
           return false;
         //if I survive to previous condition.. ok let's draw the point
@@ -470,15 +446,15 @@ export default class Scatterplot extends View {
    * @return {number} 		distance between given points
    */
     euclideanDist( x1, y1, x2, y2 ){
-	
+
         var 	xs = x2 - x1,
-          ys = y2 - y1;		
-        
+          ys = y2 - y1;
+
         xs *= xs;
         ys *= ys;
-         
+
         return Math.sqrt( xs + ys );
- 
+
     }
 
     round(number, n_decimal){
@@ -495,7 +471,7 @@ export default class Scatterplot extends View {
           try { d3.event.target.classList.add('selected') } catch {}
         }
       }
-  
+
       // on empty selection deselect all
       if(!elems) {
         this.resetSelection();
@@ -505,7 +481,7 @@ export default class Scatterplot extends View {
         this.resetSelection();
         manageElem(elems);
       }
-  
+
       // call callback and give the selected elems (to the controller)
       this.onElemSelection(this.selected_elems);
     }
@@ -513,7 +489,7 @@ export default class Scatterplot extends View {
     zoomBrush() {
       let point0 = this.svg.select('rect.handle--nw'); //north west
       let point1 = this.svg.select('rect.handle--se'); //south east
-      
+
       this.x.domain([ this.x.invert(point0.attr('x')), this.x.invert(point1.attr('x')) ]);
       this.y.domain([ this.y.invert(point1.attr('y')), this.y.invert(point0.attr('y')) ]);
 
@@ -525,14 +501,14 @@ export default class Scatterplot extends View {
         .transition().duration(300)
         .attr("cx", d => this.x(d.x) )
         .attr("cy", d => this.y(d.y) )
-      
+
       this.resetBrush();
     }
 
     get x_ax() {
         return this.x_axis;
     }
-    
+
     set x_ax(val) {
         this.x_axis = val;
     }
@@ -540,7 +516,7 @@ export default class Scatterplot extends View {
     get y_ax() {
         return this.y_axis;
     }
-    
+
     set y_ax(val) {
         this.y_axis = val;
     }

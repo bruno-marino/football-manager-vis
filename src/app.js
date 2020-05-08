@@ -8,13 +8,15 @@ const app = function() {
 
   loadData().then(() => {
     const mapchartContainer = d3.select('#map');
-    
+
     controller.mapchart.init(mapchartContainer);
     controller.onRoleChange(0);
     controller.barplot.init(d3.select('#bar'));
     controller.radarchart.init(d3.select('#radar'));
     controller.scatterplot.init(d3.select('#scatter'));
     controller.bubblechart.init(d3.select('#bubble'));
+    document.querySelector('.loader').style.display = 'none';
+    document.querySelector('#main').style.visibility = 'visible';
   });
 }
 
@@ -25,7 +27,7 @@ const loadData = function() {
         d3.json("./assets/world.geojson"),
         d3.csv("./assets/dataset.csv"),
       ];
-      
+
       Promise.all(promises).then(loaded_data => {
         loaded_data[0].features.forEach(country => {
           country.id === 'ATA' ? null : controller.handleAddCountry(country);

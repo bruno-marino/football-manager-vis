@@ -8,18 +8,18 @@ export default class MapChart extends View{
     this._values = [];
   }
 
-  init(container) {    
+  init(container) {
     super.init(container);
 
-    this.svg.append("g");   
+    this.svg.append("g");
 
     this.projection = d3.geoMercator()
       .center([0,45])
       .translate([this.width /2, this.height /2])
       .scale((this.height / (2 * Math.PI))*1.5);
 
-    this.tooltip = d3.select("body").append("div")   
-    .attr("class", "tooltip")               
+    this.tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
     .style("opacity", 0);
 
     this.draw();
@@ -38,11 +38,11 @@ export default class MapChart extends View{
           .attr("d", d3.geoPath()
             .projection(this.projection)
           )
-          .style("vector-effect", "non-scaling-stroke") 
+          .style("vector-effect", "non-scaling-stroke")
           .attr("class", "Country")
 
           //ToolTip
-          
+
           .on("mouseover", d => {
             this.tooltip.transition().duration(300)
             .style("opacity", 1)
@@ -67,22 +67,22 @@ export default class MapChart extends View{
           .transition()
           .duration(650)
           .remove()
-      ) 
+      )
   }
 
   changeRamp(range) {
     let domain = this.calcDomain()
     /*
-    
+
     OPTION 1 FOR COLOR: scaleThreshold
     manually specify domain and range
-    
-    
+
+
     */
     this.colorScale = d3.scaleThreshold()
       /*
       domain specify wich color use for the range
-      in the following: 
+      in the following:
       - till 100000 -> rgb(237,248,251)
       - from 100000 to 1000000 -> rgb(204,236,230)
       - ....
@@ -106,7 +106,7 @@ export default class MapChart extends View{
 
   legend(domain,range){
 
-    let domain_clone = domain.slice() 
+    let domain_clone = domain.slice()
 
     for (let i = 0; i < domain_clone.length; i++) {
       domain_clone[i] = "< " + parseFloat(domain_clone[i]).toFixed(2)
@@ -153,7 +153,7 @@ export default class MapChart extends View{
         .text(function(d){ return d})
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle")
-  
+
   }
 
   calcDomain(){
@@ -161,11 +161,11 @@ export default class MapChart extends View{
     for(let country in this.values ){
       arr.push(this.values[country])
     }
-    
+
     //compute the first usefull percentile
     let integer = true;
     var firstChunk = arr.length/7;
-    
+
     if(!Number.isInteger(firstChunk)){
       firstChunk = Math.round(firstChunk);
       integer = false;
@@ -174,20 +174,20 @@ export default class MapChart extends View{
     var domain = new Array();
     //sort the array of data
     arr.sort((a, b) => a - b);
-    //console.log(arr)
+
     let domain_value = 0;
     let domain_index = 0;
-  
+
     for (var i = 1; i < 7; i++) {
       domain_index = firstChunk * i;
-      if(integer){        
+      if(integer){
         domain_value = (arr[domain_index] + arr[domain_index + 1])/2
       }else{
         domain_value = arr[domain_index];
       }
       domain.push(domain_value);
     }
-    //console.log(domain)
+
     return domain; //return an array of six values
   }
 

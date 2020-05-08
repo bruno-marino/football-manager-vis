@@ -15,8 +15,6 @@ export default function pcaScatterplotMatrix(players) {
           player.x = new_data.adjustedData[0][i];
           player.y = new_data.adjustedData[1][i];
         });
-        
-        console.log(result);
         resolve(result);
       }, 0);
 
@@ -24,10 +22,10 @@ export default function pcaScatterplotMatrix(players) {
       function getPlayersMatrix(players, attributes) {
         let matrix = [];
         let matrix_row = [];
-            
+
         players.forEach(player => {
           matrix_row = [];
-          
+
           // init result entries
           result.push({
             id : player.uid,
@@ -35,21 +33,21 @@ export default function pcaScatterplotMatrix(players) {
             x : 0,
             y: 0,
           })
-          
+
           for (const [key, value] of Object.entries(attributes)) {
             value.forEach(attribute => {
               matrix_row.push( parseInt(player[attribute]) );
             })
           }
-    
+
           matrix.push(matrix_row);
         })
-        
+
         return matrix;
       }
 
     } catch(error) { reject(error); }
   });
 
-  
+
 }

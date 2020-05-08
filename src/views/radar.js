@@ -11,7 +11,7 @@ export default class RadarChart extends View {
       maxValue: 20,
       ToRight: 5,
       margin_y: 20,
-    };   
+    };
     this.axis_scale = d3.scaleLinear();
   }
 
@@ -24,11 +24,11 @@ export default class RadarChart extends View {
 
     this.svg.append("g")
       //.attr("transform", "translate(" + this.cfg.TranslateX + "," + this.cfg.TranslateY + ")");
-    
+
     // add level circles
     var fill_color = ["#c87572","#e3bf6b","#eee9a6","#cadd9e","#9eb36f"]
     for (var j = this.cfg.levels -1; j >= 0; j--) {
-      
+
       var levelFactor = (this.height * ((j + 1) / this.cfg.levels))/2 - this.cfg.margin_y;
       var fillc = fill_color[j];
       this.svg.select('g')
@@ -38,7 +38,7 @@ export default class RadarChart extends View {
         .attr("cy", this.height / 2)
         .attr("fill", fillc)
         .attr("stroke", "gray")
-        .attr("r", levelFactor)        
+        .attr("r", levelFactor)
         //.attr("transform", "translate(" + (cfg.w / 2 - levelFactor) + ", " + (cfg.h / 2 - levelFactor) + ")");
     }
 
@@ -59,20 +59,16 @@ export default class RadarChart extends View {
 
     //Tooltip
     this.tooltip = this.container
-      .append("div")   
-      .attr("class", "tooltip")               
+      .append("div")
+      .attr("class", "tooltip")
       .style("opacity", 0);
 
     this.axis_scale.domain([0, 20]);
     this.axis_scale.range([0, this.height / 2 - this.cfg.margin_y]);
   }
 
-  // draw axis + labels, legend, circles and area 
+  // draw axis + labels, legend, circles and area
   draw() {
-
-
-    //console.log(this.data);
-
     //Update legend text
     d3.select('#radar-legend-color')
     .text(this.legend_label);
@@ -88,7 +84,7 @@ export default class RadarChart extends View {
             .attr("class", "axis" )
             .on('mouseover', d => this.showTooltip(d))
             .on('mouseout', () => this.hideTooltip());
-          
+
           axis.append("line")
             .attr("class", "line");
 
@@ -112,7 +108,7 @@ export default class RadarChart extends View {
         enter => {
           let area = enter.append("polygon")
             .attr("class", "area")
-          
+
           this.update(area, 'area')
         },
         update => {
@@ -165,7 +161,7 @@ export default class RadarChart extends View {
     switch(type) {
       case 'axis':
         let radius = this.height / 2 - this.cfg.margin_y;
-        
+
         elems.selectAll('.line')
           .attr("x1", this.width / 2)
           .attr("y1", this.height / 2)
@@ -177,7 +173,7 @@ export default class RadarChart extends View {
             let i = this.getDatumIndex(d);
             return this.projectOnY(radius, i);
           });
-        
+
         let i = 0;
         let label_position = radius + 15;
         elems.selectAll('.axis_legend')
@@ -196,7 +192,7 @@ export default class RadarChart extends View {
             let x_coordinate = this.projectOnX(label_position, i)
             if (x_coordinate == this.width / 2 ) {
               return 'middle';
-            } else if (x_coordinate > this.width / 2 ) { 
+            } else if (x_coordinate > this.width / 2 ) {
               return 'start';
             } else {
               return 'end';
@@ -241,12 +237,12 @@ export default class RadarChart extends View {
 
   projectOnX(value, i) {
     /**
-     * projection on X axis = r * cos(alfa) 
+     * projection on X axis = r * cos(alfa)
      * our alfa is i times angle
      * our r is value
-     * 
+     *
      * this.width / 2 is the center of the circle
-     * 
+     *
      * this if we start from 0 radians, we want to start from pi/2 instead.
      * this is actually the same as using the sin
     **/
@@ -256,12 +252,12 @@ export default class RadarChart extends View {
 
   projectOnY(value, i) {
     /**
-     * projection on Y axis = r * sin(alfa) 
+     * projection on Y axis = r * sin(alfa)
      * our alfa is i times angle
      * our r is value
-     * 
+     *
      * this.height / 2 is the center of the circle
-     * 
+     *
      * this if we start from 0 radians, we want to start from pi/2 instead.
     **/
     let alfa = (i * this.angle) + Math.PI / 2
@@ -287,13 +283,11 @@ export default class RadarChart extends View {
       let y = this.projectOnY(value_on_axis, i);
       poly.push([x,y].join(','));
     })
-    
+
     return poly.join(' ');
   }
 
   updateColor(){
-    //console.log(this.players_number);
-
     let color = "#88419D";
     if(this.players_number == 1)
       color = "#1F77B4";
@@ -301,7 +295,7 @@ export default class RadarChart extends View {
     this.svg.selectAll(".area")
       .style("fill", color)
       .style("stroke", color);
-    
+
       this.svg.selectAll(".node")
       .attr("fill", color);
 

@@ -29,7 +29,7 @@ export default class Controller {
 
     this.zoom_button = document.querySelector('#zoom-button');
   }
-  
+
   handleAddPlayer(player) {
     this.model.addPlayer(player);
   }
@@ -74,9 +74,9 @@ export default class Controller {
 
     countries = countries.map(country => country.id);
     let players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
-    
+
     this.radarchart.legend_label = "Selected countries";
-    
+
     this.updateBarPlot([]);
     this.updateRadar(players);
     this.updateScatter(this.model.playersByCountries(countries, this.isInAgeRange.bind(this)));
@@ -90,9 +90,9 @@ export default class Controller {
     if ( elems.length == 0) {
       let countries = this.mapchart.selected_elems.map(country => country.id);
       players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
-      
+
       this.radarchart.legend_label = "Selected countries";
-      
+
       this.updateBarPlot([]);
       this.updateRadar(players);
       this.zoom_button.classList.remove('enabled')
@@ -117,9 +117,9 @@ export default class Controller {
     if (bubbles.length == 0) {
       let countries = this.mapchart.selected_elems.map(country => country.id);
       players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
-      
+
       this.radarchart.legend_label = "Selected countries";
-      
+
       this.updateBarPlot([]);
       this.updateRadar(players);
 
@@ -132,12 +132,12 @@ export default class Controller {
       });
 
       this.updateRadar(players);
-      this.updateBarPlot(players); 
+      this.updateBarPlot(players);
       this.radarchart.legend_label = "Selected players";
       this.highlightScatter(players);
     }
-    
-    this.zoom_button.classList.remove('enabled'); 
+
+    this.zoom_button.classList.remove('enabled');
   }
 
   onRadarTypeChange(radar_type) {
@@ -163,7 +163,7 @@ export default class Controller {
         })
       }
     }
-    else if (scatter_selected.length > 0) { 
+    else if (scatter_selected.length > 0) {
         // take players from individual ids
         scatter_selected.forEach(elm => {
           players.push(this.model.players[this.model.playersById[elm.id]]);
@@ -171,7 +171,7 @@ export default class Controller {
     } else {
       players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this))
     }
-    
+
     this.updateRadar(players);
   }
 
@@ -204,7 +204,7 @@ export default class Controller {
     this.matrixBubbleChart(this.bubblechart.x_axis, this.bubblechart.y_axis, players).then(data => {
       this.bubblechart.data = data;
     })
-    
+
   }
 
   updateScatter(players) {
@@ -232,7 +232,6 @@ export default class Controller {
 
   changeAgeRange(min, max) {
     this.ageRange = [min, max];
-    console.log(this.countryStrengthPerRole());
     this.mapchart.values = this.countryStrengthPerRole();
     this.mapchart.changeRamp(this.actualRole.role_scale);
     if (this.mapchart.selected_elems.length > 0)

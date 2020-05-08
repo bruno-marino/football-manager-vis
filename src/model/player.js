@@ -33,14 +33,14 @@ export default class Player {
       result += this[attr];
     });
 
-    
+
     rolesettings[1].attributes.negative.forEach(attr => {
       result += (1 - this[attr]);
     });
-    
+
     let num_attr = rolesettings[1].attributes.principal.length +
                    rolesettings[1].attributes.negative.length;
-    
+
     let final_result = 0;
     if(result!=0){
       final_result = result / num_attr;
@@ -66,43 +66,27 @@ export default class Player {
   }
 
   computeAvgRoleSkill(role) {
-
-    //console.log(rolesettings[role]);
-    //if(role.role_id=="1")
-      //return this.computeAvgGkSkill();
-
     let result = 0;
     role.attributes.principal.forEach(attr => {
-      if(!this[attr]) console.log(attr)
+      if(!this[attr]) return
       result += parseInt(this[attr]);
     })
 
     role.attributes.mental.forEach(attr => {
-      if(!this[attr]) console.log(attr)
+      if(!this[attr]) return
       result += parseInt(this[attr]);
     })
 
     role.attributes.physical.forEach(attr => {
-      if(!this[attr]) console.log(attr)
+      if(!this[attr]) return
       result += parseInt(this[attr]);
     })
 
-    let num_attr = 
+    let num_attr =
       role.attributes.principal.length +
       role.attributes.mental.length +
       role.attributes.physical.length;
-    /*
-    let invalid_attr = [
-      "uid","positions_desc","name","height","weight","nation_id","age","born","country_code"
-    ];
-    let num_attr = 0;
-    Object.keys(this).forEach(attr => {
-      if (!invalid_attr.includes(attr)) {
-        result += parseInt(this[attr]);
-        num_attr++;
-      }
-    })
-    */
+
    let final_result = 0;
    if(result!=0){
       final_result = result / num_attr;
@@ -130,10 +114,10 @@ export default class Player {
     let id_max = 0;
 
     //get id having max skill value
-    role_points.forEach(row => {     
+    role_points.forEach(row => {
       if(row.value > role_points[id_max].value){
         id_max = row.role_id;
-      }      
+      }
     })
 
     return id_max;
