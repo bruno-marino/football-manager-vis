@@ -21,7 +21,7 @@ d3.select('#range-type')
 var role_j = roles_settings[0];
 var created_content = "";
 
-created_content = "<img class='role_img' src='/assets/" + role_j.img_path + "' height='24' width='24' alt='" + role_j.role_name + "'>";
+created_content = "<img class='role_img' src='assets/" + role_j.img_path + "' height='24' width='24' alt='" + role_j.role_name + "'>";
 created_content = created_content + "<span class='role_name_container'>" + role_j.role_name + "</span>";
 document.getElementById("first-scale").innerHTML = created_content;
 
@@ -35,7 +35,7 @@ for(var j = 0; j <= 4; j++){
     created_content = created_content + "<span class='custom-option' data-value='" + j + "'>";
   }
 
-  created_content = created_content + "<img class='role_img' src='/assets/" + role_j.img_path + "' height='24' width='24' alt='" + role_j.role_name + "'>";
+  created_content = created_content + "<img class='role_img' src='assets/" + role_j.img_path + "' height='24' width='24' alt='" + role_j.role_name + "'>";
   created_content = created_content + "<span class='role_name_container'>" + role_j.role_name + "</span>";
   created_content = created_content + "</span>";
 }
