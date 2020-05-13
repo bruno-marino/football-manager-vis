@@ -116,8 +116,8 @@ export default class MapChart extends View{
 
     this.svg.append("rect")
         .attr("class","legend-container")
-        .attr("x", 95)
-        .attr("y", 75) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("x", 5)//95
+        .attr("y", 235)//75 // 100 is where the first dot appears. 25 is the distance between dots
         .attr("width", 90)
         .attr("height", 200)
         .style("fill", "#ffffff")
@@ -126,8 +126,8 @@ export default class MapChart extends View{
         .text("Strenght");
 
       this.svg.append("text")
-        .attr("x", 100)
-        .attr("y", 90)
+        .attr("x", 15)//100
+        .attr("y", 255)//90
         .text("Strenght");
 
     // Add one dot in the legend for each name.
@@ -136,8 +136,8 @@ export default class MapChart extends View{
       .data(range)
       .enter()
       .append("rect")
-        .attr("x", 100)
-        .attr("y", function(d,i){ return 100 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("x", 15)//100
+        .attr("y", function(d,i){ return 260 + i*(size+5)}) // 100(now 260) is where the first dot appears. 25 is the distance between dots
         .attr("width", size)
         .attr("height", size)
         .style("fill", function(d, i){ return range[i] })
@@ -147,8 +147,8 @@ export default class MapChart extends View{
       .data(domain_clone)
       .enter()
       .append("text")
-        .attr("x", 100 + size*1.2)
-        .attr("y", function(d,i){ return 100 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("x", 15 + size*1.2)//100 now 15
+        .attr("y", function(d,i){ return 260 + i*(size+5) + (size/2)}) // 100 (now 260) is where the first dot appears. 25 is the distance between dots
         .style("fill", function(d){ return domain_clone[d.id] })
         .text(function(d){ return d})
         .attr("text-anchor", "left")
