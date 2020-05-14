@@ -161,6 +161,17 @@ input:checked + .slidermode:before {
   justify-content: center;
 }
 
+#scatter-settings {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#sampling-slider-wrapper {
+  width: 50%;
+}
+
 .col-one-quarter{
   width: 50%;
 
@@ -600,6 +611,7 @@ input:checked + .slidermode:before {
   position: relative;
   top: 20px;
   text-align: center;
+  margin: 0 20px;
 
   .slider {
     pointer-events: none;
