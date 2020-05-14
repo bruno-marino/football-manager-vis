@@ -611,7 +611,7 @@ input:checked + .slidermode:before {
   position: relative;
   top: 20px;
   text-align: center;
-  margin: 0 20px;
+
 
   .slider {
     pointer-events: none;
@@ -673,7 +673,6 @@ input:checked + .slidermode:before {
   .output p {
     pointer-events: none;
     font-size: 14px;
-    color: #0a1a17;
     text-align: center;
 
   }
