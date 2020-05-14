@@ -101,7 +101,7 @@ for (const option of document.querySelectorAll('.custom-option')) {
           //change color scale in the map
           //Update map only if select of its view change
           graph_type = this.parentNode.parentNode.parentNode.parentNode.parentNode;
-          if(graph_type.id=="top-bar"){
+          if(graph_type.id=="age-and-role"){
             window.app.onRoleChange(parseInt(this.getAttribute('data-value')));
           }else{
             //Update Bubblechart axis
@@ -129,7 +129,7 @@ zoom_button.addEventListener('click', () => {
 
 // slider code
 var inputsRy = {
-  sliderWidth: 300,
+  sliderWidth: 200,
   minRange: 0,
   maxRange: 60,
   outputWidth:30, // output width

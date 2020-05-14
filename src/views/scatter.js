@@ -81,7 +81,7 @@ export default class Scatterplot extends View {
 
         // Add brushing
         this.brush = d3.brush()  // Add the brush feature using the d3.brush function
-            .extent( [ [0,0], [this.width,this.height] ] ) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+            .extent( [ [0,0], [this.width_nomargin,this.height_nomargin] ] ) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
             //.on("start brush", this.updateBrush.bind(this)) // Each time the brush selection changes, trigger the 'updateChart' function
             .on("end", this.endBrush.bind(this));
 

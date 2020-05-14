@@ -13,7 +13,7 @@ export default class View {
   }
 
   // insert svg in container and init zoom
-  init(container) {    
+  init(container) {
     this.container = container || this.container;
     this.svg = this.container.append("svg")
       .attr("width",this.width)
@@ -25,13 +25,13 @@ export default class View {
         .on("zoom", this.zoomed.bind(this));
 
       this.svg.call(this.zoom);
-    }  
+    }
   }
 
   draw() {}
 
   reset() {
-    if (!this.zoom_active) return 
+    if (!this.zoom_active) return
 
     this.svg.transition().duration(750).call(
       this.zoom.transform,
@@ -39,9 +39,9 @@ export default class View {
       d3.zoomTransform(this.svg.node()).invert([this.width / 2, this.height / 2])
     );
   }
-  
+
   zoomed() {
-    if (!this.zoom_active) return 
+    if (!this.zoom_active) return
 
     const {transform} = d3.event;
     this.svg.select("g").attr("transform", transform);
@@ -89,7 +89,7 @@ export default class View {
   get width() {
     return this.container.node().getBoundingClientRect().width;
   }
-  
+
   get height() {
     return this.container.node().getBoundingClientRect().height;
   }
@@ -101,7 +101,7 @@ export default class View {
   set selected_elems(elems) {
     this._selected_elems = elems;
   }
-  
+
   get data() {
     return this._data;
   }
