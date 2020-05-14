@@ -114,7 +114,13 @@ export default class MapChart extends View{
 
     domain_clone.push("> " + parseFloat(domain[domain.length - 1]).toFixed(2))
 
-    this.svg.append("rect")
+    //remove precedent legend
+    this.svg.select(".map-legend-container").remove();
+    //add new legend area
+    let rectarea = this.svg.append("g")
+    .attr("class","map-legend-container");
+
+    rectarea.append("rect")
         .attr("class","legend-container")
         .attr("x", 5)//95
         .attr("y", this.height - 200)//75 // 100 is where the first dot appears. 25 is the distance between dots
@@ -122,17 +128,16 @@ export default class MapChart extends View{
         .attr("height", 200)
         .style("fill", "#ffffff")
         .style("stroke", "#000000")
-        .style("stroke-width", "1")
-        .text("Strenght");
+        .style("stroke-width", "1");
 
-      this.svg.append("text")
+    rectarea.append("text")
         .attr("x", 15)//100
         .attr("y", this.height - 185)//90
         .text("Strenght");
 
     // Add one dot in the legend for each name.
     var size = 20
-    this.svg.selectAll("mydots")
+    rectarea.selectAll("mydots")
       .data(range)
       .enter()
       .append("rect")
@@ -143,7 +148,7 @@ export default class MapChart extends View{
         .style("fill", function(d, i){ return range[i] })
 
     // Add one dot in the legend for each name.
-    this.svg.selectAll("mylabels")
+    rectarea.selectAll("mylabels")
       .data(domain_clone)
       .enter()
       .append("text")
