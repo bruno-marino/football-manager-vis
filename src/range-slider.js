@@ -27,7 +27,7 @@ export default function slider(container, options) {
   let t1 = createElement('div', ['thumb', 't1']);
   createElement('p', []).innerHTML = options.label
 
-  if ( options.theValue && !Array.isArray(inputsRy.theValue)) {
+  if (!Array.isArray(inputsRy.theValue)) {
     o0.style.display = 'none';
     t0.style.display = 'none';
     inputsRy.theValue = [0, inputsRy.theValue];
@@ -98,7 +98,7 @@ export default function slider(container, options) {
       if (theValue0 < theValue1 - inputsRy.thumbGap &&
         theValue0 >= inputsRy.minRange) {
         inputsRy.theValue[0] = theValue0;
-        thumbs[0].style.left = (theValue0 - inputsRy.minRange) * rangeK - (thumbRealWidth / 2) + "px";
+        thumbs[0].style.left = (theValue0 - inputsRy.minRange) * rangeK - (thumbRealWidth / 2 - 4) + "px";//added -4
         outputs[0].style.left = (theValue0 - inputsRy.minRange) * rangeK - inputsRy.outputWidth / 2 + "px";
         outputs[0].innerHTML = "<p>" + theValue0 + "</p>";
         slider.style.paddingLeft = (theValue0 - inputsRy.minRange) * rangeK + "px";
@@ -110,7 +110,7 @@ export default function slider(container, options) {
       if (theValue1 > theValue0 + inputsRy.thumbGap &&
         theValue1 <= inputsRy.maxRange) {
         inputsRy.theValue[1] = theValue1;
-        thumbs[1].style.left = (theValue1 - inputsRy.minRange) * rangeK - (thumbRealWidth / 2) + "px";
+        thumbs[1].style.left = (theValue1 - inputsRy.minRange) * rangeK - (thumbRealWidth / 2 - 4) + "px";//added -4
         outputs[1].style.left = (theValue1 - inputsRy.minRange) * rangeK - inputsRy.outputWidth / 2 + "px";
         outputs[1].innerHTML = "<p>" + theValue1 + "</p>";
         slider.style.paddingRight = (inputsRy.maxRange - theValue1) * rangeK + "px";
