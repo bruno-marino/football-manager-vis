@@ -238,6 +238,11 @@ export default class Controller {
       this.onCountriesSelection(this.mapchart.selected_elems);
   }
 
+  changeSamplingRate(rate) {
+    this.scatterplot.minimum_distance = rate;
+    this.scatterplot.draw(true)
+  }
+
   isValidPlayer(player) {
     return player.hasRole(this.actualRole) && this.isInAgeRange(player);
   }

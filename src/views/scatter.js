@@ -15,6 +15,7 @@ export default class Scatterplot extends View {
         this.y_axis = "";
       }
 
+      this.minimum_distance = 100;
     }
 
     init(container) {
@@ -29,7 +30,7 @@ export default class Scatterplot extends View {
         this.domain_start_y = this.domain_start_x;
         this.domain_end_y = this.domain_end_x;
 
-        this.margin = {top: 10, right: 30, bottom: 60, left: 60};
+        this.margin = {top: 10, right: 30, bottom: 40, left: 60};
         this.width_nomargin = this.width - this.margin.left - this.margin.right;
         this.height_nomargin = this.height - this.margin.top - this.margin.bottom;
         let real_svg = this.svg;
@@ -54,7 +55,7 @@ export default class Scatterplot extends View {
             .attr('id', 'axis-x-label')
             .attr('class', 'axis-label')
             .attr('x', this.width_nomargin / 2)
-            .attr('y', this.height - (this.margin.bottom/2))
+            .attr('y', this.height - (this.margin.bottom/2) + 5)
             .style("fill", "#000000");
 
         y_bar.append('text')
@@ -221,6 +222,7 @@ export default class Scatterplot extends View {
             },
 
             update => this.update(update),
+            exit => exit.remove()
           );
 
     }
@@ -228,8 +230,7 @@ export default class Scatterplot extends View {
     update(dots) {
 
       if(!this.pca){
-        dots.transition(300)
-            .attr("cx", d => this.x(d.x))
+        dots.attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
             .attr("r", d => this.sizeScale(d.players_list.length))
             .style("fill", "#a2a2a2")
@@ -238,8 +239,7 @@ export default class Scatterplot extends View {
       }else{
         dots.classed("bubble", false);
 
-        dots.transition(300)
-            .attr("cx", d => this.x(d.x))
+        dots.attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
             .attr("r", "3")
             .style("fill", d => rolesettings[d.role].color )
@@ -367,7 +367,6 @@ export default class Scatterplot extends View {
     }
 
     sample(d) {
-        let minimum_distance = 150.0;
         let x_1=0, y_1 = 0, n_decimal = 0, computed_distance=0.0, rounded_x = 0.0, rounded_y = 0.0, too_near=false;
         //return false;
 
@@ -392,7 +391,7 @@ export default class Scatterplot extends View {
           //here x_2 == x_1
           computed_distance = this.euclideanDist( x_1, y_1, x_1, y_2);
 
-          if(computed_distance < minimum_distance){
+          if(computed_distance < this.minimum_distance){
 
             too_near = true;
             break;
@@ -421,7 +420,7 @@ export default class Scatterplot extends View {
           //here y_2 == y_1
           computed_distance = this.euclideanDist( x_1, y_1, x_2, y_1);
 
-          if(computed_distance < minimum_distance){
+          if(computed_distance < this.minimum_distance){
 
             too_near = true;
             break;
@@ -530,4 +529,11 @@ export default class Scatterplot extends View {
       if (this.svg) this.draw(true);
     }
 
+    set minimum_distance(dist) {
+      this._minimum_distance = parseFloat(dist + 50);
+    }
+
+    get minimum_distance() {
+      return this._minimum_distance;
+    }
 }
