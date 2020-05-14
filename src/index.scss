@@ -1,3 +1,5 @@
+$blue: #4480ca;
+
 body {
   font-family: sans-serif;
   background: #232323;
@@ -45,7 +47,7 @@ body.light-mode text{
   vertical-align:middle;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -76,11 +78,11 @@ body.light-mode text{
 }
 
 input:checked + .slidermode {
-  background-color: #305c91;
+  background-color: $blue;
 }
 
 input:focus + .slidermode {
-  box-shadow: 0 0 1px #305c91;
+  box-shadow: 0 0 1px $blue;
 }
 
 input:checked + .slidermode:before {
@@ -407,7 +409,7 @@ input:checked + .slidermode:before {
   width: 20px;
   height: 20px;
   margin: -5px 0;
-  background-color: #555;
+  background-color: $blue;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4DDBFF), to(#00CCFF));
   background-image: -webkit-linear-gradient(right, #4DDBFF, #00CCFF);
   background-image: -moz-linear-gradient(right, #4DDBFF, #00CCFF);
@@ -611,7 +613,6 @@ input:checked + .slidermode:before {
   position: relative;
   top: 20px;
   text-align: center;
-  margin: 0 20px;
 
   .slider {
     pointer-events: none;
@@ -638,8 +639,7 @@ input:checked + .slidermode:before {
     border-style: solid;
     /*border-width:4px; width:16px; height:16px;*/
 
-    background-color: #305c91;
-    background-color: rgba(100, 100, 100, 1);
+    background-color: $blue;
     border-radius: 50%;
     position: absolute;
     /*top:-6px;left:50px;*/
@@ -648,7 +648,7 @@ input:checked + .slidermode:before {
   .track {
     pointer-events: none;
     height: 100%;
-    background-color: #305c91;
+    background-color: $blue;
   }
 
   .container {
@@ -673,9 +673,7 @@ input:checked + .slidermode:before {
   .output p {
     pointer-events: none;
     font-size: 14px;
-    color: #0a1a17;
     text-align: center;
-
   }
 }
 

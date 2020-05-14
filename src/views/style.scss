@@ -45,17 +45,18 @@ body .map-legend-container text{
 }
 
 #bar {
+  $bar-color: #4480ca;
   text {
     font-size: 14px;
   }
 
   line {
     stroke-width: 4px;
-    stroke: rgb(21, 74, 153);
+    stroke: $bar-color;
   }
 
   circle {
-    fill: rgb(21, 74, 153);
+    fill: $bar-color;
   }
 }
 

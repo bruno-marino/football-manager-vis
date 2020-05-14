@@ -55,16 +55,14 @@ export default class Scatterplot extends View {
             .attr('id', 'axis-x-label')
             .attr('class', 'axis-label')
             .attr('x', this.width_nomargin / 2)
-            .attr('y', this.height - (this.margin.bottom/2) + 5)
-            .style("fill", "#000000");
+            .attr('y', this.height - (this.margin.bottom/2) + 5);
 
         y_bar.append('text')
             .attr('id', 'axis-y-label')
             .attr('class', 'axis-label')
             .attr('x', -this.height_nomargin / 2)
-            .attr('y', -this.margin.bottom / 2)
+            .attr('y', -this.margin.left / 2 - 5)
             .attr('transform', `rotate(-90)`)
-            .style("fill", "#000000")
             .style('text-anchor', 'middle');
 
         this.svg.append("g")

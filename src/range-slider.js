@@ -27,7 +27,7 @@ export default function slider(container, options) {
   let t1 = createElement('div', ['thumb', 't1']);
   createElement('p', []).innerHTML = options.label
 
-  if (!Array.isArray(inputsRy.theValue)) {
+  if ( options.theValue && !Array.isArray(inputsRy.theValue)) {
     o0.style.display = 'none';
     t0.style.display = 'none';
     inputsRy.theValue = [0, inputsRy.theValue];
