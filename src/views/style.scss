@@ -5,6 +5,13 @@
 .Country.selected, .country.selected:hover {
   stroke-width: 3px;
 }
+.Country.selected{
+  stroke: #FFFF00;
+  stroke-width: 4px;
+}
+.goalkeeper .Country.selected{
+  stroke: #00B8FF;
+}
 .Country:hover {
   stroke-width: 2px;
   cursor: pointer;

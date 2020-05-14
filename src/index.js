@@ -102,6 +102,11 @@ for (const option of document.querySelectorAll('.custom-option')) {
           //Update map only if select of its view change
           graph_type = this.parentNode.parentNode.parentNode.parentNode.parentNode;
           if(graph_type.id=="age-and-role"){
+            if(this.getAttribute('data-value')==1){
+              document.getElementById("map").classList.add("goalkeeper");
+            }else{
+              document.getElementById("map").classList.remove('goalkeeper');
+            }
             window.app.onRoleChange(parseInt(this.getAttribute('data-value')));
           }else{
             //Update Bubblechart axis
