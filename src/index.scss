@@ -1,7 +1,22 @@
 body {
   font-family: sans-serif;
+  background: #232323;
+  color: white;
+}
+
+body text{
+  fill: white;
+}
+
+body.light-mode{
+  background:white;
   color:#444;
 }
+
+body.light-mode text{
+  fill:#444;
+}
+
 #root{
   display:flex;
   flex-flow: row wrap;
@@ -13,6 +28,77 @@ body {
   margin:0;
   box-sizing: border-box;
 }
+
+/* switch mode*/
+.switch-container{
+  position: relative;
+}
+.model-label{
+  padding: 0 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 90px;
+  height: 34px;
+  vertical-align:middle;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slidermode {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slidermode:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slidermode {
+  background-color: #305c91;
+}
+
+input:focus + .slidermode {
+  box-shadow: 0 0 1px #305c91;
+}
+
+input:checked + .slidermode:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(52px);
+}
+
+/* Rounded sliders */
+.slidermode.sliderround {
+  border-radius: 34px;
+}
+
+.slidermode.sliderround:before {
+  border-radius: 50%;
+}
+
+/* endswitch mode*/
 
 .view-container {
   padding:10px;
@@ -34,6 +120,7 @@ body {
   padding-top: 20px;
   max-width: 200px;
   height: calc(50% - 28px);
+  text-align: center;
 }
 
 #radar-and-bar {
@@ -208,6 +295,7 @@ body {
   height:40px;
   cursor: pointer;
   transition: all 0.5s;
+  text-align:left;
 }
 
 #bubble-settings .custom-option{

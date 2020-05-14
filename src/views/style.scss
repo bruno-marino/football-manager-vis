@@ -28,7 +28,13 @@ div.tooltip {
   border-radius: 8px;
   pointer-events: none;
   top: 0;
+  color:#444;
 }
+
+body .map-legend-container text{
+  fill:#444;
+}
+
 
 .map-legend-container text{
   font-size: 14px;

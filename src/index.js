@@ -6,6 +6,20 @@ app();
 
 const roles_settings = window.app.rolesettings;
 
+
+//mode selection: dark or light mode
+d3.select('#switch-mode')
+      .on("click", function() {
+        d3.select('body').classed("light-mode", !d3.select('body').classed("light-mode"));
+        if(d3.select('body').classed("light-mode")){
+          d3.select(".mode-label").text("Light mode");
+        }else{
+          d3.select(".mode-label").text("Dark mode");
+        }
+      });
+
+
+
 //Radar chart -Range selection
 var radar_type = new Array();
 radar_type["1"] = "principal";
