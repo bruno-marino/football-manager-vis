@@ -76,7 +76,7 @@ export default function slider(container, options) {
       var theValue0 = inputsRy.theValue[0];
       var theValue1 = inputsRy.theValue[1];
 
-      if (!Array.isArray(options.theValue)) {
+      if ( options.theValue && !Array.isArray(options.theValue)) {
         options.onRangeChange(theValue1)
       } else {
         options.onRangeChange(theValue0, theValue1)
