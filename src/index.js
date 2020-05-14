@@ -121,9 +121,11 @@ for (const option of document.querySelectorAll('.custom-option')) {
             if(this.getAttribute('data-value')==1){
               document.getElementById("map").classList.add("goalkeeper");
               document.getElementById("scatter").classList.add("goalkeeper");
+              document.getElementById("bubble").classList.add("goalkeeper");
             }else{
               document.getElementById("map").classList.remove('goalkeeper');
-              document.getElementById("scatter").classList.add("goalkeeper");
+              document.getElementById("scatter").classList.remove("goalkeeper");
+              document.getElementById("bubble").classList.remove("goalkeeper");
             }
             window.app.onRoleChange(parseInt(this.getAttribute('data-value')));
           }else{
