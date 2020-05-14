@@ -50,7 +50,7 @@ export default function slider(container, options) {
     thumbs[i].style.width = thumbs[i].style.height = inputsRy.thumbWidth + "px";
     thumbs[i].style.borderWidth = inputsRy.thumbBorderWidth + "px";
     thumbs[i].style.top = -(inputsRy.thumbWidth / 2 + inputsRy.thumbBorderWidth - inputsRy.trackHeight / 2 - 4) + "px";
-    thumbs[i].style.left = (inputsRy.theValue[i] - inputsRy.minRange) * rangeK - (thumbRealWidth / 2) + "px";
+    thumbs[i].style.left = (inputsRy.theValue[i] - inputsRy.minRange) * rangeK - (thumbRealWidth / 2 - 4) + "px"; // added - 4
 
   }
 
