@@ -108,13 +108,13 @@ body .map-legend-container text{
 
   circle {
     opacity:0.5;
-    stroke:black;
+    stroke:#ccc;
     stroke-width: 0.2px;
   }
 
   circle.selected, circle.selected:hover {
     stroke-width: 2px;
-    stroke: black;
+    stroke: $highlight_color;
     opacity: 1;
   }
   circle.bubble:hover {
@@ -124,25 +124,22 @@ body .map-legend-container text{
   }
   circle.brush_selected {
     opacity: 1 !important;
-    stroke: black;
-    stroke-width: 1px;
-  }
-}
-
-#scatter{
-  circle.selected, circle.selected:hover {
-    stroke-width: 2px;
-    stroke: $highlight_color;
-    opacity: 1;
-  }
-  circle.brush_selected {
-    opacity: 1 !important;
     stroke: $highlight_color;
     stroke-width: 1px;
   }
 }
 
-#scatter.goalkeeper{
+/* Use if you want buble border black in light mode
+body.light-mode #scatter circle{
+  stroke:black;
+}
+body.light-mode #bubble circle{
+  stroke:black;
+}
+*/
+
+
+#scatter.goalkeeper, #bubble.goalkeeper{
   circle.selected, circle.selected:hover {
     stroke-width: 2px;
     stroke: $highlight_color_gk;
