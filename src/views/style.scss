@@ -1,3 +1,7 @@
+
+$highlight_color: #FFFF00;
+$highlight_color_gk: #00B8FF;
+
 .Country {
   stroke: black;
   stroke-width: 0.3;
@@ -6,11 +10,11 @@
   stroke-width: 3px;
 }
 .Country.selected{
-  stroke: #FFFF00;
+  stroke: $highlight_color;
   stroke-width: 4px;
 }
 .goalkeeper .Country.selected{
-  stroke: #00B8FF;
+  stroke: $highlight_color_gk;
 }
 .Country:hover {
   stroke-width: 2px;
@@ -123,4 +127,31 @@ body .map-legend-container text{
     stroke: black;
     stroke-width: 1px;
   }
+}
+
+#scatter{
+  circle.selected, circle.selected:hover {
+    stroke-width: 2px;
+    stroke: $highlight_color;
+    opacity: 1;
+  }
+  circle.brush_selected {
+    opacity: 1 !important;
+    stroke: $highlight_color;
+    stroke-width: 1px;
+  }
+}
+
+#scatter.goalkeeper{
+  circle.selected, circle.selected:hover {
+    stroke-width: 2px;
+    stroke: $highlight_color_gk;
+    opacity: 1;
+  }
+  circle.brush_selected {
+    opacity: 1 !important;
+    stroke: $highlight_color_gk;
+    stroke-width: 1px;
+  }
+
 }
