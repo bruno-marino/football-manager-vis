@@ -226,7 +226,6 @@ export default class Scatterplot extends View {
         if (!this.svg) return
         dots = this.svg.select('#dots_area')
           .selectAll("circle")
-        console.log(dots)
         if (!dots) return
       }
       if(!this.pca){
