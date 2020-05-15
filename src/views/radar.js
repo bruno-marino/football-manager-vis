@@ -18,10 +18,6 @@ export default class RadarChart extends View {
   init(container) {
     super.init(container);
 
-    this.players_number = 100;
-
-    this.legend_label = "Selected countries";
-
     this.svg.append("g")
       //.attr("transform", "translate(" + this.cfg.TranslateX + "," + this.cfg.TranslateY + ")");
 
@@ -55,7 +51,8 @@ export default class RadarChart extends View {
     }
 
     this.svg.select('g').append("g").attr("id","axis_group")
-    this.svg.select('g').append("g").attr("id", "circles_group")
+    this.svg.select('g').append("g").attr("id", "circles_group_countries")
+    this.svg.select('g').append('g').attr('id', 'circles_group_players')
 
     //Tooltip
     this.tooltip = this.container
@@ -68,15 +65,12 @@ export default class RadarChart extends View {
   }
 
   // draw axis + labels, legend, circles and area
-  draw() {
-    //Update legend text
-    d3.select('#radar-legend-color')
-    .text(this.legend_label);
-
+  draw(type, data) {
+    this.actual_polyline = type;
     // draw axis + labels
-    this.svg.select('#axis_group')
+    let axes = this.svg.select('#axis_group')
       .selectAll(".axis")
-      .data(this.data, d => d.axis)
+      .data(data, d => d.axis)
       .join(
         // add an axis for each new axis in data
         enter => {
@@ -101,7 +95,8 @@ export default class RadarChart extends View {
       )
 
     // draw areas
-    this.svg.select('#circles_group')
+    // select the right group based on type: players or countries
+    this.svg.select(`#circles_group_${type}`)
       .selectAll(".area")
       .data([true])
       .join(
@@ -117,19 +112,14 @@ export default class RadarChart extends View {
         }
       )
 
-    let color = "#88419D";
-    if(this.players_number==1)
-      color = "#1f77b4";
-
     // draw circles
-    this.svg.select("#circles_group")
+    this.svg.select(`#circles_group_${type}`)
       .selectAll(".node")
-      .data(this.data)
+      .data(data)
       .join(
         enter => {
-          let nodes = enter.append("svg:circle")
+          let nodes = enter.append("circle")
             .attr("class", "node")
-            .attr("fill", color )
             .attr('r', this.cfg.radius)
             .on('mouseover', d => {
               this.showTooltip(d);
@@ -287,19 +277,38 @@ export default class RadarChart extends View {
     return poly.join(' ');
   }
 
-  updateColor(){
-    let color = "#88419D";
-    if(this.players_number == 1)
-      color = "#1F77B4";
+  get data_players() {
+    return this._data_players;
+  }
 
-    this.svg.selectAll(".area")
-      .style("fill", color)
-      .style("stroke", color);
+  set data_players(data) {
+    this._data_players = data;
+    if (this.svg) this.draw('players', data);
+  }
 
-      this.svg.selectAll(".node")
-      .attr("fill", color);
+  get data_countries() {
+    return this._data_countries;
+  }
 
-      d3.select(".radar-legend-square")
-      .style("background", color);
+  set data_countries(data) {
+    this._data_countries = data;
+    if (this.svg) this.draw('countries', data);
+  }
+
+  // override
+  get data() {
+    switch (this.actual_polyline) {
+      case 'players':
+        return this.data_players;
+        break;
+
+      case 'countries':
+        return this.data_countries;
+        break;
+
+      default:
+        return null;
+        break;
+    }
   }
 }

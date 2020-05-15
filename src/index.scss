@@ -1,4 +1,5 @@
 $blue: #4480ca;
+$countries-polyline: #88419D;
 
 body {
   font-family: sans-serif;
@@ -465,18 +466,24 @@ input:checked + .slidermode:before {
 
 .radar-legend{
   font-size:12px;
-  height: 15px;
   margin-bottom:15px;
 }
-.radar-legend span{
-  vertical-align: middle;
+.radar-legend div{
+  padding: 2px 0;
 }
 
 .radar-legend-square{
   width: 12px;
   height: 12px;
-  background:#88419D; //#1f77b4;
   display:inline-block;
+}
+
+#radar-player-legend .radar-legend-square {
+  background: $blue;
+}
+
+#radar-countries-legend .radar-legend-square {
+  background: $countries-polyline;
 }
 
 .height-250{

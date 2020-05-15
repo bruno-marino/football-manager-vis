@@ -96,7 +96,7 @@ export default class Controller {
     this.radarchart.legend_label = "Selected countries";
 
     this.updateBarPlot([]);
-    this.updateRadar(players);
+    this.updateRadar(players, 'countries');
     // for scatter consider valid all roles (for comparison!)
     this.updateScatter(this.model.playersByCountries(countries, this.isInAgeRange.bind(this)));
     // for bubble instead, consider both role selected and age
@@ -105,7 +105,6 @@ export default class Controller {
 
   onScatterSelection(elems) {
     this.bubblechart.resetBrush();
-
     let players = [];
     if ( elems.length == 0) {
       let countries = this.mapchart.selected_elems.map(country => country.id);
@@ -114,17 +113,19 @@ export default class Controller {
       this.radarchart.legend_label = "Selected countries";
 
       this.updateBarPlot([]);
-      this.updateRadar(players);
+      // on radar show only country avg
+      this.updateRadar(players, 'countries');
+      this.updateRadar([], 'players');
       this.zoom_button.classList.remove('enabled')
     } else {
       players = [];
       elems.forEach(elm => {
         players.push(this.model.players[this.model.playersById[elm.id]]);
-      })
+      });
 
       this.updateBarPlot(players);
-      this.updateRadar(players);
-      this.radarchart.legend_label = "Selected players";
+      this.updateRadar(players, 'players');
+      //this.radarchart.legend_label = "Selected players";
       this.highlightBubble(players);
       this.zoom_button.classList.add('enabled');
     }
@@ -132,7 +133,6 @@ export default class Controller {
 
   onBubbleSelection(bubbles) {
     this.scatterplot.resetBrush();
-
     let players = [];
     if (bubbles.length == 0) {
       let countries = this.mapchart.selected_elems.map(country => country.id);
@@ -167,7 +167,7 @@ export default class Controller {
     let players = [];
     let selected = this.bubblechart.selected_elems;
     let scatter_selected = this.scatterplot.selected_elems;
-    // if something is selected don't consider countries averages
+    // if something is selected
     if (selected.length > 0) {
       if (selected[0].players_list) {
         // take players from scatter bubbles
@@ -183,27 +183,23 @@ export default class Controller {
         scatter_selected.forEach(elm => {
           players.push(this.model.players[this.model.playersById[elm.id]]);
         })
-    } else {
-      players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this))
     }
 
-    this.updateRadar(players);
+    let countries_avgs = this.model.playersByCountries(countries, this.isValidPlayer.bind(this))
+
+    this.updateRadar(players, 'players');
+    this.updateRadar(countries_avgs, 'countries');
   }
 
-  /*
-  onPcaActivation(){
-    this.scatterplot.pca = true;
-    this.onCountriesSelection(this.mapchart.selected_elems);
-  }
-*/
-  updateRadar(players) {
+  updateRadar(players, polyline) {
     //check how many players are selected
     this.radarSetOfSkills(this.radar_type, players).then(data => {
-      this.radarchart.data = data;
+      if (polyline === 'players') {
+        this.radarchart.data_players = data;
+      } else if (polyline === 'countries') {
+        this.radarchart.data_countries = data;
+      }
     });
-
-    this.radarchart.players_number = players.length;
-    this.radarchart.updateColor();
   }
 
   updateBarPlot(players) {

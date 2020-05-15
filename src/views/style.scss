@@ -1,6 +1,8 @@
 
 $highlight_color: #FFFF00;
 $highlight_color_gk: #00B8FF;
+$blue: #4480ca;
+$countries-polyline: #88419D;
 
 .Country {
   stroke: black;
@@ -52,11 +54,11 @@ body .map-legend-container text{
 
   line {
     stroke-width: 4px;
-    stroke: $bar-color;
+    stroke: $blue;
   }
 
   circle {
-    fill: $bar-color;
+    fill: $blue;
   }
 }
 
@@ -91,14 +93,35 @@ body .map-legend-container text{
     //fill: #88419D;// #1f77b4;
   }
 */
+  #circles_group_countries {
+    .node, .area {
+      fill: $countries-polyline; //#1f77b4;
+      stroke: $countries-polyline;// #1f77b4
+    }
+  }
+
+  #circles_group_players {
+    .node, .area {
+      fill: $blue;
+      stroke: $blue;
+    }
+  }
+
   .area {
-    fill: #88419D; //#1f77b4;
     fill-opacity: 0.2;
-    stroke: #88419D;// #1f77b4
   }
 
   .area:hover{
     fill-opacity: 0.5;
+  }
+
+  .radar-legend{
+    font-size:12px;
+    height: 15px;
+    margin-bottom:15px;
+  }
+  .radar-legend span{
+    vertical-align: middle;
   }
 }
 
