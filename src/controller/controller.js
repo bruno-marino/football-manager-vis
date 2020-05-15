@@ -66,10 +66,14 @@ export default class Controller {
     if (this.scatterplot.hasBrushActive())
       this.scatterplot.endBrush();
 
-    if (this.bubblechart.selected_elems.length == 1) {
+    if ( this.bubblechart.selected_elems.length == 1 || this.scatterplot.selected_elems.length == 1) {
+      this.scatterplot.resetSelection();
       this.bubblechart.resetSelection();
-      this.bubblechart.handleElemSelection([]);
+      this.updateBarPlot([]);
+      this.updateRadar([], 'players')
     }
+
+    this.updateRadar(players, 'countries')
     // for bubble instead, consider both role selected and age
     this.updateBubble(players);
   }
@@ -138,10 +142,10 @@ export default class Controller {
       let countries = this.mapchart.selected_elems.map(country => country.id);
       players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
 
-      this.radarchart.legend_label = "Selected countries";
-
       this.updateBarPlot([]);
-      this.updateRadar(players);
+      // on radar show only country avg
+      this.updateRadar(players, 'countries');
+      this.updateRadar([], 'players');
 
     } else {
 
@@ -151,9 +155,8 @@ export default class Controller {
         });
       });
 
-      this.updateRadar(players);
+      this.updateRadar(players, 'players');
       this.updateBarPlot(players);
-      this.radarchart.legend_label = "Selected players";
       this.highlightScatter(players);
     }
 
