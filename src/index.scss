@@ -7,8 +7,10 @@ body {
   color: white;
 }
 
-body text{
-  fill: white;
+body {
+  text, .icon {
+   fill: white;
+  }
 }
 
 body.light-mode{
@@ -16,8 +18,10 @@ body.light-mode{
   color:#444;
 }
 
-body.light-mode text{
-  fill:#444;
+body.light-mode {
+  text, .icon {
+    fill:#444;
+  }
 }
 
 #root{
