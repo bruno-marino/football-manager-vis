@@ -10,13 +10,14 @@ const app = function() {
     const mapchartContainer = d3.select('#map');
 
     controller.mapchart.init(mapchartContainer);
-    controller.onRoleChange(0);
     controller.barplot.init(d3.select('#bar'));
     controller.radarchart.init(d3.select('#radar'));
     controller.scatterplot.init(d3.select('#scatter'));
     controller.bubblechart.init(d3.select('#bubble'));
     document.querySelector('.loader').style.display = 'none';
     document.querySelector('#main').style.visibility = 'visible';
+    controller.mapchart.values = controller.countryStrengthPerRole();
+    controller.mapchart.changeRamp(controller.actualRole.role_scale);
   });
 }
 

@@ -5,9 +5,9 @@
     "color": "#88419d",
     "img_path": "/img/role_0.png",
     "role_scale": ["#edf8fb","#bfd3e6","#9ebcda","#8c96c6","#8c6bb1","#88419d","#6e016b"],
-    "positions": ["GK", "D", "WB", "M","DM","AM", "S"],
+    "positions": ["D", "WB", "M","DM","AM", "S"],
     "attributes": {
-      "principal": ["aerial_ability","command_of_area","communication","handling","kicking","one_on_ones","reflexes","rushing_out","tendency_to_punch","throwing","long_throws","marking","heading","passing","tackling","crossing","corners","dribbling","technique","first_touch","free_kicks","long_shots","penalty_taking","finishing"],
+      "principal": ["marking","heading","passing","tackling","crossing","corners","dribbling","technique","first_touch","free_kicks","long_shots","penalty_taking","finishing"],
       "physical": ["agility","balance","jumping","strength","acceleration","natural_fitness","pace","stamina"],
       "mental": ["anticipation","bravery","composure", "concentration", "decisions", "determination", "positioning", "leadership", "off_the_ball","teamwork","vision","aggression"],
       "negative": ["eccentricity"]

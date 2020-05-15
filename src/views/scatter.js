@@ -7,8 +7,8 @@ export default class Scatterplot extends View {
         super(container);
       this.pca = isPca;
 
-      this.x_axis = "aerial_ability";
-      this.y_axis = "aerial_ability";
+      this.x_axis = "marking";
+      this.y_axis = "marking";
 
       if(isPca){
         this.x_axis = "";
@@ -104,7 +104,6 @@ export default class Scatterplot extends View {
         this.domain_end_x = 20;
         this.domain_start_y = this.domain_start_x;
         this.domain_end_y = this.domain_end_x;
-
         this.draw();
     }
 
@@ -178,7 +177,7 @@ export default class Scatterplot extends View {
           .selectAll("circle")
           .remove();
         //draw points
-        this.svg.select('#dots_area')
+        let update = this.svg.select('#dots_area')
           .selectAll("circle")
           .data(this.data)
           .join(
@@ -186,15 +185,13 @@ export default class Scatterplot extends View {
               // active sampling based on flags
               enter = doSampling && this.pca ? enter.filter(d => this.sample(d)) : enter;
 
-              let circles = enter.append("circle")
+              return enter.append("circle")
                 .on("click", d => {
                   this.resetBrush();
                   this.resetSelection();
                   this.handleElemSelection(d);
-                });
-
-                //ToolTip
-                circles.on("mouseover", d => {
+                })
+                .on("mouseover", d => {
                   this.tooltip.transition().duration(300)
                     .style("opacity", 1)
                   if (!this.pca) {
@@ -215,18 +212,23 @@ export default class Scatterplot extends View {
                       .style("opacity", 0);
                   //}
                 })
-
-              this.update(circles);
             },
-
-            update => this.update(update),
+            update => update,
             exit => exit.remove()
           );
 
+      this.update(update);
+      if (this.hasBrushActive) this.endBrush();
     }
 
     update(dots) {
-
+      if (!dots) {
+        if (!this.svg) return
+        dots = this.svg.select('#dots_area')
+          .selectAll("circle")
+        console.log(dots)
+        if (!dots) return
+      }
       if(!this.pca){
         dots.attr("cx", d => this.x(d.x))
             .attr("cy", d => this.y(d.y))
@@ -256,7 +258,9 @@ export default class Scatterplot extends View {
     }
 
     endBrush() {
-        let extent = d3.event.selection
+        let extent = d3.event ? d3.event.selection : d3.brushSelection(this.svg.select('#brush').node());
+        if (!extent && !d3.event) return // if brush is null and there's no event, don't do anything
+
         // If no selection, back to initial coordinate. Otherwise, select players
         if(!extent){
           if (d3.event.sourceEvent &&
@@ -268,7 +272,7 @@ export default class Scatterplot extends View {
           this.x.domain([ this.domain_start_x,this.domain_end_x])
           this.y.domain([ this.domain_start_y,this.domain_end_y])
 
-          this.draw(true);
+
           this.svg.select('g.x.axis').transition().duration(300).call(d3.axisBottom(this.x));
           this.svg.select('g.y.axis').transition().duration(300).call(d3.axisLeft(this.y));
           this.svg
@@ -276,6 +280,11 @@ export default class Scatterplot extends View {
             .transition().duration(300)
             .attr("cx", d => this.x(d.x) )
             .attr("cy", d => this.y(d.y) )
+          if (this.pca) {
+            this.drawed_points_x = [];
+            this.drawed_points_y = [];
+            this.svg.selectAll('circle').filter(d => !this.sample(d)).remove();
+          }
         } else {
             this.resetSelection();
             //this.x.domain([ this.x.invert(extent[0][0]), this.x.invert(extent[1][0]) ])
@@ -318,12 +327,16 @@ export default class Scatterplot extends View {
 
     resetSelection() {
       super.resetSelection();
-      this.svg.selectAll('.brush_selected').classed('brush_selected', false);
+      if (this.svg) this.svg.selectAll('.brush_selected').classed('brush_selected', false);
     }
 
     resetBrush() {
-      this.svg.select('#brush').call(this.brush.move, null);
+      if (this.svg) this.svg.select('#brush').call(this.brush.move, null);
       this.resetSelection();
+    }
+
+    hasBrushActive() {
+      return d3.brushSelection(this.svg.select('#brush').node()) != null ? true : false
     }
 
     idled(){
@@ -489,7 +502,7 @@ export default class Scatterplot extends View {
 
       this.x.domain([ this.x.invert(point0.attr('x')), this.x.invert(point1.attr('x')) ]);
       this.y.domain([ this.y.invert(point1.attr('y')), this.y.invert(point0.attr('y')) ]);
-
+      this.svg.select('#brush').call(this.brush.move, null);
       this.draw();
       this.svg.select('g.x.axis').transition().duration(300).call(d3.axisBottom(this.x));
       this.svg.select('g.y.axis').transition().duration(300).call(d3.axisLeft(this.y));
@@ -499,7 +512,7 @@ export default class Scatterplot extends View {
         .attr("cx", d => this.x(d.x) )
         .attr("cy", d => this.y(d.y) )
 
-      this.resetBrush();
+
     }
 
     get x_ax() {

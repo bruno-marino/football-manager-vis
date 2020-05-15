@@ -47,12 +47,31 @@ export default class Controller {
   }
 
   onRoleChange(role_id) {
+    let old_role = this.role_id;
     this.role_id = role_id;
     this.scatterplot.pca_role = role_id;
     this.mapchart.values = this.countryStrengthPerRole();
     this.mapchart.changeRamp(this.actualRole.role_scale);
-    if(this.mapchart.selected_elems.length > 0)
-      this.onCountriesSelection(this.mapchart.selected_elems);
+
+    let countries = this.mapchart.selected_elems.map(country => country.id);
+    let players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
+
+    // compute new pca only when gk are selected or were selected.
+    if (role_id == 1 || old_role == 1) {
+      this.updateScatter(this.model.playersByCountries(countries, this.isInAgeRange.bind(this)));
+    } else { // otherwise the postions won't change, just opacity
+      this.scatterplot.update(); // visually update
+    }
+
+    if (this.scatterplot.hasBrushActive())
+      this.scatterplot.endBrush();
+
+    if (this.bubblechart.selected_elems.length == 1) {
+      this.bubblechart.resetSelection();
+      this.bubblechart.handleElemSelection([]);
+    }
+    // for bubble instead, consider both role selected and age
+    this.updateBubble(players);
   }
 
   onAxisChange(x_axis, y_axis) {
@@ -60,17 +79,16 @@ export default class Controller {
     let countries = this.mapchart.selected_elems.map(country => country.id);
     let players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
 
-    this.updateRadar(players);
-    this.bubblechart.resetBrush();
-    this.scatterplot.resetBrush();
-    this.updateBarPlot([]);
+    //this.bubblechart.resetBrush();
+    //this.scatterplot.resetBrush();
+
     this.radarchart.legend_label = "Selected countries";
     this.updateBubble(players, x_axis, y_axis);
   }
 
   onCountriesSelection(countries) {
-    this.scatterplot.resetBrush();
-    this.bubblechart.resetBrush();
+    //this.scatterplot.resetBrush();
+    //this.bubblechart.resetBrush();
 
     countries = countries.map(country => country.id);
     let players = this.model.playersByCountries(countries, this.isValidPlayer.bind(this));
@@ -79,7 +97,9 @@ export default class Controller {
 
     this.updateBarPlot([]);
     this.updateRadar(players);
+    // for scatter consider valid all roles (for comparison!)
     this.updateScatter(this.model.playersByCountries(countries, this.isInAgeRange.bind(this)));
+    // for bubble instead, consider both role selected and age
     this.updateBubble(players);
   }
 
@@ -156,11 +176,6 @@ export default class Controller {
             players.push(this.model.players[this.model.playersById[id]]);
           });
         });
-      } else {
-        // take players from individual ids
-        selected.forEach(elm => {
-          players.push(this.model.players[this.model.playersById[elm.id]]);
-        })
       }
     }
     else if (scatter_selected.length > 0) {
@@ -198,11 +213,15 @@ export default class Controller {
   }
 
   updateBubble(players, x_axis, y_axis) {
-
     this.bubblechart.x_axis = x_axis || this.bubblechart.x_axis;
     this.bubblechart.y_axis = y_axis || this.bubblechart.y_axis;
     this.matrixBubbleChart(this.bubblechart.x_axis, this.bubblechart.y_axis, players).then(data => {
       this.bubblechart.data = data;
+      if (this.scatterplot.selected_elems && this.scatterplot.selected_elems.length > 0) {
+        this.highlightBubble(this.scatterplot.selected_elems.map( e => {
+          return this.model.players[this.model.playersById[e.id]];
+        }))
+      }
     })
 
   }

@@ -82,7 +82,7 @@ export default class View {
 
   resetSelection() {
     // reset selected elems
-    this.svg.selectAll('.selected').classed('selected', false);
+    if (this.svg) this.svg.selectAll('.selected').classed('selected', false);
     this.selected_elems = [];
   }
 
