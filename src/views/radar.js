@@ -211,13 +211,34 @@ export default class RadarChart extends View {
   }
 
   showTooltip(d) {
+
     let newX = d3.event.pageX;
     let newY = d3.event.pageY - 30;
+
+    //tooltip text for countries
+    let tooltip_label = "";
+ 
+    if (typeof(this.data_countries) !== 'undefined') {
+      this.data_countries.forEach(row => {
+          if(row["axis"]==d.axis){
+            tooltip_label = "Countries: " + row["value"].toFixed(2);
+          }
+      })
+    }
+    //tooltip text if also players are selected
+    if (typeof(this.data_players) !== 'undefined') {
+      this.data_players.forEach(row => {
+        if(row["axis"]==d.axis && row["value"]!=0){
+          tooltip_label = tooltip_label +"<br>Players: " + row["value"].toFixed(2);
+        }
+      }) 
+    }
+    
 
     this.tooltip
       .style('left', newX + 'px')
       .style('top', newY + 'px')
-      .text(d.value.toFixed(2))
+      .html(tooltip_label)
       .style('opacity', 1);
   }
 
