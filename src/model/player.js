@@ -96,7 +96,7 @@ export default class Player {
   }
 
   hasRole(role) {
-    if(role.role_id == 0) return true;
+    if(role.role_id == 0) return this.role_id != 1 ? true : false;
 
     return role.role_id == this.role_id;
     //return role.positions.filter(pos => this.positions_desc.includes(pos)).length === 0 ? false : true;
