@@ -71,6 +71,7 @@ for (const [key, value] of Object.entries(object)) {
   })
 }
 
+roles_settings[1]["attributes"]["principal"].forEach(f => all_features.push(f))
 
 var f_count = 0;
 var first_content = "";
