@@ -31,7 +31,7 @@ const loadData = function() {
 
       Promise.all(promises).then(loaded_data => {
         loaded_data[0].features.forEach(country => {
-          country.id === 'ATA' ? null : controller.handleAddCountry(country);
+          country.id === 'ATA' || country.id === 'GRL'? null : controller.handleAddCountry(country);
         });
 
         loaded_data[1].forEach(player => {

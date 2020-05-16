@@ -46,7 +46,7 @@ export default class MapChart extends View{
           .on("mouseover", d => {
             this.tooltip.transition().duration(300)
             .style("opacity", 1)
-            this.tooltip.html("<b>" + d.properties.name + "</b> <br> Strenght: " + parseFloat(this.values[d.id]).toFixed(2) )
+            this.tooltip.html("<b>" + d.properties.name + "</b> <br> Strenght: " + this.legendScale(this.values[d.id]).toFixed(2) )
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY -30) + "px");
           })
@@ -71,7 +71,7 @@ export default class MapChart extends View{
   }
 
   changeRamp(range) {
-    let domain = this.calcDomain()
+    let domain = Object.keys(this.values).map(v => this.values[v])
     /*
 
     OPTION 1 FOR COLOR: scaleThreshold
@@ -79,7 +79,7 @@ export default class MapChart extends View{
 
 
     */
-    this.colorScale = d3.scaleThreshold()
+    this.colorScale = d3.scaleQuantile()
       /*
       domain specify wich color use for the range
       in the following:
@@ -96,7 +96,8 @@ export default class MapChart extends View{
       //.range(["#edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#41ae76", "#238b45", "#005824"]);
       .range(range);
 
-    this.legend(domain,range)
+    this.legendScale = d3.scaleLinear(d3.extent(domain), [1, 10]);
+    this.legend()
 
     if (this.svg) {
       this.draw();
@@ -104,15 +105,12 @@ export default class MapChart extends View{
 
   }
 
-  legend(domain,range){
-
-    let domain_clone = domain.slice()
-
-    for (let i = 0; i < domain_clone.length; i++) {
-      domain_clone[i] = "< " + parseFloat(domain_clone[i]).toFixed(2)
-    }
-
-    domain_clone.push("> " + parseFloat(domain[domain.length - 1]).toFixed(2))
+  legend(){
+    let range = this.colorScale.range();
+    let domain_clone = [];
+    range.forEach( color => {
+      domain_clone.push("< " + this.legendScale(this.colorScale.invertExtent(color)[1]).toFixed(2));
+    })
 
     //remove precedent legend
     this.svg.select(".map-legend-container").remove();
@@ -154,7 +152,7 @@ export default class MapChart extends View{
       .append("text")
         .attr("x", 15 + size*1.2)//100 now 15
         .attr("y", (d,i) => { return (this.height - 175) + i*(size+5) + (size/2)}) // 100 (now 260) is where the first dot appears. 25 is the distance between dots
-        .style("fill", function(d){ return domain_clone[d.id] })
+        //.style("fill", function(d){ return domain_clone[d.id] })
         .text(function(d){ return d})
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle")

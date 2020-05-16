@@ -21,7 +21,7 @@
     "role_scale": ["#ffffd4","#fee391","#fec44f","#fe9929","#ec7014","#cc4c02","#8c2d04"],
     "positions": ["GK"],
     "attributes": {
-      "principal": ["aerial_ability","command_of_area","communication","handling","kicking","one_on_ones","reflexes","rushing_out","tendency_to_punch","throwing","long_throws"],
+      "principal": ["aerial_ability","command_of_area","communication","handling","kicking","one_on_ones","reflexes","rushing_out","tendency_to_punch","throwing"],
       "physical": ["agility","balance","jumping","strength"],
       "mental": ["anticipation","bravery","composure", "concentration", "decisions", "determination", "positioning", "leadership"],
       "negative": ["eccentricity"]
@@ -35,7 +35,7 @@
     "role_scale": ["#f1eef6","#d0d1e6","#a6bddb","#74a9cf","#3690c0","#0570b0","#034e7b"],
     "positions": ["D","WB"],
     "attributes": {
-      "principal": ["marking","heading","aerial_ability","passing","tackling","long_throws","crossing","corners","dribbling"],
+      "principal": ["marking","heading","passing","tackling","long_throws","crossing","corners","dribbling"],
       "physical": ["acceleration","balance","jumping","strength","natural_fitness"],
       "mental": ["anticipation","bravery","composure", "concentration", "decisions", "determination", "positioning", "leadership", "teamwork", "vision"]
     }
