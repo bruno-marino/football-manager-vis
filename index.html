@@ -10,12 +10,32 @@
   <meta http-equiv="Expires" content="0" />
   <!-- End preventing browser cache -->
   <title>visual-analytics-football-talent-scout</title>
-<link href="style.css?24e775e8831a68add6db" rel="stylesheet"></head>
+<link href="style.css?c37e586f9da731f93024" rel="stylesheet"></head>
 <body>
   <div class="loader"></div>
   <div id="main">
     <div id="root">
-    <div id="top-bar">
+
+
+
+    <div id="map-container" class="view-container">
+      <div id="map"></div>
+    </div>
+    <div id="age-and-role">
+
+      <div class="switch-container">
+       <span class="mode-label">Dark mode</span>
+      <label class="switch">
+        <input type="checkbox" id="switch-mode">
+        <span class="slidermode sliderround"></span>
+      </label>
+      </div>
+      <br><br><br>
+
+      <div id="age-range-slider"></div>
+
+      <br><br><br>
+
       <div class="filter-box">
         <div class="custom-select-wrapper">
             <div class="custom-select">
@@ -32,99 +52,106 @@
         </div>
       </div>
 
-      <div class="slider-container">
-        <div class="slider">
-          <div class="track"></div>
-        </div>
-        <div class="output o0"> </div>
-        <div class="thumb t0"></div>
-
-        <div class="output o1"> </div>
-        <div class="thumb t1"></div>
-
-        <p>Age Range</p>
-      </div>
     </div>
-
-
-    <div id="map_container">
-      <div id="map"></div>
-    </div>
-    <div class="bottom-margin"></div>
-    <div class="col-50 vertical-bottom">
-      <div class="scatter_container">
-        <div id="scatter-settings">
-          <!--
-          <label class="slct-container"> &nbsp;PCA
-            <input id="pca_check" type="checkbox">
-            <span class="slct-checkmark"></span>
-          </label>
-          -->
-          <div class="custom-select-wrapper">
-            <span class="what-axes">x axis</span>
-            <div class="custom-select">
-                <div class="custom-select__trigger">
-                  <span id="first-x-axis" id="color_selection">
-                      <!-- fill automatically -->
-                  </span>
-                  <div class="arrow"></div>
-                </div>
-                <div id="x-axis-container" class="custom-options">
-                    <!-- fill automatically -->
-                </div>
+    <div id="radar-and-bar" class="view-container">
+        <div id="radar_container">
+          <div id="radar"></div>
+          <div class="range-legend">
+            <div class="radar-legend">
+              <div  id="radar-countries-legend">
+                <span class="radar-legend-square"></span>
+                <span>Selected Countries</span>
+              </div>
+              <div id="radar-player-legend">
+                <span class="radar-legend-square"></span>
+                <span>Selected Players</span>
+              </div>
             </div>
+            <input id="range-type" class="range vertical-lowest-first round rang-adjust" type="range" min="1" max="3" step="1" value="1">
+            <span class="rang-top">Principal</span>
+            <span class="rang-middle">Physical</span>
+            <span class="rang-bottom">Mental</span>
           </div>
-
-          <div class="custom-select-wrapper">
-            <span class="what-axes">y axis</span>
-            <div class="custom-select">
-                <div class="custom-select__trigger">
-                  <span id="first-y-axis" id="color_selection">
-                      <!-- fill automatically -->
-                  </span>
-                  <div class="arrow"></div>
-                </div>
-                <div id="y-axis-container" class="custom-options">
-                    <!-- fill automatically -->
-                </div>
-            </div>
-          </div>
-
-          <!--<button id="apply-settings" class="btn">Apply</button>-->
-
         </div>
-        <div id="bubble"></div>
+
+        <div id="bar_container">
+          <div id="bar"></div>
+        </div>
+
+    </div>
+    <div id="toolbar">
+      <div id="bubble-settings">
+        <!--
+        <label class="slct-container"> &nbsp;PCA
+          <input id="pca_check" type="checkbox">
+          <span class="slct-checkmark"></span>
+        </label>
+        -->
+        <div class="custom-select-wrapper">
+          <span class="what-axes">x axis</span>
+          <div class="custom-select">
+              <div class="custom-select__trigger">
+                <span id="first-x-axis" id="color_selection">
+                    <!-- fill automatically -->
+                </span>
+                <div class="arrow"></div>
+              </div>
+              <div id="x-axis-container" class="custom-options">
+                  <!-- fill automatically -->
+              </div>
+          </div>
+        </div>
+
+        <div class="custom-select-wrapper" style="margin-left:20px;">
+          <span class="what-axes">y axis</span>
+          <div class="custom-select">
+              <div class="custom-select__trigger">
+                <span id="first-y-axis" id="color_selection">
+                    <!-- fill automatically -->
+                </span>
+                <div class="arrow"></div>
+              </div>
+              <div id="y-axis-container" class="custom-options">
+                  <!-- fill automatically -->
+              </div>
+          </div>
+        </div>
+
+        <!--<button id="apply-settings" class="btn">Apply</button>-->
+
       </div>
-    </div><div class="col-50 vertical-bottom">
-      <div class="scatter_container">
+
+      <div id="scatter-settings">
         <div id="zoom-button">
           <div id="button-wrapper">
-            <img src="assets/img/zoom_in_24dp.png"/>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" class="icon"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/></svg>
             <span>Zoom Brush</span>
           </div>
         </div>
-        <div id="scatter"></div>
-      </div>
-    </div>
-    </div>
-    <div class="bottom-margin"></div>
-    <div class="col-50">
-      <div id="bar_container">
-        <div id="bar"></div>
-      </div>
-    </div><div class="col-50">
-      <div id="radar_container">
-        <div class="col-80 height-250"><div id="radar"></div></div><div class="col-20 range-legend">
-          <div class="radar-legend"><span class="radar-legend-square"></span>
-            <span id="radar-legend-color">Selected countries</span></div>
-          <input id="range-type" class="range vertical-lowest-first round rang-adjust" type="range" min="1" max="3" step="1" value="1">
-          <span class="rang-top">Principal</span>
-          <span class="rang-middle">Physical</span>
-          <span class="rang-bottom">Mental</span>
+
+        <div id="sampling-slider-wrapper">
+          <div id="sampling-slider"></div>
         </div>
       </div>
     </div>
-    <div class="bottom-margin"></div>
+    <div class="col-one-quarter view-container">
+
+
+      <div class="scatter_container">
+        <div id="bubble"></div>
+      </div>
+
+    </div><div class="col-one-quarter view-container">
+
+
+      <div class="scatter_container">
+        <div id="scatter"></div>
+      </div>
+
+
+    </div>
+
+    </div>
   </div>
-<script type="text/javascript" src="main.js?24e775e8831a68add6db"></script></body>
+<script type="text/javascript" src="main.js?c37e586f9da731f93024"></script></body>
 </html>
