@@ -11,13 +11,15 @@ export default function countryStrengthPerRole() {
     }
   });
 
+  //Uncomment if want z-score
+  /*
   let num_countries=0;
   let sum = 0;
   let avg;
   let r=0;
   let variance;
   let standard_dev;
-
+  */
   
   Object.keys(data).forEach(country => {
 
@@ -37,11 +39,15 @@ export default function countryStrengthPerRole() {
     /* alternative with less malus*/
     //let adjNP = data[country].length <= 400 ? max+50 : max;
     //data[country] = (result/max) * (adjNP/500); 
-
+  //Uncomment if want z-score
+  /*
     num_countries++;
     sum = sum + data[country];
+  */
   });
 
+  //Uncomment if want z-score
+  /*
   avg = sum/num_countries;
 
   //variance computation
@@ -57,6 +63,6 @@ export default function countryStrengthPerRole() {
   Object.keys(data).forEach(country => {
     data[country] = (data[country] - avg) / standard_dev;
   });
-
+  */
   return data;
 }
