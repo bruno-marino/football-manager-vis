@@ -11,3 +11,7 @@ football clubs as a source for scouting players (Wikipedia) and therefore we thi
 reliable and useful according our analytics. The dataset has 150,000+ football players (rows)
 and more than 80 attributes (columns). For simplicity will keep only most important attributes
 for the project and take only a subset of players.
+
+## Demo
+
+You can find the working tool here: [https://bruno-marino.github.io/visual-analytics-football-talent-scout/](https://bruno-marino.github.io/visual-analytics-football-talent-scout/)
