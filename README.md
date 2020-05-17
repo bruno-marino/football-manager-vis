@@ -12,6 +12,6 @@ reliable and useful according our analytics. The dataset has 150,000+ football p
 and more than 80 attributes (columns). For simplicity will keep only most important attributes
 for the project and take only a subset of players.
 
-## Demo
+## Working software
 
 You can find the working tool here: [https://bruno-marino.github.io/football-manager-vis/](https://bruno-marino.github.io/football-manager-vis/)
