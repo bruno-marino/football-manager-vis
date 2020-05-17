@@ -14,4 +14,4 @@ for the project and take only a subset of players.
 
 ## Demo
 
-You can find the working tool here: [https://bruno-marino.github.io/visual-analytics-football-talent-scout/](https://bruno-marino.github.io/visual-analytics-football-talent-scout/)
+You can find the working tool here: [https://bruno-marino.github.io/football-manager-vis/](https://bruno-marino.github.io/football-manager-vis/)
