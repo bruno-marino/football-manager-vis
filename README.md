@@ -1,4 +1,4 @@
-# Visual Analytics project: help a football talent scout finding football players
+# FMVIS: Visualizations to analyze Football Manager data
 The purpose of this project is to graphically help a hypothetical talent scout.
 
 ## Dataset
