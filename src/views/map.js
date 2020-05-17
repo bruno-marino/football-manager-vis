@@ -46,7 +46,8 @@ export default class MapChart extends View{
           .on("mouseover", d => {
             this.tooltip.transition().duration(300)
             .style("opacity", 1)
-            this.tooltip.html("<b>" + d.properties.name + "</b> <br> Strenght: " + this.legendScale(this.values[d.id]).toFixed(2) )
+            let value = this.values[d.id] ?  this.legendScale(value).toFixed(2) : 0;
+            this.tooltip.html("<b>" + d.properties.name + "</b> <br> Strenght: " + value)
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY -30) + "px");
           })
