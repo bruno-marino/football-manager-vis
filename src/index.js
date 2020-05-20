@@ -76,6 +76,7 @@ roles_settings[1]["attributes"]["principal"].forEach(f => all_features.push(f))
 var f_count = 0;
 var first_content = "";
 created_content = "";
+all_features.sort();
 all_features.forEach(function(feature){
   if(f_count==0){
     first_content =  "<span class='role_name_container'>" + feature + "</span>";
