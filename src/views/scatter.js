@@ -7,8 +7,8 @@ export default class Scatterplot extends View {
         super(container);
       this.pca = isPca;
 
-      this.x_axis = "marking";
-      this.y_axis = "marking";
+      this.x_axis = "acceleration";
+      this.y_axis = "acceleration";
 
       if(isPca){
         this.x_axis = "";
