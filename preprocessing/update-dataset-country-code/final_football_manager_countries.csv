@@ -1,0 +1,222 @@
+FM17ID,Country_name,Alpha_3
+106,Afghanistan,AFG
+752,Albania,ALB
+5,Algeria,DZA
+129504,American Samoa,ASM
+753,Andorra,AND
+6,Angola,AGO
+129514,Anguilla,AIA
+359,Antigua and Barbuda,ATG
+1649,Argentina,ARG
+754,Armenia,ARM
+360,Aruba,ABW
+1435,Australia,AUS
+755,Austria,AUT
+756,Azerbaijan,AZE
+107,Bahrain,BHR
+108,Bangladesh,BGD
+361,Barbados,BRB
+758,Belarus,BLR
+757,Belgium,BEL
+362,Belize,BLZ
+7,Benin,BEN
+363,Bermuda,BMU
+131012,Bhutan,BTN
+1650,Bolivia,BOL
+759,Bosnia and Herzegovina,BIH
+8,Botswana,BWA
+1651,Brazil,BRA
+109,Brunei Darussalam,BRN
+760,Bulgaria,BGR
+9,Burkina Faso,BFA
+5630219,Burma,MMR
+10,Burundi,BDI
+118,Cambodia,KHM
+11,Cameroon,CMR
+364,Canada,CAN
+12,Cape Verde Islands, CPV
+365,Cayman Islands,CYM
+13,Central African Republic,CAF
+14,Chad,TCD
+1652,Chile,CHL
+110,China PR,CHN
+138,Taiwan,TWN
+1653,Colombia,COL
+919586,Comoros,COM
+49,Congo,COG
+1436,Cook Islands,COK
+366,Costa Rica,CRI
+761,Croatia,HRV
+367,Cuba,CUB
+380,Curaçao,NLD
+762,Cyprus,CYP
+763,Czech Republic,CZE
+53,Democratic Republic of Congo,COD
+764,Denmark,DNK
+15,Djibouti,DJI
+368,Dominica,DMA
+142527,Dominican Republic,DOM
+5626837,East Timor,TLS
+1654,Ecuador,ECU
+16,Egypt,EGY
+370,El Salvador,SLV
+765,England,GBR
+17,Equatorial Guinea,GNQ
+129511,Eritrea,ERI
+766,Estonia,EST
+18,Ethiopia,ETH
+767,Faroe Islands,FRO
+1437,Fiji,FJI
+768,Finland,FIN
+769,France,FRA
+917496,French Guiana,GUF
+781,FYR of Macedonia,MKD
+19,Gabon,GAB
+770,Georgia,GEO
+771,Germany,DEU
+21,Ghana,GHA
+214394,Gibraltar,GIB
+772,Greece,GRC
+371,Grenada,GRD
+917498,Guadeloupe,GLP
+129508,Guam,GUM
+373,Guatemala,GTM
+22,Guinea,GIN
+23,Guinea-Bissau,GNB
+374,Guyana,GUY
+375,Haiti,HTI
+784,Holland,NLD
+376,Honduras,HND
+111,Hong Kong (China PR),HKG
+773,Hungary,HUN
+774,Iceland,ISL
+112,India,IND
+113,Indonesia,IDN
+114,Iran,IRN
+115,Iraq,IRQ
+775,Israel,ISR
+776,Italy,ITA
+24,Ivory Coast,CIV
+377,Jamaica,JAM
+116,Japan,JPN
+117,Jordan,JOR
+119,Kazakhstan,KAZ
+25,Kenya,KEN
+209002,Kiribati,KIR
+217945,Kosovo,OSA
+120,Kuwait,KWT
+121,Kyrgyzstan,KGZ
+122,Laos,LAO
+777,Latvia,LVA
+123,Lebanon,LBN
+26,Lesotho,LSO
+27,Liberia,LBR
+28,Libya,LBY
+778,Liechtenstein,LIE
+779,Lithuania,LTU
+780,Luxembourg,LUX
+124,Macau (China PR),CHN
+29,Madagascar,MDG
+30,Malawi,MWI
+125,Malaysia,MYS
+126,Maldives,MDV
+31,Mali,MLI
+782,Malta,MLT
+917502,Martinique,MTQ
+32,Mauritania,MRT
+33,Mauritius,MUS
+918740,Mayotte,MYT
+379,Mexico,MEX
+783,Moldova,MDA
+8162661,Monaco,MCO
+129505,Mongolia,MNG
+62002127,Montenegro,MNE
+129520,Montserrat,MSR
+34,Morocco,MAR
+35,Mozambique,MOZ
+127,Myanmar,MMR
+36,Namibia,NAM
+128,Nepal,NPL
+129532,New Caledonia,NCL
+1438,New Zealand,NZL
+381,Nicaragua,NIC
+37,Niger,NER
+38,Nigeria,NGA
+129,North Korea,PRK
+785,Northern Ireland,GBR
+23008660,Northern Mariana Islands,MNP
+786,Norway,NOR
+130,Oman,OMN
+131,Pakistan,PAK
+1662,Palestine,PSE
+382,Panama,PAN
+1439,Papua New Guinea,PNG
+1655,Paraguay,PRY
+1656,Peru,PER
+141,Philippines,PHL
+787,Poland,POL
+788,Portugal,PRT
+383,Puerto Rico,PRI
+132,Qatar,QAT
+789,Republic of Ireland,IRL
+917510,Réunion,REU
+790,Romania,ROU
+791,Russia,RUS
+39,Rwanda,RWA
+385,Saint Kitts and Nevis,KNA
+384,Saint Lucia,LCA
+918748,Saint Pierre and Miquelon,SPM
+386,Saint Vincent and the Grenadines,VCT
+1444,Samoa,WSM
+792,San Marino,SMR
+40,São Tomé and Príncipe,STP
+133,Saudi Arabia,SAU
+793,Scotland,GBR
+41,Senegal,SEN
+802,Serbia,SRB
+42,Seychelles,SYC
+43,Sierra Leone,SLE
+134,Singapore,SGP
+794,Slovakia,SVK
+795,Slovenia,SVN
+1440,Solomon Islands,SLB
+44,Somalia,SOM
+45,South Africa,ZAF
+135,South Korea,KOR
+13113220,South Sudan,SDS
+796,Spain,ESP
+136,Sri Lanka,LKA
+46,Sudan,SDN
+387,Suriname,SUR
+47,Swaziland,SWZ
+797,Sweden,SWE
+798,Switzerland,CHE
+137,Syria,SYR
+1441,Tahiti,PYF
+139,Tajikistan,TJK
+48,Tanzania,TZA
+140,Thailand,THA
+388,The Bahamas,BHS
+20,The Gambia,GMB
+50,Togo,TGO
+1442,Tonga,TON
+389,Trinidad and Tobago,TTO
+51,Tunisia,TUN
+799,Turkey,TUR
+142,Turkmenistan,TKM
+129526,Turks and Caicos Islands,TCA
+23088616,Tuvalu,TUV
+52,Uganda,UGA
+800,Ukraine,UKR
+143,United Arab Emirates,ARE
+219003,United Kingdom,GBR
+390,United States,USA
+1657,Uruguay,URY
+144,Uzbekistan,UZB
+1443,Vanuatu,VUT
+1658,Venezuela,VEN
+145,Vietnam,VNM
+801,Wales,GBR
+146,Yemen,YEM
+54,Zambia,ZMB
+55,Zimbabwe,ZWE
